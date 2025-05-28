@@ -25,6 +25,8 @@ const Lava = () => {
   if (!ready) return <div>Loading ML backend...</div>;
 
   const renderTopicComponent = () => {
+    console.log(selection);
+    setActivePage("ModelAnalysis");
     switch (selection.topic) {
       case 'CKD':
         return <CKDPrediction />;
@@ -63,13 +65,37 @@ const Lava = () => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Lava Application
           </Typography>
-          <Button color="inherit" onClick={() => {setSelection(null);setActivePage('Dashboard')}}>
+          <Button
+            color="inherit"
+            sx={{
+              backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'inherit', 
+              color: activePage === 'Dashboard' ? '#fff' : 'inherit',
+            }}
+            onClick={() => {
+              setSelection(null);
+              setActivePage('Dashboard');
+            }}
+          >
             Dashboard
           </Button>
-          <Button color="inherit" onClick={() => {setActivePage('ModelAnalysis')}}>
+          <Button
+            color="inherit"
+            sx={{
+              backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'inherit', 
+              color: activePage === 'ModelAnalysis' ? '#fff' : 'inherit',
+            }}
+            onClick={() => setActivePage('ModelAnalysis')}
+          >
             Model Analysis
           </Button>
-          <Button color="inherit" onClick={() => setActivePage('Settings')}>
+          <Button
+            color="inherit"
+            sx={{
+              backgroundColor: activePage === 'Settings' ? '#1164ad' : 'inherit', 
+              color: activePage === 'Settings' ? '#fff' : 'inherit',
+            }}
+            onClick={() => setActivePage('Settings')}
+          >
             Settings
           </Button>
         </Toolbar>

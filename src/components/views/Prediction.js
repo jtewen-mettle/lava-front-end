@@ -29,7 +29,7 @@ import AgeGroupLineChart from '../charts/AgeGroupLineChart';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
-const Prediction = ({csvData,gridLabels,topic,score}) => {
+const Prediction = ({csvData,topic,score}) => {
   const [tab, setTab] = useState(0);
   const [metricsData, setMetricsData] = useState(null);
   const [subGroupMetricsData, setSubGroupMetricsData] = useState(null);
@@ -226,6 +226,14 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
             return acc;
           }, {})
         );
+
+        const unique = new Map();
+        formattedCsvData.forEach(row => {
+          unique.set(row.Patient_ID, row); // keeps last by timestamp due to sorting
+        });
+
+        formattedCsvData = Array.from(unique.values());
+
         const {ageGroups,genderCounts,raceCounts} = calculateDistributions(formattedCsvData);
         setAgeGroupDist(ageGroups);
         setGenderDist(genderCounts);      
@@ -265,13 +273,56 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
     return { ageGroups, genderCounts, raceCounts };
   };
 
+  const gridLabels = [
+    {
+      label: 'Overall Accuracy',
+      field: 'overall_accuracy',
+      format: (v) => `${(v * 100).toFixed(1)}%`,
+      tooltip: "How often the model's predictions are correct overall.",
+      formula: "Formula: (True Positives + True Negatives) / Total Predictions",
+      info: "Correct predictions",
+    },
+    {
+      label: 'Precision (Prediction Reliability)',
+      field: 'alert_reliability',
+      format: (v) => `${(v * 100).toFixed(1)}%`,
+      tooltip: 'When the model predicts "yes", how often is it actually correct?',
+      formula: 'Formula: True Positives / (True Positives + False Positives)',
+      info: "% of predictive positives that are correct",
+    },
+    {
+      label: 'Recall (Prediction Detection Rate)',
+      field: 'need_detection_rate',
+      format: (v) => `${(v * 100).toFixed(1)}%`,
+      tooltip: 'How well the model identifies all actual "yes" cases.',
+      formula: 'Formula: True Positives / (True Positives + False Negatives)',
+      info: "% of actual positives detected",
+    },
+    {
+      label: 'F1 Score (Balanced Prediction Score)',
+      field: 'balanced_score',
+      format: (v) => v.toFixed(2),
+      tooltip: "The harmonic mean of Precision and Recall, showing overall model effectiveness.",
+      formula: "Formula: 2 * (Precision * Recall) / (Precision + Recall)",
+      info: "Balance between Precision and Recall",
+    },
+  ];
+
     const metrics = metricsData
-    ? gridLabels.map(({ label, field, format, tooltip,info }) => ({
-        label,
-        value: format(metricsData.summary_metrics[field]),
-        tooltip,info
-        }))
-    : [];
+        ? gridLabels.map(({ label, field, format, tooltip, formula,info }) => {
+            const value = metricsData.summary_metrics[field];
+            const formattedValue = format(value);
+            const isGood = value >= 0.7;
+            return {
+                label,
+                value: formattedValue,
+                tooltip,
+                formula,
+                info,
+                isGood
+            };
+            })
+        : [];
 
 
   const accuracyChart = {
@@ -354,9 +405,9 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
               )}
               {tab === 1 && (
                 <Box mt={4}>
-                  <Grid container spacing={4} justifyContent="center">
+                  <Grid container spacing={4}>
                     {/* Gender Chart */}
-                    <Grid item xs={12} md={8} width="30%">
+                    <Grid item xs={12} md={8} width="45%" height="600px">
                       <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
                         <Typography variant="h6">Gender-wise Visualization</Typography>
                         <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
@@ -379,9 +430,7 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
                         />
                       </Paper>
                     </Grid>
-
-                    {/* Race Chart */}
-                    <Grid item xs={12} md={8} width="30%">
+                    <Grid item xs={12} md={8} width="45%" height="600px">
                       <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
                         <Typography variant="h6">Race-wise Precision</Typography>
                         <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
@@ -404,9 +453,7 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
                         />
                       </Paper>
                     </Grid>
-
-                    {/* Age Chart */}
-                    <Grid item xs={12} md={8} width="30%">
+                    <Grid item xs={12} md={8} width="45%" paddingTop={4} height="500px">
                       <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
                         {ageMetrics && <AgeGroupLineChart data={ageMetrics} />}
                       </Paper>

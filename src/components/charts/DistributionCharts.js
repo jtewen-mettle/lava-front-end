@@ -37,7 +37,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
   return (
     <Box mt={4}>
     <Grid container spacing={4} width="100%">
-      <Grid item xs={12} md={6} width="30%">
+      <Grid item xs={12} md={6} width="45%">
         <Paper sx={{ p: 2, height: '300px' }}> {/* Set a consistent height */}
           <Typography variant="h6" gutterBottom align="left">
             Age Distribution
@@ -56,10 +56,10 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
             }} />
         </Paper>
       </Grid>
-      <Grid item xs={12} md={6} width="30%">
+      <Grid item xs={12} md={6} width="45%">
         <DistributionPieChart title="Gender Distribution" data={genderCounts}/>
       </Grid>
-      <Grid item xs={12} width="30%">
+      <Grid item xs={12} width="45%">
         <Paper sx={{ p: 2, height: '300px' }}> {/* Set the same height */}
           <Typography variant="h6" gutterBottom align="left">
             Race/Ethnicity Distribution

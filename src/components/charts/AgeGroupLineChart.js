@@ -37,7 +37,7 @@ const AgeGroupLineChart = ({ data }) => {
                     <Tooltip />
                     <Legend formatter={legendFormatter} /> 
                     <Line type="monotone" dataKey="True Positive Rate" stroke="#ff0000" name="True Positive Rate" />
-                    <Line type="monotone" dataKey="True Negative Rate" stroke="#00ff00" name="True Negative Rate" />
+                    <Line type="monotone" dataKey="True Negative Rate" stroke="#cc8400" name="True Negative Rate" />
                     <Line type="monotone" dataKey="False Positive Rate" stroke="#0000ff" name="False Positive Rate" />
                     <Line type="monotone" dataKey="False Negative Rate" stroke="#ff00ff" name="False Negative Rate" />
                 </LineChart>

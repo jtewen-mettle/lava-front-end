@@ -8,6 +8,8 @@ import {
   IconButton,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import WarningIcon from '@mui/icons-material/Warning';
 
 const MetricsGrid = ({ metrics }) => {
   const colors = ['#f9f9f9', '#f0f4f8'];
@@ -34,7 +36,18 @@ const MetricsGrid = ({ metrics }) => {
                 >
                   {metric.label}
                 </Typography>
-                <Tooltip title={metric.tooltip || 'More info'} arrow>
+                <Tooltip
+                  title={
+                    <>
+                      <span>{metric.tooltip}</span>
+                      <br />
+                      <span color="white" style={{ fontStyle: 'italic' }}>
+                        {metric.formula}
+                      </span>
+                    </>
+                  }
+                  arrow
+                >
                   <IconButton size="small">
                     <InfoIcon fontSize="small" color="primary" />
                   </IconButton>
@@ -42,6 +55,11 @@ const MetricsGrid = ({ metrics }) => {
               </Grid>
               <Typography variant="h6" textAlign="left" mt={1}>
                 {metric.value}
+                {metric.isGood ? (
+                  <CheckCircleIcon style={{ color: 'green', marginLeft: '8px' }} />
+                ) : (
+                  <WarningIcon style={{ color: 'red', marginLeft: '8px' }} />
+                )}
               </Typography>
               <Typography
                 variant="body2"
