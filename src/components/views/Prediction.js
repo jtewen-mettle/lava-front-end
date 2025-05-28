@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Typography, Card, CardContent, Tabs, Tab, Button, Paper,IconButton,Tooltip as MuiTooltip } from '@mui/material';
+import { Box, Grid, Typography, Card, CardContent, Tabs, Tab, Button, Paper,IconButton,Tooltip as MuiTooltip, FormControl,
+  InputLabel,
+  Select,
+  MenuItem } from '@mui/material';
 import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -36,6 +39,21 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
   const [ageGroupDist, setAgeGroupDist] = useState({});
   const [genderDist, setGenderDist] = useState({});
   const [raceDist, setRaceDist] = useState({});
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedRace, setSelectedRace] = useState('');
+
+  // Get unique values for dropdowns
+  const genderOptions = ['male', 'female'];
+  const raceOptions = ['White', 'Black'];
+
+  // Filter data based on selected value or show all if none selected
+  const filteredGenderData = selectedGender
+    ? genderMetrics.filter(item => item.Subgroup === selectedGender)
+    : genderMetrics;
+
+  const filteredRaceData = selectedRace
+    ? raceMetrics.filter(item => item.Subgroup === selectedRace)
+    : raceMetrics;
 
   const handleTabChange = (event, newValue) => setTab(newValue);
 
@@ -337,20 +355,60 @@ const Prediction = ({csvData,gridLabels,topic,score}) => {
               {tab === 1 && (
                 <Box mt={4}>
                   <Grid container spacing={4} justifyContent="center">
+                    {/* Gender Chart */}
                     <Grid item xs={12} md={8} width="30%">
                       <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
-                        <SubgroupBarChart title="Gender-wise Visualization" rawData={genderMetrics} selectedFeature="Gender" />
+                        <Typography variant="h6">Gender-wise Visualization</Typography>
+                        <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
+                          <InputLabel>Gender</InputLabel>
+                          <Select
+                            value={selectedGender}
+                            label="Gender"
+                            onChange={e => setSelectedGender(e.target.value)}
+                          >
+                            <MenuItem value="">All</MenuItem>
+                            {genderOptions.map(option => (
+                              <MenuItem key={option} value={option}>{option}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <SubgroupBarChart
+                          title="Gender-wise Visualization"
+                          rawData={filteredGenderData}
+                          selectedFeature="Gender"
+                        />
                       </Paper>
                     </Grid>
+
+                    {/* Race Chart */}
                     <Grid item xs={12} md={8} width="30%">
                       <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
-                        <SubgroupBarChart title="Race-wise Precision" rawData={raceMetrics} selectedFeature="Race" />
+                        <Typography variant="h6">Race-wise Precision</Typography>
+                        <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
+                          <InputLabel>Race</InputLabel>
+                          <Select
+                            value={selectedRace}
+                            label="Race"
+                            onChange={e => setSelectedRace(e.target.value)}
+                          >
+                            <MenuItem value="">All</MenuItem>
+                            {raceOptions.map(option => (
+                              <MenuItem key={option} value={option}>{option}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <SubgroupBarChart
+                          title="Race-wise Precision"
+                          rawData={filteredRaceData}
+                          selectedFeature="Race"
+                        />
                       </Paper>
                     </Grid>
+
+                    {/* Age Chart */}
                     <Grid item xs={12} md={8} width="30%">
                       <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
-                        {/* <SubgroupBarChart title="Age-wise Precision" rawData={ageMetrics} selectedFeature="Age" /> */}
-                        {ageMetrics && <AgeGroupLineChart data={ageMetrics}/>}
+                        {ageMetrics && <AgeGroupLineChart data={ageMetrics} />}
                       </Paper>
                     </Grid>
                   </Grid>
