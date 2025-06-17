@@ -7,6 +7,7 @@ import CardioVascularPrediction from './topics/CardioVascularPrediction';
 import * as tf from '@tensorflow/tfjs';
 import * as sk from 'scikitjs';
 import { useAppContext } from '../context/AppContext';
+import ProstateCancerPrediction from './topics/ProstateCancerPrediciton';
 
 const Lava = () => {
   //const [selection, setSelection] = useState(null);
@@ -25,13 +26,17 @@ const Lava = () => {
   if (!ready) return <div>Loading ML backend...</div>;
 
   const renderTopicComponent = () => {
+    console.log("renderTopicComponent called");
     console.log(selection);
     setActivePage("ModelAnalysis");
     switch (selection.topic) {
       case 'CKD':
+        console.log("CKD Prediction selected");
         return <CKDPrediction />;
       case 'CardioVascularPrediction':
         return <CardioVascularPrediction />;
+      case 'ProstateCancerPrediction':
+        return <ProstateCancerPrediction />;
       case 'HospitalizationRisk':
         return <HospitalizationRiskPrediction />;
       default:

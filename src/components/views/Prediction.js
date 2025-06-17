@@ -44,12 +44,12 @@ const Prediction = ({csvData,topic,score}) => {
   const [predictionValue, setPredictionValue] = useState(80);
 
   // Get unique values for dropdowns
-  const genderOptions = ['male', 'female'];
+  const genderOptions = ['Male', 'Female'];
   const raceOptions = ['White', 'Black'];
 
   // Filter data based on selected value or show all if none selected
   const filteredGenderData = selectedGender
-    ? genderMetrics.filter(item => item.Subgroup === selectedGender)
+    ? genderMetrics.filter(item => item.Subgroup.toLowerCase() === selectedGender.toLowerCase())
     : genderMetrics;
 
   const filteredRaceData = selectedRace
@@ -58,7 +58,7 @@ const Prediction = ({csvData,topic,score}) => {
 
   const handleTabChange = (event, newValue) => setTab(newValue);
 
-  function normalizeAndPredict(data, scoreKey, thresholdPercent = 20) {
+  function normalizeAndPredict(data, scoreKey, thresholdPercent = 40) {
     console.log(thresholdPercent);
     return data.map(row => {
       const score = parseFloat(row[scoreKey]) / 100; // Convert to 0–1
@@ -245,7 +245,7 @@ const Prediction = ({csvData,topic,score}) => {
   }, [csvData, tab]);
 
   const calculateDistributions = (data) => {
-    const ageGroups = { '0-10': 0,'11-20': 0, '21-30': 0,'31-40': 0,'41-50': 0, '51-60': 0, '60+': 0 };
+    const ageGroups = { '0-10': 0,'11-20': 0, '21-30': 0,'31-40': 0,'41-50': 0, '51-60': 0, '60-80+': 0 };
     const genderCounts = {};
     const raceCounts = {};
   
@@ -313,7 +313,7 @@ const Prediction = ({csvData,topic,score}) => {
         ? gridLabels.map(({ label, field, format, tooltip, formula,info }) => {
             const value = metricsData.summary_metrics[field];
             const formattedValue = format(value);
-            const isGood = value >= 0.7;
+            const isGood = value >= 0.6;
             return {
                 label,
                 value: formattedValue,
@@ -334,7 +334,7 @@ const Prediction = ({csvData,topic,score}) => {
     labels: metricsData?.accuracy_over_time.months || [],
     datasets: [
       {
-        label: 'Claimed Accuracy',
+        label: 'DSI Developer Claimed Accuracy',
         data: metricsData?.accuracy_over_time.claimed || [],
         borderColor: 'blue',
         fill: false

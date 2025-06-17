@@ -28,9 +28,10 @@ const SelectionPage = ({ onSubmit }) => {
         <Typography variant="body1" gutterBottom>Pick a Topic</Typography>
         <Select value={topic} onChange={(e) => setTopic(e.target.value)} displayEmpty>
           <MenuItem value="">Select a topic</MenuItem>
-          <MenuItem value="CKD">Chronic Kidney Disease (CKD) Predictor – Accuracy Evaluation</MenuItem>
+          <MenuItem value="CKD">Kidney Failure Estimator</MenuItem>
           <MenuItem value="CardioVascularPrediction">CardioVascular Predictor Evaluation</MenuItem>
-          <MenuItem value="HospitalizationRisk">30 Day Hospitalization risk due to progression of CKD</MenuItem>
+          <MenuItem value="ProstateCancerPrediction">ProstateCancer Predictor Evaluation</MenuItem>
+          {/* <MenuItem value="HospitalizationRisk">30 Day Hospitalization risk due to progression of CKD</MenuItem> */}
         </Select>
       </FormControl>
 

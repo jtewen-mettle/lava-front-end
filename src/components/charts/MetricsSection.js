@@ -38,7 +38,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
         datasets: [
           ...accuracyChart.datasets,
           {
-            label: `Prediction (${predictionValue})`,
+            label: `Provider defined threshold (${predictionValue})`,
             data: new Array(accuracyChart.labels.length).fill(predictionValue),
             borderColor: 'green',
             borderDash: [6, 6],
