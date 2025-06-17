@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Grid, Paper, Typography, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Bar, Line } from 'react-chartjs-2';
 
-const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocChart, recalculateMetrics }) => {
+const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocChart, recalculateMetrics,predictionValue,onPredictionChange }) => {
     const [threshold, setThreshold] = useState(20); 
 
     const total = metricsData.confusion_matrix.true_positive +
@@ -32,6 +32,23 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
         setThreshold(newThreshold);
         recalculateMetrics(newThreshold); 
     };
+
+    const extendedChart = {
+        ...accuracyChart,
+        datasets: [
+          ...accuracyChart.datasets,
+          {
+            label: `Prediction (${predictionValue})`,
+            data: new Array(accuracyChart.labels.length).fill(predictionValue),
+            borderColor: 'green',
+            borderDash: [6, 6],
+            pointRadius: 0,
+            fill: false,
+          },
+        ],
+      };
+      
+    
 
     return (
         <Box mt={4} width="100%">
@@ -117,7 +134,22 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 <Grid item xs={12} md={8} width="45%">
                     <Paper elevation={2} style={{ padding: 16, height: '100%' }}>
                         <Typography variant="subtitle1" align="left" sx={{ marginBottom: '10%',bottom: '20px' }}gutterBottom>Accuracy Over Time</Typography>
-                        <Line  data={accuracyChart} options={{
+                        <FormControl sx={{ marginBottom: 2, width:"80%" }}>
+                            <InputLabel id="prediction-label">Provider defined threshold</InputLabel>
+                            <Select
+                            labelId="prediction-label"
+                            value={predictionValue}
+                            label="Provider defined threshold"
+                            onChange={onPredictionChange}
+                            >
+                            {[50, 60, 70, 80, 90, 100].map((val) => (
+                                <MenuItem key={val} value={val}>{val}</MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+                        <Line  data={extendedChart} 
+                        options={{
                             responsive: true,
                             plugins: {
                                 legend: {

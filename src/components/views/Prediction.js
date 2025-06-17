@@ -41,6 +41,7 @@ const Prediction = ({csvData,topic,score}) => {
   const [raceDist, setRaceDist] = useState({});
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedRace, setSelectedRace] = useState('');
+  const [predictionValue, setPredictionValue] = useState(80);
 
   // Get unique values for dropdowns
   const genderOptions = ['male', 'female'];
@@ -283,7 +284,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "Correct predictions",
     },
     {
-      label: 'Precision (Prediction Reliability)',
+      label: 'Prediction Reliability(Precision)',
       field: 'alert_reliability',
       format: (v) => `${(v * 100).toFixed(1)}%`,
       tooltip: 'When the model predicts "yes", how often is it actually correct?',
@@ -291,7 +292,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "% of predictive positives that are correct",
     },
     {
-      label: 'Recall (Prediction Detection Rate)',
+      label: 'Prediction Detection Rate(Recall)',
       field: 'need_detection_rate',
       format: (v) => `${(v * 100).toFixed(1)}%`,
       tooltip: 'How well the model identifies all actual "yes" cases.',
@@ -299,7 +300,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "% of actual positives detected",
     },
     {
-      label: 'F1 Score (Balanced Prediction Score)',
+      label: 'Balanced Prediction Score(F1 Score)',
       field: 'balanced_score',
       format: (v) => v.toFixed(2),
       tooltip: "The harmonic mean of Precision and Recall, showing overall model effectiveness.",
@@ -324,6 +325,10 @@ const Prediction = ({csvData,topic,score}) => {
             })
         : [];
 
+  const handlePredictionChange = (event) => {
+    console.log("Prediction Value Changed: ", event.target.value);
+    setPredictionValue(event.target.value);
+  };
 
   const accuracyChart = {
     labels: metricsData?.accuracy_over_time.months || [],
@@ -401,7 +406,7 @@ const Prediction = ({csvData,topic,score}) => {
                 </Tabs>
               </Box>
               {tab === 0 && (
-                <MetricsSection topic={topic} metricsData={metricsData} accuracyChart={accuracyChart} barChartData={barChartData} rocChart={rocChart} />
+                <MetricsSection topic={topic} metricsData={metricsData} accuracyChart={accuracyChart} barChartData={barChartData} rocChart={rocChart} predictionValue={predictionValue} onPredictionChange={handlePredictionChange} />
               )}
               {tab === 1 && (
                 <Box mt={4}>
