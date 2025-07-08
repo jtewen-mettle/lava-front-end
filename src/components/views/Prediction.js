@@ -46,7 +46,7 @@ const Prediction = ({csvData,topic,score}) => {
 
   // Get unique values for dropdowns
   const genderOptions = ['Male', 'Female'];
-  const raceOptions = ['White', 'Black'];
+  const raceOptions = raceMetrics ? [...new Set(raceMetrics.map(item => item.Subgroup))] : [];
 
   // Filter data based on selected value or show all if none selected
   const filteredGenderData = selectedGender
