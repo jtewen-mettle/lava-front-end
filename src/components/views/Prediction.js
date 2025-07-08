@@ -444,7 +444,7 @@ const Prediction = ({csvData,topic,score}) => {
       >
         <Box display="flex" justifyContent="space-between" width="100%">
         <Typography variant="h5" gutterBottom textAlign="left">
-          Accuracy Metrics: Development of {topic} {score && `(Score: ${score})`}
+          Accuracy Metrics: Development of {topic}
         </Typography>
         </Box>
 
