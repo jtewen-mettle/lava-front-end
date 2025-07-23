@@ -12,6 +12,29 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { styled } from '@mui/material/styles';
+
+const StyledTabs = styled(Tabs)({
+  borderBottom: '1px solid #ccc',
+  minHeight: 'auto',
+  '& .MuiTabs-indicator': {
+    display: 'none', // Remove the bottom indicator
+  },
+});
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  textTransform: 'none',
+  fontWeight: 500,
+  borderRadius: '8px 8px 0 0',
+  minHeight: 'auto',
+  padding: '10px 16px',
+  marginRight: '4px',
+  backgroundColor: '#e0e0e0', // Default background for inactive
+  '&.Mui-selected': {
+    backgroundColor: '#2f75b5', // Blue background for active tab
+    color: '#fff',
+  },
+}));
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
@@ -157,11 +180,11 @@ const HospitalizationRiskPrediction = (props) => {
           </Grid>
 
           <Box mt={4}>
-            <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
-              <Tab label="Performance Metrics" />
-              <Tab label="Bias Analysis" />
-              <Tab label="Data Distribution" />
-            </Tabs>
+            <StyledTabs value={tab} onChange={handleTabChange}>
+              <StyledTab label="Performance Metrics" />
+              <StyledTab label="Sub-Group Analysis" />
+              <StyledTab label="Data Distribution" />
+            </StyledTabs>
 
             {tab === 0 && (
               <Box mt={4}>

@@ -51,7 +51,15 @@ const SubgroupBarChart = ({ rawData, selectedFeature }) => {
       <h3 align="left">Subgroup Analysis across {selectedFeature}</h3>
       <ResponsiveContainer width="90%" height={500}>
         <BarChart
-          data={chartData}
+          data={chartData.map(d => {
+            const updated = { ...d };
+            subgroups.forEach(sg => {
+              if (!d.isSeparator && !isNaN(d[sg])) {
+                updated[sg] = d[sg] * 100;
+              }
+            });
+            return updated;
+          })}
           margin={{ top: 60, right: 30, left: 20, bottom: 100 }}
           style={{ fontSize: '12px' }}
         >
@@ -64,8 +72,8 @@ const SubgroupBarChart = ({ rawData, selectedFeature }) => {
             height={100}
             tickFormatter={(value) => (value.includes('Separator') ? '' : value)} 
           />
-          <YAxis domain={[0, 1.2]} ticks={[0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2]} />
-          <Tooltip />
+          <YAxis domain={[0, 120]} ticks={[0, 20, 40, 60, 80, 100, 120]} />
+          <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
           <Legend
             verticalAlign="top"
             layout="horizontal"
@@ -84,12 +92,15 @@ const SubgroupBarChart = ({ rawData, selectedFeature }) => {
                 dataKey={subgroup}
                 position="top"
                 style={{ fontSize: '10px' }}
-                formatter={(value) => (value && !isNaN(value) ? value.toFixed(2) : 'N/A')}
+                formatter={(value) =>
+                  value && !isNaN(value) ? `${value.toFixed(0)}%` : 'N/A'
+                }
               />
             </Bar>
           ))}
         </BarChart>
       </ResponsiveContainer>
+
     </div>
   );
 };

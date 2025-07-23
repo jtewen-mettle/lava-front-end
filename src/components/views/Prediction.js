@@ -27,6 +27,29 @@ import DistributionCharts from '../charts/DistributionCharts';
 import InfoIcon from '@mui/icons-material/Info';
 import MetricsGrid from '../views/MetricsGrid';
 import AgeGroupLineChart from '../charts/AgeGroupLineChart';
+import { styled } from '@mui/material/styles';
+
+const StyledTabs = styled(Tabs)({
+  borderBottom: '1px solid #ccc',
+  minHeight: 'auto',
+  '& .MuiTabs-indicator': {
+    display: 'none', // Remove the bottom indicator
+  },
+});
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  textTransform: 'none',
+  fontWeight: 500,
+  borderRadius: '8px 8px 0 0',
+  minHeight: 'auto',
+  padding: '10px 16px',
+  marginRight: '4px',
+  backgroundColor: '#e0e0e0', // Default background for inactive
+  '&.Mui-selected': {
+    backgroundColor: '#2f75b5', // Blue background for active tab
+    color: '#fff',
+  },
+}));
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
@@ -338,7 +361,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "Correct predictions",
     },
     {
-      label: 'Prediction Reliability(Precision)',
+      label: 'Prediction Reliability (Postive Predictive Value)',
       field: 'alert_reliability',
       format: (v) => `${(v * 100).toFixed(1)}%`,
       tooltip: 'When the model predicts "yes", how often is it actually correct?',
@@ -346,7 +369,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "% of predictive positives that are correct",
     },
     {
-      label: 'Prediction Detection Rate(Recall)',
+      label: 'Prediction Detection Rate (Sensitivity)',
       field: 'need_detection_rate',
       format: (v) => `${(v * 100).toFixed(1)}%`,
       tooltip: 'How well the model identifies all actual "yes" cases.',
@@ -354,7 +377,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "% of actual positives detected",
     },
     {
-      label: 'Balanced Prediction Score(F1 Score)',
+      label: 'Balanced Prediction Score (F1 Score)',
       field: 'balanced_score',
       format: (v) => v.toFixed(2),
       tooltip: "The harmonic mean of Precision and Recall, showing overall model effectiveness.",
@@ -453,11 +476,11 @@ const Prediction = ({csvData,topic,score}) => {
             <MetricsGrid metrics={metrics} />
             <Box mt={4} width="100%">
               <Box display="flex" justifyContent="left">
-                <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
-                  <Tab label="Performance Metrics" />
-                  <Tab label="Subgroup Analysis" />
-                  <Tab label="Data Distribution" />
-                </Tabs>
+                <StyledTabs value={tab} onChange={handleTabChange}>
+                  <StyledTab label="Performance Metrics" />
+                  <StyledTab label="Sub-Group Analysis" />
+                  <StyledTab label="Data Distribution" />
+                </StyledTabs>
               </Box>
               {tab === 0 && (
                 <MetricsSection topic={topic} metricsData={metricsData} accuracyChart={accuracyChart} barChartData={barChartData} rocChart={rocChart} predictionValue={predictionValue} onPredictionChange={handlePredictionChange} calibrationData={calibrationData}/>

@@ -17,7 +17,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
  * @param {string} title - Chart title
  */
 const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, title = "Calibration Plot" }) => {
-  const [showConfidenceInterval, setShowConfidenceInterval] = useState(false);
+  const [showConfidenceInterval, setShowConfidenceInterval] = useState(true);
   
   const calibrationData = useMemo(() => {
     // Use fixed nBins for calculation
