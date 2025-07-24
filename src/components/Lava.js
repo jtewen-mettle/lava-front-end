@@ -71,7 +71,12 @@ const Lava = () => {
           backgroundColor: '#275786',
           boxShadow: '0 4px 12px rgba(39, 87, 134, 0.3)',
           borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
-          background: 'linear-gradient(135deg, #275786 0%, #1e4a6f 100%)'
+          background: 'linear-gradient(135deg, #275786 0%, #1e4a6f 100%)',
+          marginLeft: '-32px',
+          marginRight: '-32px',
+          width: 'calc(100% + 64px)',
+          padding: '6px'
+
         }}
       >
         <Toolbar sx={{ paddingLeft: '24px', paddingRight: '24px' }}>
@@ -79,6 +84,7 @@ const Lava = () => {
             variant="h6" 
             sx={{ 
               flexGrow: 1,
+              paddingLeft: '58px',
               fontFamily: 'Arial, sans-serif',
               fontWeight: 'bold',
               letterSpacing: '0.5px',
