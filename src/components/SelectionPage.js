@@ -45,8 +45,10 @@ const SelectionPage = ({ onSubmit }) => {
       sx={{
         minHeight: '60vh',
         backgroundColor: 'transparent',
-        margin: '20px',
-        marginTop: '40px'
+        mx: 'auto',
+        maxWidth: '1600px',
+        px: { xs: 2, sm: 3, md: 3 },
+        py: { xs: 2, sm: 3, md: 4 }
       }}
     >
       <LavaLogo />

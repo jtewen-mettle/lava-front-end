@@ -274,7 +274,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
         <Box mt={4} width="100%">
             <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: '1fr 1fr', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 600px), 1fr))',
                 gap: '24px',
                 width: '100%',
                 gridAutoRows: 'minmax(400px, auto)'
@@ -1318,6 +1318,8 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                 display="grid"
                                 gridTemplateColumns="repeat(2, 1fr)" 
                                 gap={3}
+                                columnGap={8}
+                                rowGap={2}
                                 sx={{ 
                                     height: '400px',
                                     maxWidth: '600px',
@@ -1334,10 +1336,12 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     display="flex" 
                                     justifyContent="center" 
                                     alignItems="center"
-                                    minHeight="0"
+                                    height="200px"
+                                    width="100%"
                                     sx={{
                                         transition: 'all 0.3s ease',
                                         cursor: 'pointer',
+                                        aspectRatio: '1',
                                         '&:hover': {
                                             transform: 'translateY(-4px) scale(1.03)',
                                             boxShadow: '0 12px 30px rgba(76, 175, 80, 0.4)',
@@ -1361,10 +1365,12 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     display="flex" 
                                     justifyContent="center" 
                                     alignItems="center"
-                                    minHeight="0"
+                                    height="200px"
+                                    width="100%"
                                     sx={{
                                         transition: 'all 0.3s ease',
                                         cursor: 'pointer',
+                                        aspectRatio: '1',
                                         '&:hover': {
                                             transform: 'translateY(-4px) scale(1.03)',
                                             boxShadow: '0 12px 30px rgba(244, 67, 54, 0.4)',
@@ -1388,10 +1394,12 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     display="flex" 
                                     justifyContent="center" 
                                     alignItems="center"
-                                    minHeight="0"
+                                    height="200px"
+                                    width="100%"
                                     sx={{
                                         transition: 'all 0.3s ease',
                                         cursor: 'pointer',
+                                        aspectRatio: '1',
                                         '&:hover': {
                                             transform: 'translateY(-4px) scale(1.03)',
                                             boxShadow: '0 12px 30px rgba(244, 67, 54, 0.4)',
@@ -1415,10 +1423,12 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     display="flex" 
                                     justifyContent="center" 
                                     alignItems="center"
-                                    minHeight="0"
+                                    height="200px"
+                                    width="100%"
                                     sx={{
                                         transition: 'all 0.3s ease',
                                         cursor: 'pointer',
+                                        aspectRatio: '1',
                                         '&:hover': {
                                             transform: 'translateY(-4px) scale(1.03)',
                                             boxShadow: '0 12px 30px rgba(76, 175, 80, 0.4)',

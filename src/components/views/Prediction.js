@@ -43,7 +43,7 @@ const StyledTabs = styled(Tabs)({
     display: 'none',
   },
   '& .MuiTabs-flexContainer': {
-    gap: '0', // No gap between tabs
+    gap: '10px',
     position: 'relative',
   },
 });
@@ -63,8 +63,8 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   color: '#6b7280',
   border: 'none',
   borderBottom: '2.5px solid transparent', // So parent border shows through
-  width: '180px',
-  minWidth: '180px',
+  width: '160px',
+  minWidth: '160px',
   maxWidth: '180px',
   position: 'relative',
   '&:hover': {
@@ -495,10 +495,18 @@ const Prediction = ({csvData,topic,score}) => {
 
   return (
     <div>
-      <Box p={4} m={2} width="calc(100%-32px)" margin="20px"
-        display="flex"
-        flexDirection="column"
-        alignItems="stretch"
+      <Box 
+        sx={{ 
+          p: { xs: 2, sm: 3, md: 3 }, 
+          mx: 'auto',
+          maxWidth: '1600px',
+          width: '100%',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          overflow: 'hidden'
+        }}
       >
         <Box display="flex" justifyContent="space-between" width="100%">
         <Typography variant="h5" gutterBottom textAlign="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '18px' }}>
@@ -527,10 +535,12 @@ const Prediction = ({csvData,topic,score}) => {
                 <Box mt={4}>
                   <div style={{ 
                     display: 'grid', 
-                    gridTemplateColumns: '1fr 1fr', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 600px), 1fr))',
                     gap: '24px',
                     width: '100%',
-                    gridAutoRows: 'minmax(400px, auto)'
+                    gridAutoRows: 'minmax(400px, auto)',
+                    maxWidth: '100%',
+                    overflow: 'hidden'
                   }}>
                     {/* Gender Chart */}
                     <Paper 
@@ -538,10 +548,14 @@ const Prediction = ({csvData,topic,score}) => {
                       style={{ 
                         padding: '16px', 
                         height: '400px', 
+                        width: '100%',
+                        maxWidth: '100%',
+                        boxSizing: 'border-box',
                         display: 'flex', 
                         flexDirection: 'column',
                         transition: 'all 0.3s ease',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        overflow: 'hidden'
                       }}
                       sx={{
                         '&:hover': {
@@ -580,10 +594,14 @@ const Prediction = ({csvData,topic,score}) => {
                       style={{ 
                         padding: '16px', 
                         height: '400px', 
+                        width: '100%',
+                        maxWidth: '100%',
+                        boxSizing: 'border-box',
                         display: 'flex', 
                         flexDirection: 'column',
                         transition: 'all 0.3s ease',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        overflow: 'hidden'
                       }}
                       sx={{
                         '&:hover': {

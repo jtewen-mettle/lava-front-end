@@ -156,10 +156,11 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
     <Box mt={4}>
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: '1fr 1fr', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 600px), 1fr))', 
         gap: '24px',
         width: '100%',
-        gridAutoRows: 'minmax(400px, auto)'
+        gridAutoRows: 'minmax(400px, auto)',
+        maxWidth: '100%'
       }}>
         {/* Age Distribution */}
         <Paper 

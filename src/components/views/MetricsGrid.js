@@ -16,22 +16,27 @@ const MetricsGrid = ({ metrics }) => {
 
   return (
     <div style={{ 
-      display: 'flex', 
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
       width: '100%', 
       gap: '20px',
-      marginBottom: '16px'
+      marginBottom: '16px',
+      maxWidth: '100%'
     }}>
       {metrics.map((metric, i) => (
         <Card
           key={i}
+          elevation={2}
           style={{
             backgroundColor: colors[i % 2],
-            flex: 1,
+            width: '100%',
+            minWidth: 0,
             display: 'flex',
             flexDirection: 'column',
             minHeight: '120px',
             cursor: 'pointer',
             transition: 'all 0.3s ease',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
           }}
           elevation={2}
           sx={{
