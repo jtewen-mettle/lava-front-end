@@ -16,7 +16,8 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
     
     const accuracyChartRef = useRef(null);
     const barChartRef = useRef(null);
-    const rocChartRef = useRef(null); 
+    const rocChartRef = useRef(null);
+    const breakdownChartRef = useRef(null); 
 
     const total = metricsData.confusion_matrix.true_positive +
         metricsData.confusion_matrix.false_negative +   
@@ -85,6 +86,140 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
         let legendData = null;
         
         switch(activeChart) {
+            case 'breakdown':
+                // For breakdown chart download, always use the modal format for consistency
+                // Create a temporary modal-style element if modal is not open
+                const downloadBreakdownChart = () => {
+                    // Always create a standardized temporary element for consistent downloads
+                    // regardless of whether modal is open or closed
+                    const element = document.createElement('div');
+                    element.style.cssText = `
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 16px;
+                        width: 600px;
+                        height: 400px;
+                        padding: 20px;
+                        background: white;
+                        font-family: Arial, sans-serif;
+                    `;
+                    
+                    // Create the four boxes with standardized styling for download
+                    const boxes = [
+                        {
+                            data: metricsData.confusion_matrix.true_positive,
+                            percent: percent(metricsData.confusion_matrix.true_positive),
+                            label: 'Correctly predicted',
+                            color: '#e0f2f1'
+                        },
+                        {
+                            data: metricsData.confusion_matrix.false_negative,
+                            percent: percent(metricsData.confusion_matrix.false_negative),
+                            label: 'Missed Predictions',
+                            color: '#ffebee'
+                        },
+                        {
+                            data: metricsData.confusion_matrix.false_positive,
+                            percent: percent(metricsData.confusion_matrix.false_positive),
+                            label: 'Wrongly predicted positive',
+                            color: '#ffebee'
+                        },
+                        {
+                            data: metricsData.confusion_matrix.true_negative,
+                            percent: percent(metricsData.confusion_matrix.true_negative),
+                            label: 'Correctly predicted negative',
+                            color: '#e0f2f1'
+                        }
+                    ];
+                    
+                    boxes.forEach(box => {
+                        const boxElement = document.createElement('div');
+                        boxElement.style.cssText = `
+                            background-color: ${box.color};
+                            padding: 16px;
+                            border-radius: 8px;
+                            text-align: center;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 120px;
+                        `;
+                        
+                        boxElement.innerHTML = `
+                            <div>
+                                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 8px; font-family: Arial, sans-serif; color: #333;">
+                                    ${box.data} (${box.percent})
+                                </div>
+                                <div style="font-size: 0.9rem; font-family: Arial, sans-serif; color: #666;">
+                                    ${box.label}
+                                </div>
+                            </div>
+                        `;
+                        element.appendChild(boxElement);
+                    });
+                    
+                    // Add title
+                    const titleElement = document.createElement('div');
+                    titleElement.style.cssText = `
+                        grid-column: 1 / -1;
+                        text-align: center;
+                        font-size: 1.3rem;
+                        font-weight: bold;
+                        margin-bottom: 16px;
+                        font-family: Arial, sans-serif;
+                        color: #333;
+                        order: -1;
+                    `;
+                    titleElement.textContent = getTitle();
+                    element.appendChild(titleElement);
+                    
+                    // Temporarily add to DOM for rendering
+                    element.style.position = 'absolute';
+                    element.style.left = '-9999px';
+                    element.style.top = '-9999px';
+                    document.body.appendChild(element);
+                    
+                    const isTemporary = true;
+                    
+                    if (element) {
+                        // Use html2canvas to capture the breakdown grid
+                        import('html2canvas').then(html2canvas => {
+                            html2canvas.default(element, {
+                                backgroundColor: '#ffffff',
+                                scale: 2,
+                                useCORS: true,
+                                allowTaint: true,
+                                width: element.offsetWidth || 600,
+                                height: element.offsetHeight || 400
+                            }).then(canvas => {
+                                // Clean up temporary element
+                                if (isTemporary && element.parentNode) {
+                                    element.parentNode.removeChild(element);
+                                }
+                                
+                                downloadCanvasChart(canvas, format, 'risk_breakdown', getTitle(), {
+                                    label: 'Risk Breakdown Analysis',
+                                    value: `Total samples: ${total} | TP: ${metricsData.confusion_matrix.true_positive} | FP: ${metricsData.confusion_matrix.false_positive}`
+                                }, [
+                                    { label: 'True Positive', color: '#e0f2f1' },
+                                    { label: 'False Positive', color: '#ffebee' },
+                                    { label: 'False Negative', color: '#ffebee' },
+                                    { label: 'True Negative', color: '#e0f2f1' }
+                                ]);
+                            }).catch(error => {
+                                // Clean up on error
+                                if (isTemporary && element.parentNode) {
+                                    element.parentNode.removeChild(element);
+                                }
+                                console.error('Error capturing breakdown chart:', error);
+                            });
+                        });
+                    }
+                };
+                
+                downloadBreakdownChart();
+                handleDownloadClose();
+                return;
             case 'accuracy':
                 canvas = accuracyChartRef.current?.canvas;
                 fileName = 'accuracy_over_time';
@@ -167,8 +302,50 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
                             {getTitle()} 
                         </Typography>
+                        <Box>
+                            <IconButton 
+                                size="small" 
+                                onClick={() => handleEnlargeChart(null, getTitle(), 'breakdown')}
+                                title="Enlarge Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    marginRight: '6px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
+                            >
+                                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+                            </IconButton>
+                            <IconButton 
+                                size="small" 
+                                onClick={(e) => handleDownloadClick(e, 'breakdown')}
+                                title="Download Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
+                            >
+                                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+                            </IconButton>
+                        </Box>
                     </Box>
                     <Box
+                        ref={breakdownChartRef}
                         display="grid"
                         gridTemplateColumns="repeat(2, 1fr)" 
                         gap={1.5}
@@ -189,6 +366,15 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             justifyContent="center" 
                             alignItems="center"
                             minHeight="0"
+                            sx={{
+                                transition: 'all 0.3s ease',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    transform: 'translateY(-2px) scale(1.02)',
+                                    boxShadow: '0 8px 20px rgba(76, 175, 80, 0.3)',
+                                    bgcolor: '#c8e6c9'
+                                }
+                            }}
                         >
                             <div>
                                 <Typography variant="h6" sx={{ fontSize: '1rem' }}>
@@ -207,6 +393,15 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             justifyContent="center" 
                             alignItems="center"
                             minHeight="0"
+                            sx={{
+                                transition: 'all 0.3s ease',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    transform: 'translateY(-2px) scale(1.02)',
+                                    boxShadow: '0 8px 20px rgba(244, 67, 54, 0.3)',
+                                    bgcolor: '#ffcdd2'
+                                }
+                            }}
                         >
                             <div>
                                 <Typography variant="h6" sx={{ fontSize: '1rem' }}>
@@ -225,6 +420,15 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             justifyContent="center" 
                             alignItems="center"
                             minHeight="0"
+                            sx={{
+                                transition: 'all 0.3s ease',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    transform: 'translateY(-2px) scale(1.02)',
+                                    boxShadow: '0 8px 20px rgba(244, 67, 54, 0.3)',
+                                    bgcolor: '#ffcdd2'
+                                }
+                            }}
                         >
                             <div>
                                 <Typography variant="h6" sx={{ fontSize: '1rem' }}>
@@ -243,6 +447,15 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             justifyContent="center" 
                             alignItems="center"
                             minHeight="0"
+                            sx={{
+                                transition: 'all 0.3s ease',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    transform: 'translateY(-2px) scale(1.02)',
+                                    boxShadow: '0 8px 20px rgba(76, 175, 80, 0.3)',
+                                    bgcolor: '#c8e6c9'
+                                }
+                            }}
                         >
                             <div>
                                 <Typography variant="h6" sx={{ fontSize: '1rem' }}>
@@ -782,8 +995,9 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             <IconButton 
                                 size="small" 
                                 onClick={(e) => {
-                                    setActiveChart(modalChart?.type === 'line' ? (modalTitle.includes('Accuracy') ? 'accuracy' : 'roc') : 'bar');
-                                    handleDownloadClick(e);
+                                    const chartType = modalChart?.type === 'line' ? (modalTitle.includes('Accuracy') ? 'accuracy' : 'roc') : 
+                                                     modalChart?.type === 'breakdown' ? 'breakdown' : 'bar';
+                                    handleDownloadClick(e, chartType);
                                 }}
                                 title="Download Chart"
                                 sx={{
@@ -1098,6 +1312,129 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     }
                                 }} 
                             />
+                        )}
+                        {modalChart && modalChart.type === 'breakdown' && (
+                            <Box
+                                display="grid"
+                                gridTemplateColumns="repeat(2, 1fr)" 
+                                gap={3}
+                                sx={{ 
+                                    height: '400px',
+                                    maxWidth: '600px',
+                                    margin: '0 auto',
+                                    paddingX: 2,
+                                    paddingY: 3
+                                }}
+                            >
+                                <Box
+                                    bgcolor="#e0f2f1"
+                                    p={3}
+                                    borderRadius={3}
+                                    textAlign="center"
+                                    display="flex" 
+                                    justifyContent="center" 
+                                    alignItems="center"
+                                    minHeight="0"
+                                    sx={{
+                                        transition: 'all 0.3s ease',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px) scale(1.03)',
+                                            boxShadow: '0 12px 30px rgba(76, 175, 80, 0.4)',
+                                            bgcolor: '#c8e6c9'
+                                        }
+                                    }}
+                                >
+                                    <div>
+                                        <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 1 }}>
+                                            {metricsData.confusion_matrix.true_positive} 
+                                            ({percent(metricsData.confusion_matrix.true_positive)})
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontSize: '1.2rem' }}>Correctly predicted</Typography>
+                                    </div>
+                                </Box>
+                                <Box
+                                    bgcolor="#ffebee"
+                                    p={3}
+                                    borderRadius={3}
+                                    textAlign="center"
+                                    display="flex" 
+                                    justifyContent="center" 
+                                    alignItems="center"
+                                    minHeight="0"
+                                    sx={{
+                                        transition: 'all 0.3s ease',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px) scale(1.03)',
+                                            boxShadow: '0 12px 30px rgba(244, 67, 54, 0.4)',
+                                            bgcolor: '#ffcdd2'
+                                        }
+                                    }}
+                                >
+                                    <div>
+                                        <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 1 }}>
+                                            {metricsData.confusion_matrix.false_negative} 
+                                            ({percent(metricsData.confusion_matrix.false_negative)})
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontSize: '1.2rem' }}>Missed Predictions</Typography>
+                                    </div>
+                                </Box>
+                                <Box
+                                    bgcolor="#ffebee"
+                                    p={3}
+                                    borderRadius={3}
+                                    textAlign="center"
+                                    display="flex" 
+                                    justifyContent="center" 
+                                    alignItems="center"
+                                    minHeight="0"
+                                    sx={{
+                                        transition: 'all 0.3s ease',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px) scale(1.03)',
+                                            boxShadow: '0 12px 30px rgba(244, 67, 54, 0.4)',
+                                            bgcolor: '#ffcdd2'
+                                        }
+                                    }}
+                                >
+                                    <div>
+                                        <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 1 }}>
+                                            {metricsData.confusion_matrix.false_positive} 
+                                            ({percent(metricsData.confusion_matrix.false_positive)})
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontSize: '1.2rem' }}>Wrongly predicted positive</Typography>
+                                    </div>
+                                </Box>
+                                <Box
+                                    bgcolor="#e0f2f1"
+                                    p={3}
+                                    borderRadius={3}
+                                    textAlign="center"
+                                    display="flex" 
+                                    justifyContent="center" 
+                                    alignItems="center"
+                                    minHeight="0"
+                                    sx={{
+                                        transition: 'all 0.3s ease',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px) scale(1.03)',
+                                            boxShadow: '0 12px 30px rgba(76, 175, 80, 0.4)',
+                                            bgcolor: '#c8e6c9'
+                                        }
+                                    }}
+                                >
+                                    <div>
+                                        <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 1 }}>
+                                            {metricsData.confusion_matrix.true_negative} 
+                                            ({percent(metricsData.confusion_matrix.true_negative)})
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontSize: '1.2rem' }}>Correctly predicted negative</Typography>
+                                    </div>
+                                </Box>
+                            </Box>
                         )}
                     </Box>
                 </DialogContent>

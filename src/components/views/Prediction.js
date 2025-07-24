@@ -27,54 +27,81 @@ import DistributionCharts from '../charts/DistributionCharts';
 import InfoIcon from '@mui/icons-material/Info';
 import MetricsGrid from '../views/MetricsGrid';
 import AgeGroupLineChart from '../charts/AgeGroupLineChart';
+import ModelCardSection from '../charts/ModelCardSection';
 import { styled } from '@mui/material/styles';
 
 const StyledTabs = styled(Tabs)({
   minHeight: 'auto',
   width: '100%',
   position: 'relative',
-  backgroundColor: '#fafbfc',
-  borderRadius: '12px',
-  padding: '6px',
-  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
-  border: '1px solid #f0f4f8',
+  backgroundColor: 'transparent',
+  borderRadius: '12px 12px 0 0',
+  padding: '0',
+  margin: '0',
+  borderBottom: '2.5px solid #e5e7eb',
+  zIndex: 1,
   '& .MuiTabs-indicator': {
     display: 'none',
   },
   '& .MuiTabs-flexContainer': {
-    gap: '10px',
+    gap: '12px',
+    position: 'relative',
+    zIndex: 1,
   },
 });
 
 const StyledTab = styled(Tab)(({ theme }) => ({
-  textTransform: 'none',
+  textTransform: 'None',
   fontWeight: 600,
   fontSize: '13px',
   fontFamily: 'Arial, sans-serif',
-  borderRadius: '8px',
-  minHeight: '34px',
-  padding: '8px 14px',
+  borderRadius: '12px 12px 0 0',
+  minHeight: '36px',
+  padding: '8px 12px',
   marginRight: 0,
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  backgroundColor: '#e5e7eb',
+  color: '#6b7280',
+  border: 'none',
+  width: '180px',
+  minWidth: '180px',
+  maxWidth: '180px',
   position: 'relative',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  backgroundColor: 'transparent',
-  color: '#64748b',
-  border: '1px solid transparent',
+  marginBottom: '-2.5px',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    bottom: '-2.5px',
+    left: 0,
+    width: '100%',
+    height: '2.5px',
+    backgroundColor: 'transparent',
+    transition: 'all 0.3s ease',
+    zIndex: 100,
+  },
   '&:hover': {
-    backgroundColor: '#e3f2fd',
-    color: '#1976d2',
-    transform: 'translateY(-1px)',
-    boxShadow: '0 4px 12px rgba(25, 118, 210, 0.15)',
+    backgroundColor: '#d1d5db',
+    color: '#374151',
+    transform: 'scale(1.05)',
+    '&::before': {
+      backgroundColor: '#93c5fd',
+    },
   },
   '&.Mui-selected': {
-    backgroundColor: '#1976d2',
+    backgroundColor: '#3b82f6',
     color: '#ffffff',
-    boxShadow: '0 6px 20px rgba(25, 118, 210, 0.3)',
-    border: '1px solid #1976d2',
-    transform: 'translateY(-2px)',
+    transform: 'scale(1.02)',
+    '&::before': {
+      backgroundColor: '#1d4ed8',
+    },
     '&:hover': {
-      backgroundColor: '#1565c0',
-      transform: 'translateY(-2px)',
+      backgroundColor: '#2563eb',
+      color: '#ffffff',
+      transform: 'scale(1.05)',
+      '&::before': {
+        backgroundColor: '#1d4ed8',
+      },
     },
   },
 }));
@@ -509,6 +536,7 @@ const Prediction = ({csvData,topic,score}) => {
                   <StyledTab label="Performance Metrics" />
                   <StyledTab label="Sub-Group Analysis" />
                   <StyledTab label="Data Distribution" />
+                  <StyledTab label="Model Card" />
                 </StyledTabs>
               </Box>
               {tab === 0 && (
@@ -640,6 +668,10 @@ const Prediction = ({csvData,topic,score}) => {
                   <h5 align="left">Patient Demographic Distribution</h5>
                   <DistributionCharts ageGroups={ageGroupDist} genderCounts={genderDist} raceCounts={raceDist} />
                 </Box>
+              )}
+
+              {tab === 3 && (
+                <ModelCardSection topic={topic.toLowerCase()} />
               )}
             </Box>
           </>
