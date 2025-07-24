@@ -4,6 +4,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, ArcElement, T
 import { Box, Grid, Paper, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
 import DistributionPieChart from './DistributionPieChart';
+import { downloadCanvasChart } from './ChartDownloadUtils';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -13,6 +14,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
   const [modalTitle, setModalTitle] = useState('');
   const [downloadMenuAnchor, setDownloadMenuAnchor] = useState(null);
   const [activeChart, setActiveChart] = useState(null);
+  const [lastTooltipData, setLastTooltipData] = useState(null);
   
   const ageChartRef = useRef(null);
   const raceChartRef = useRef(null);
@@ -35,12 +37,35 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
     }]
   };
 
+  // Create light, appealing race color palette for distribution charts
+  const raceDistributionColors = [
+    "rgba(255, 182, 193, 0.95)", // Light pink
+    "rgba(173, 216, 230, 0.95)", // Light blue
+    "rgba(221, 160, 221, 0.95)", // Light orchid
+    "rgba(255, 218, 185, 0.95)", // Light peach
+    "rgba(144, 238, 144, 0.95)", // Light green
+    "rgba(255, 255, 224, 0.95)", // Light yellow
+    "rgba(255, 192, 203, 0.95)", // Light coral
+    "rgba(176, 196, 222, 0.95)", // Light steel blue
+    "rgba(230, 230, 250, 0.95)", // Light lavender
+    "rgba(240, 248, 255, 0.95)"  // Light azure
+  ];
+  
+  const raceLabels = Object.keys(raceCounts).sort(); // Sort for consistency in display
+  const raceColors = raceLabels.map((race, index) => {
+    return raceDistributionColors[index % raceDistributionColors.length];
+  });
+
   const raceData = {
-    labels: Object.keys(raceCounts),
+    labels: raceLabels,
     datasets: [{
       label: 'Patients',
-      data: Object.values(raceCounts),
-      backgroundColor: '#ab47bc'
+      data: raceLabels.map(label => raceCounts[label]),
+      backgroundColor: raceColors,
+      borderColor: raceColors.map(color => color.replace('0.95', '1')), // Solid border
+      borderWidth: 2,
+      borderRadius: 4,
+      borderSkipped: false,
     }]
   };
 
@@ -60,34 +85,65 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
     setActiveChart(null);
   };
 
+  const getTooltipDataForChart = (chartType) => {
+    switch(chartType) {
+      case 'age':
+        return {
+          label: 'Age Groups',
+          value: `Total patients: ${Object.values(ageGroups).reduce((sum, val) => sum + val, 0)}`
+        };
+      case 'race':
+        return {
+          label: 'Race/Ethnicity',
+          value: `Total patients: ${Object.values(raceCounts).reduce((sum, val) => sum + val, 0)}`
+        };
+      default:
+        return null;
+    }
+  };
+
+  const getLegendDataForChart = (chartType) => {
+    switch(chartType) {
+      case 'age':
+        return Object.keys(ageGroups).map(ageGroup => ({
+          label: ageGroup,
+          color: '#42a5f5'
+        }));
+      case 'race':
+        return raceLabels.map((race, index) => ({
+          label: race,
+          color: raceColors[index]
+        }));
+      default:
+        return null;
+    }
+  };
+
   const downloadChart = (format) => {
     let canvas;
     let fileName = `${activeChart}_distribution`;
+    let title = '';
     
     switch(activeChart) {
       case 'age':
         canvas = ageChartRef.current?.canvas;
         fileName = 'age_distribution';
+        title = 'Age Distribution';
         break;
       case 'race':
         canvas = raceChartRef.current?.canvas;
         fileName = 'race_distribution';
+        title = 'Race/Ethnicity Distribution';
         break;
       default:
         return;
     }
 
     if (canvas) {
-      let mimeType = 'image/png';
-      if (format === 'jpg' || format === 'jpeg') {
-        mimeType = 'image/jpeg';
-      }
-      
-      const url = canvas.toDataURL(mimeType);
-      const link = document.createElement('a');
-      link.download = `${fileName}.${format === 'pdf' ? 'png' : format}`;
-      link.href = url;
-      link.click();
+      // Get tooltip and legend data for the active chart
+      const tooltipData = getTooltipDataForChart(activeChart);
+      const legendData = getLegendDataForChart(activeChart);
+      downloadCanvasChart(canvas, format, fileName, title, tooltipData, legendData);
     }
     handleDownloadClose();
   };
@@ -229,13 +285,40 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
               options={{ 
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    titleColor: '#333',
+                    bodyColor: '#666',
+                    borderColor: '#ddd',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: true
+                  }
+                },
                 scales: {
                   x: {
                     title: {
                       display: true,
                       text: 'Race/Ethnicity Group',
                       font: { size: 14 }
+                    },
+                    grid: {
+                      display: false
                     }
+                  },
+                  y: {
+                    grid: {
+                      color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                  }
+                },
+                elements: {
+                  bar: {
+                    borderWidth: 2,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '#333'
                   }
                 }
               }} />

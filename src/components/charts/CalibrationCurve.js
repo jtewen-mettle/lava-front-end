@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Box, Paper, Typography, Switch, FormControlLabel, Tooltip as MUITooltip, IconButton, Dialog, DialogTitle, DialogContent, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
+import { downloadCanvasChart } from './ChartDownloadUtils';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -39,16 +40,23 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
     if (chartRef.current) {
       const canvas = chartRef.current.canvas;
       if (canvas) {
-        let mimeType = 'image/png';
-        if (format === 'jpg' || format === 'jpeg') {
-          mimeType = 'image/jpeg';
+        // Create tooltip data with calibration info
+        const tooltipData = {
+          label: 'Calibration Analysis',
+          value: `Bins: ${nBins} | Confidence Interval: ${showConfidenceInterval ? 'Enabled' : 'Disabled'}`
+        };
+
+        // Create legend data for calibration curve
+        const legendData = [
+          { label: 'Calibration Curve', color: 'blue' },
+          { label: 'Perfect Calibration', color: 'red' }
+        ];
+        
+        if (showConfidenceInterval) {
+          legendData.push({ label: 'Confidence Interval', color: 'rgba(0, 123, 255, 0.3)' });
         }
         
-        const url = canvas.toDataURL(mimeType);
-        const link = document.createElement('a');
-        link.download = `calibration_curve.${format === 'pdf' ? 'png' : format}`;
-        link.href = url;
-        link.click();
+        downloadCanvasChart(canvas, format, 'calibration_curve', title, tooltipData, legendData);
       }
     }
     handleDownloadClose();

@@ -3,6 +3,7 @@ import { Grid, Paper, Typography, Box, Select, MenuItem, FormControl, InputLabel
 import { Bar, Line } from 'react-chartjs-2';
 import { ZoomIn, Download, MoreVert } from '@mui/icons-material';
 import CalibrationCurve from './CalibrationCurve';
+import { downloadCanvasChart } from './ChartDownloadUtils';
 
 const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocChart, recalculateMetrics,predictionValue,onPredictionChange, calibrationData }) => {
     const [threshold, setThreshold] = useState(20);
@@ -78,35 +79,55 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
     const downloadChart = (format) => {
         let canvas;
         let fileName = `${activeChart}_chart`;
+        let title = '';
+        let tooltipData = null;
+        let legendData = null;
         
         switch(activeChart) {
             case 'accuracy':
                 canvas = accuracyChartRef.current?.canvas;
                 fileName = 'accuracy_over_time';
+                title = 'Accuracy Over Time';
+                tooltipData = {
+                    label: 'Accuracy Analysis',
+                    value: `Threshold: ${predictionValue}% | Total samples: ${total}`
+                };
+                legendData = [
+                    { label: 'Accuracy', color: '#42a5f5' },
+                    { label: `Threshold (${predictionValue}%)`, color: 'green' }
+                ];
                 break;
             case 'bar':
                 canvas = barChartRef.current?.canvas;
                 fileName = 'accuracy_metrics';
+                title = 'Accuracy Metrics';
+                tooltipData = {
+                    label: 'Performance Metrics',
+                    value: `Accuracy: ${(metricsData.accuracy * 100).toFixed(1)}% | F1: ${(metricsData.f1_score * 100).toFixed(1)}%`
+                };
+                legendData = [
+                    { label: 'Metrics', color: '#42a5f5' }
+                ];
                 break;
             case 'roc':
                 canvas = rocChartRef.current?.canvas;
                 fileName = 'roc_curve';
+                title = 'ROC Curve';
+                tooltipData = {
+                    label: 'ROC Analysis',
+                    value: `AUC: ${metricsData.auroc ? (metricsData.auroc * 100).toFixed(1) + '%' : 'N/A'}`
+                };
+                legendData = [
+                    { label: 'ROC Curve', color: '#42a5f5' },
+                    { label: 'Random Classifier', color: '#ff7c7c' }
+                ];
                 break;
             default:
                 return;
         }
 
         if (canvas) {
-            let mimeType = 'image/png';
-            if (format === 'jpg' || format === 'jpeg') {
-                mimeType = 'image/jpeg';
-            }
-            
-            const url = canvas.toDataURL(mimeType);
-            const link = document.createElement('a');
-            link.download = `${fileName}.${format === 'pdf' ? 'png' : format}`;
-            link.href = url;
-            link.click();
+            downloadCanvasChart(canvas, format, fileName, title, tooltipData, legendData);
         }
         handleDownloadClose();
     };

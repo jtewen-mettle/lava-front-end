@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import { Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
+import { downloadChart as downloadChartUtil } from './ChartDownloadUtils';
 
 const AgeGroupLineChart = ({ data }) => {
     const [openModal, setOpenModal] = useState(false);
@@ -26,39 +27,31 @@ const AgeGroupLineChart = ({ data }) => {
 
     const downloadChart = (format) => {
         if (chartRef.current) {
-            const svgElement = chartRef.current.container.querySelector('svg');
-            if (svgElement) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const img = new Image();
-                
-                const svgData = new XMLSerializer().serializeToString(svgElement);
-                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-                const url = URL.createObjectURL(svgBlob);
-                
-                img.onload = () => {
-                    canvas.width = svgElement.clientWidth || 800;
-                    canvas.height = svgElement.clientHeight || 400;
-                    ctx.fillStyle = 'white';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, 0, 0);
-                    
-                    let mimeType = 'image/png';
-                    if (format === 'jpg' || format === 'jpeg') {
-                        mimeType = 'image/jpeg';
-                    }
-                    
-                    const downloadUrl = canvas.toDataURL(mimeType);
-                    const link = document.createElement('a');
-                    link.download = `age_group_analysis.${format === 'pdf' ? 'png' : format}`;
-                    link.href = downloadUrl;
-                    link.click();
-                    
-                    URL.revokeObjectURL(url);
-                };
-                
-                img.src = url;
-            }
+            const chartContainer = chartRef.current.container;
+            
+            // Create tooltip data with age group analysis summary
+            const tooltipData = {
+                label: 'Age Group Analysis',
+                value: `Total groups: ${data.length} | Metrics: TPR, TNR, FPR, FNR analyzed across age groups`
+            };
+
+            // Create legend data for age group metrics
+            const legendData = [
+                { label: 'True Positive Rate', color: '#8884d8' },
+                { label: 'True Negative Rate', color: '#82ca9d' },
+                { label: 'False Positive Rate', color: '#ffc658' },
+                { label: 'False Negative Rate', color: '#ff7c7c' }
+            ];
+            
+            downloadChartUtil({
+                chartElement: chartContainer,
+                format,
+                fileName: 'age_group_analysis',
+                title: 'Subgroup Analysis across AgeGroup',
+                chartType: 'svg',
+                tooltipData,
+                legendData
+            });
         }
         handleDownloadClose();
     };
@@ -242,6 +235,7 @@ const AgeGroupLineChart = ({ data }) => {
                 <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
                 <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
                 <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+                <MenuItem onClick={() => downloadChart('svg')}>Download as SVG</MenuItem>
             </Menu>
         </div>
     );

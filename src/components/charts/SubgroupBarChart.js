@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import { Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
+import { downloadChart as downloadChartUtil } from './ChartDownloadUtils';
 
 function transformSubgroupMetricsData(rawData) {
   console.log(rawData);
@@ -56,53 +57,83 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
 
   const downloadChart = (format) => {
     if (chartRef.current) {
-      const svgElement = chartRef.current.container.querySelector('svg');
-      if (svgElement) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        
-        // Convert SVG to canvas and download
-        const svgData = new XMLSerializer().serializeToString(svgElement);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
-        
-        img.onload = () => {
-          canvas.width = svgElement.clientWidth || 800;
-          canvas.height = svgElement.clientHeight || 600;
-          ctx.fillStyle = 'white';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0);
-          
-          let mimeType = 'image/png';
-          if (format === 'jpg' || format === 'jpeg') {
-            mimeType = 'image/jpeg';
-          }
-          
-          const downloadUrl = canvas.toDataURL(mimeType);
-          const link = document.createElement('a');
-          link.download = `subgroup_${selectedFeature}_chart.${format === 'pdf' ? 'png' : format}`;
-          link.href = downloadUrl;
-          link.click();
-          
-          URL.revokeObjectURL(url);
-        };
-        
-        img.src = url;
-      }
+      const chartContainer = chartRef.current.container;
+      
+      // Create tooltip data with subgroup analysis summary
+      const tooltipData = {
+        label: `${selectedFeature} Subgroup Analysis`,
+        value: `Groups: ${subgroups.join(', ')} | Metrics: Accuracy, Recall, Precision, F1 Score, AUROC`
+      };
+
+      // Create legend data using stable color mapping
+      const legendData = subgroups.map((group) => ({
+        label: group,
+        color: colorMap[group]
+      }));
+      
+      downloadChartUtil({
+        chartElement: chartContainer,
+        format,
+        fileName: `subgroup_${selectedFeature}_chart`,
+        title: `Subgroup Analysis across ${selectedFeature}`,
+        chartType: 'svg',
+        tooltipData,
+        legendData
+      });
     }
     handleDownloadClose();
   };
 
   // Define color schemes for different selectedFeatures
   const colorSchemes = {
-    Gender: ["#FF5733", "#33C1FF"], 
-    Race: ["#8E44AD", "#27AE60", "#F1C40F", "#E74C3C"],
+    Gender: ["rgb(136, 132, 216)", "rgb(130, 202, 157)"], // Male: purple-blue, Female: green
+    Race: [
+      "rgb(255, 120, 150)", // Vibrant pink
+      "rgb(100, 180, 255)", // Vibrant blue
+      "rgb(200, 100, 200)", // Vibrant orchid
+      "rgb(255, 180, 120)", // Vibrant peach
+      "rgb(100, 220, 100)", // Vibrant green
+      "rgb(255, 240, 120)", // Vibrant yellow
+      "rgb(255, 140, 140)", // Vibrant coral
+      "rgb(120, 160, 255)", // Vibrant steel blue
+      "rgb(180, 150, 255)", // Vibrant lavender
+      "rgb(150, 220, 255)"  // Vibrant azure
+    ],
     Default: ["#8884d8", "#82ca9d", "#ffc658"], 
   };
 
-  // Get the appropriate color scheme or fallback to Default
-  const colors = colorSchemes[selectedFeature] || colorSchemes.Default;
+  // Create stable color mapping based on subgroup names instead of array index
+  const createStableColorMapping = (subgroups, selectedFeature) => {
+    const colorPalette = colorSchemes[selectedFeature] || colorSchemes.Default;
+    const colorMap = {};
+
+    if (selectedFeature === 'Gender') {
+      // Stable mapping for gender subgroups
+      const genderOrder = ['Male', 'Female'];
+      subgroups.forEach(subgroup => {
+        const index = genderOrder.indexOf(subgroup);
+        colorMap[subgroup] = colorPalette[index !== -1 ? index : 0];
+      });
+    } else if (selectedFeature === 'Race') {
+      // Stable mapping for race subgroups - use alphabetical order for consistency
+      // This ensures each race gets the same color as in Race/Ethnicity Distribution
+      const allRaces = [...new Set(subgroups)].sort();
+      subgroups.forEach(subgroup => {
+        const index = allRaces.indexOf(subgroup);
+        colorMap[subgroup] = colorPalette[index % colorPalette.length];
+      });
+    } else {
+      // Default mapping for other features
+      subgroups.forEach((subgroup, index) => {
+        colorMap[subgroup] = colorPalette[index % colorPalette.length];
+      });
+    }
+
+    return colorMap;
+  };
+
+  // Get stable color mapping
+  const colorMap = createStableColorMapping(subgroups, selectedFeature);
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -233,17 +264,23 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
             wrapperStyle={{ marginTop: '-20px', fontSize: '9px' }}
             formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
           />
-          {subgroups.map((subgroup, i) => (
+          {subgroups.map((subgroup) => (
             <Bar
               key={subgroup}
               dataKey={subgroup}
-              fill={colors[i % colors.length]}
+              fill={colorMap[subgroup]}
               isAnimationActive={!chartData.some((d) => d.isSeparator)} 
             >
               <LabelList
                 dataKey={subgroup}
                 position="top"
-                style={{ fontSize: '10px' }}
+                angle={selectedFeature === 'Gender' ? 0 : -90}
+                offset={selectedFeature === 'Gender' ? 6 : 12}
+                style={{ 
+                  fontSize: selectedFeature === 'Gender' ? '10px' : '8px', 
+                  fontWeight: 'bold',
+                  fill: '#333'
+                }}
                 formatter={(value) =>
                   value && !isNaN(value) ? `${value.toFixed(0)}%` : 'N/A'
                 }
@@ -335,16 +372,22 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                   wrapperStyle={{ marginTop: '-30px' }}
                   formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
                 />
-                {subgroups.map((subgroup, i) => (
+                {subgroups.map((subgroup) => (
                   <Bar
                     key={subgroup}
                     dataKey={subgroup}
-                    fill={colors[i % colors.length]}
+                    fill={colorMap[subgroup]}
                   >
                     <LabelList
                       dataKey={subgroup}
                       position="top"
-                      style={{ fontSize: '10px' }}
+                      angle={selectedFeature === 'Gender' ? 0 : -90}
+                      offset={selectedFeature === 'Gender' ? 8 : 15}
+                      style={{ 
+                        fontSize: selectedFeature === 'Gender' ? '12px' : '9px', 
+                        fontWeight: 'bold',
+                        fill: '#333'
+                      }}
                       formatter={(value) =>
                         value && !isNaN(value) ? `${value.toFixed(0)}%` : 'N/A'
                       }
@@ -366,6 +409,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
         <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
         <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
         <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+        <MenuItem onClick={() => downloadChart('svg')}>Download as SVG</MenuItem>
       </Menu>
     </div>
   );

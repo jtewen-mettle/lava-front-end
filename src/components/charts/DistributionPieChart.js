@@ -2,8 +2,16 @@ import React, { useState, useRef } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Paper, Typography, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
+import { downloadChart as downloadChartUtil } from './ChartDownloadUtils';
 
-const GENDER_COLORS = ['rgb(130, 202, 157)', 'rgb(136, 132, 216)'];
+const GENDER_COLORS = ['rgb(130, 202, 157)', 'rgb(136, 132, 216)']; // Female: green, Male: purple-blue
+
+// Light variations for enhanced visuals
+const GENDER_COLORS_LIGHT = [
+    'rgba(130, 202, 157, 0.8)', // Female: light green with transparency
+    'rgba(136, 132, 216, 0.8)'  // Male: light purple-blue with transparency
+];
+
 
 const prepareChartData = (data) =>
     Object.entries(data).map(([name, value]) => ({
@@ -34,39 +42,32 @@ const DistributionPieChart = ({ title, data }) => {
 
     const downloadChart = (format) => {
         if (chartRef.current) {
-            const svgElement = chartRef.current.container.querySelector('svg');
-            if (svgElement) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const img = new Image();
-                
-                const svgData = new XMLSerializer().serializeToString(svgElement);
-                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-                const url = URL.createObjectURL(svgBlob);
-                
-                img.onload = () => {
-                    canvas.width = svgElement.clientWidth || 400;
-                    canvas.height = svgElement.clientHeight || 400;
-                    ctx.fillStyle = 'white';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, 0, 0);
-                    
-                    let mimeType = 'image/png';
-                    if (format === 'jpg' || format === 'jpeg') {
-                        mimeType = 'image/jpeg';
-                    }
-                    
-                    const downloadUrl = canvas.toDataURL(mimeType);
-                    const link = document.createElement('a');
-                    link.download = `gender_distribution.${format === 'pdf' ? 'png' : format}`;
-                    link.href = downloadUrl;
-                    link.click();
-                    
-                    URL.revokeObjectURL(url);
-                };
-                
-                img.src = url;
-            }
+            const chartContainer = chartRef.current.container;
+            
+            // Create tooltip data with gender distribution info
+            const total = chartData.reduce((sum, item) => sum + item.value, 0);
+            const tooltipData = {
+                label: 'Gender Distribution',
+                value: `Total patients: ${total} | ${chartData.map(item => 
+                    `${item.name}: ${item.value} (${((item.value/total)*100).toFixed(1)}%)`
+                ).join(', ')}`
+            };
+
+            // Create legend data with gender colors
+            const legendData = chartData.map((item, index) => ({
+                label: `${item.name}: ${item.value} (${((item.value/total)*100).toFixed(1)}%)`,
+                color: GENDER_COLORS[index % GENDER_COLORS.length]
+            }));
+            
+            downloadChartUtil({
+                chartElement: chartContainer,
+                format,
+                fileName: 'gender_distribution',
+                title: title,
+                chartType: 'svg',
+                tooltipData,
+                legendData
+            });
         }
         handleDownloadClose();
     };
@@ -107,11 +108,11 @@ const DistributionPieChart = ({ title, data }) => {
             
             return (
                 <div style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    backgroundColor: 'rgba(189, 195, 199, 0.9)',
                     padding: '12px',
                     border: `2px solid ${data.payload.fill}`,
                     borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                     fontSize: '14px',
                     fontWeight: '500',
                     fontFamily: 'Arial, sans-serif',
@@ -125,7 +126,7 @@ const DistributionPieChart = ({ title, data }) => {
                     textAlign: 'center',
                     backdropFilter: 'blur(5px)'
                 }}>
-                    <p style={{ margin: 0, color: data.payload.fill, fontWeight: 'bold' }}>
+                    <p style={{ margin: 0, color: '#333', fontWeight: 'bold' }}>
                         {data.name}: {data.value}
                     </p>
                     <p style={{ margin: '4px 0 0 0', color: '#333' }}>
@@ -209,7 +210,7 @@ const DistributionPieChart = ({ title, data }) => {
                                     key={`cell-${index}`} 
                                     fill={GENDER_COLORS[index % GENDER_COLORS.length]}
                                     style={{
-                                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+                                        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
                                         cursor: 'pointer'
                                     }}
                                 />
@@ -302,8 +303,9 @@ const DistributionPieChart = ({ title, data }) => {
                                             key={`cell-${index}`} 
                                             fill={GENDER_COLORS[index % GENDER_COLORS.length]}
                                             style={{
-                                                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
-                                                cursor: 'pointer'
+                                                filter: 'drop-shadow(0 5px 10px rgba(0,0,0,0.2))',
+                                                cursor: 'pointer',
+                                                opacity: 0.95
                                             }}
                                         />
                                     ))}
@@ -334,6 +336,7 @@ const DistributionPieChart = ({ title, data }) => {
                 <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
                 <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
                 <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+                <MenuItem onClick={() => downloadChart('svg')}>Download as SVG</MenuItem>
             </Menu>
         </Paper>
     );
