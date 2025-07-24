@@ -383,20 +383,57 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                     <div style={{ flex: 1, height: '320px' }}>
                         <Bar
                             ref={barChartRef}
-                            data={barChartData}
+                            data={{
+                                ...barChartData,
+                                datasets: barChartData.datasets.map(dataset => ({
+                                    ...dataset,
+                                    borderWidth: 2,
+                                    borderRadius: 4,
+                                    borderSkipped: false,
+                                }))
+                            }}
                             options={{
                                 responsive: true,
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: { display: false },
+                                    tooltip: {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                        titleColor: '#fff',
+                                        bodyColor: '#fff',
+                                        borderColor: '#333',
+                                        borderWidth: 1,
+                                        cornerRadius: 8,
+                                        displayColors: true
+                                    }
                                 },
                                 scales: {
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
+                                    },
                                     y: {
                                         min: 0,
                                         max: 1.2,
                                         ticks: { stepSize: 0.2 },
+                                        grid: {
+                                            color: 'rgba(0, 0, 0, 0.1)'
+                                        }
                                     },
                                 },
+                                elements: {
+                                    bar: {
+                                        borderWidth: 2,
+                                        hoverBorderWidth: 2,
+                                        hoverBackgroundColor: undefined,
+                                        hoverBorderColor: undefined,
+                                        shadowColor: 'rgba(0, 0, 0, 0.15)',
+                                        shadowBlur: 8,
+                                        shadowOffsetX: 0,
+                                        shadowOffsetY: 4
+                                    }
+                                }
                             }}
                         />
                     </div>

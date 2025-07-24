@@ -108,7 +108,7 @@ const DistributionPieChart = ({ title, data }) => {
             
             return (
                 <div style={{
-                    backgroundColor: 'rgba(189, 195, 199, 0.9)',
+                    backgroundColor: 'rgba(237, 240, 241, 0.88)',
                     padding: '12px',
                     border: `2px solid ${data.payload.fill}`,
                     borderRadius: '8px',
@@ -129,7 +129,7 @@ const DistributionPieChart = ({ title, data }) => {
                     <p style={{ margin: 0, color: '#333', fontWeight: 'bold' }}>
                         {data.name}: {data.value}
                     </p>
-                    <p style={{ margin: '4px 0 0 0', color: '#333' }}>
+                    <p style={{ margin: '4px 0 0 0', color: '#333', fontWeight: 'bold' }}>
                         {((data.value / chartData.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1)}%
                     </p>
                 </div>

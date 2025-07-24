@@ -256,7 +256,18 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
             tickFormatter={(value) => (value.includes('Separator') ? '' : value)} 
           />
           <YAxis domain={[0, 120]} ticks={[0, 20, 40, 60, 80, 100, 120]} />
-          <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+          <Tooltip 
+            formatter={(value) => `${value.toFixed(1)}%`}
+            contentStyle={{
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              color: '#fff',
+              borderColor: '#333',
+              borderWidth: 1,
+              borderRadius: 8,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+            }}
+            labelStyle={{ color: '#fff' }}
+          />
           <Legend
             verticalAlign="top"
             layout="horizontal"
@@ -364,7 +375,18 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                   tickFormatter={(value) => (value.includes('Separator') ? '' : value)} 
                 />
                 <YAxis domain={[0, 120]} ticks={[0, 20, 40, 60, 80, 100, 120]} />
-                <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+                <Tooltip 
+                  formatter={(value) => `${value.toFixed(1)}%`}
+                  contentStyle={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    color: '#fff',
+                    borderColor: '#333',
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                  }}
+                  labelStyle={{ color: '#fff' }}
+                />
                 <Legend
                   verticalAlign="top"
                   layout="horizontal"

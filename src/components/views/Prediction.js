@@ -32,6 +32,18 @@ import { styled } from '@mui/material/styles';
 const StyledTabs = styled(Tabs)({
   borderBottom: '1px solid #ccc',
   minHeight: 'auto',
+  width: '100%',
+  position: 'relative',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '1px',
+    backgroundColor: '#ccc',
+    zIndex: 1,
+  },
   '& .MuiTabs-indicator': {
     display: 'none', // Remove the bottom indicator
   },
@@ -45,6 +57,7 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   padding: '10px 16px',
   marginRight: '4px',
   backgroundColor: '#e0e0e0', // Default background for inactive
+  color: '#333', // Dark text for inactive tabs
   '&.Mui-selected': {
     backgroundColor: '#2f75b5', // Blue background for active tab
     color: '#fff',

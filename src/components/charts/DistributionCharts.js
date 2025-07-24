@@ -24,7 +24,11 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
     datasets: [{
       label: 'Patients',
       data: Object.values(ageGroups),
-      backgroundColor: '#42a5f5'
+      backgroundColor: '#42a5f5',
+      borderColor: '#1976d2',
+      borderWidth: 2,
+      borderRadius: 4,
+      borderSkipped: false,
     }]
   };
 
@@ -61,8 +65,8 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
     datasets: [{
       label: 'Patients',
       data: raceLabels.map(label => raceCounts[label]),
-      backgroundColor: raceColors,
-      borderColor: raceColors.map(color => color.replace('0.95', '1')), // Solid border
+      backgroundColor: 'rgba(255, 182, 193, 0.95)', // Light pink
+      borderColor: 'rgba(255, 182, 193, 1)',
       borderWidth: 2,
       borderRadius: 4,
       borderSkipped: false,
@@ -112,7 +116,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
       case 'race':
         return raceLabels.map((race, index) => ({
           label: race,
-          color: raceColors[index]
+          color: 'rgba(255, 182, 193, 0.95)'
         }));
       default:
         return null;
@@ -212,13 +216,58 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
               options={{ 
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                  legend: { 
+                    display: true,
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                      usePointStyle: true,
+                      pointStyle: 'rect',
+                      color: '#333',
+                      font: {
+                        family: 'Arial, sans-serif',
+                        size: 12
+                      }
+                    }
+                  },
+                  tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: '#333',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: true
+                  }
+                },
                 scales: {
                   x: {
                     title: {
                       display: true,
                       text: 'Age Group',
                       font: { size: 14 }
+                    },
+                    grid: {
+                      display: false
                     }
+                  },
+                  y: {
+                    grid: {
+                      color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                  }
+                },
+                elements: {
+                  bar: {
+                    borderWidth: 2,
+                    hoverBorderWidth: 2,
+                    hoverBackgroundColor: '#42a5f5',
+                    hoverBorderColor: '#1976d2',
+                    shadowColor: 'rgba(0, 0, 0, 0.15)',
+                    shadowBlur: 8,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 4
                   }
                 }
               }} />
@@ -286,12 +335,25 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                  legend: { display: false },
+                  legend: { 
+                    display: true,
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                      usePointStyle: true,
+                      pointStyle: 'rect',
+                      color: '#333',
+                      font: {
+                        family: 'Arial, sans-serif',
+                        size: 12
+                      }
+                    }
+                  },
                   tooltip: {
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    titleColor: '#333',
-                    bodyColor: '#666',
-                    borderColor: '#ddd',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: '#333',
                     borderWidth: 1,
                     cornerRadius: 8,
                     displayColors: true
@@ -317,8 +379,13 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                 elements: {
                   bar: {
                     borderWidth: 2,
-                    hoverBorderWidth: 3,
-                    hoverBorderColor: '#333'
+                    hoverBorderWidth: 2,
+                    hoverBackgroundColor: 'rgba(255, 182, 193, 0.95)',
+                    hoverBorderColor: 'rgba(255, 182, 193, 1)',
+                    shadowColor: 'rgba(0, 0, 0, 0.15)',
+                    shadowBlur: 8,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 4
                   }
                 }
               }} />

@@ -46,7 +46,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
           value: `Bins: ${nBins} | Confidence Interval: ${showConfidenceInterval ? 'Enabled' : 'Disabled'}`
         };
 
-        // Create legend data for calibration curve
+        // Create legend data for calibration curve with metrics
         const legendData = [
           { label: 'Calibration Curve', color: 'blue' },
           { label: 'Perfect Calibration', color: 'red' }
@@ -54,6 +54,17 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
         
         if (showConfidenceInterval) {
           legendData.push({ label: 'Confidence Interval', color: 'rgba(0, 123, 255, 0.3)' });
+        }
+        
+        // Add metrics to legend
+        if (calibrationError !== null) {
+          legendData.push({ label: `ECE: ${calibrationError.toFixed(3)}`, color: '#f8f9fa' });
+        }
+        if (calibrationMetrics.brierScore !== null) {
+          legendData.push({ label: `Brier Score: ${calibrationMetrics.brierScore.toFixed(3)}`, color: '#f8f9fa' });
+        }
+        if (calibrationAssessment) {
+          legendData.push({ label: `${calibrationAssessment.level}: ${calibrationAssessment.message}`, color: calibrationAssessment.color });
         }
         
         downloadCanvasChart(canvas, format, 'calibration_curve', title, tooltipData, legendData);
@@ -553,9 +564,202 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                   sx={{ m: 0 }}
                 />
               </Box>
-              {/* Add metrics display here if needed */}
+              
+              {/* Calibration Metrics in Modal */}
+              {calibrationError !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Expected Calibration Error: Lower values (≤0.05) indicate excellent calibration
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                      Expected Calibration Error
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationError.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.brierScore !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Brier Score: Lower is better. Measures accuracy of probabilistic predictions (0 = perfect, 1 = worst)
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                      Brier Score
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.brierScore.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.meanCalibrationError !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Mean Calibration Error: Lower is better. Represents the maximum calibration error across all bins
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                      Mean Calibration Error
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.meanCalibrationError.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.reliability !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Reliability: Lower is better. Measures how much predictions deviate from actual outcomes within bins
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                      Reliability
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.reliability.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.resolution !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Resolution: Higher is better. Measures the model's ability to distinguish between different outcome rates
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                      Resolution
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.resolution.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
             </Box>
           </Box>
+          
+          {/* Bottom: Assessment Bar in Modal */}
+          {calibrationAssessment && (
+            <Box mt={2} mx={2} mb={1}>
+              <Box 
+                p={1} 
+                borderRadius={1} 
+                bgcolor="#f5f5f5"
+                border={`2px solid ${calibrationAssessment.color}`}
+                sx={{ boxShadow: 1 }}
+              >
+                <Box display="flex" alignItems="center" justifyContent="center" gap={1} flexWrap="wrap">
+                  <span style={{ fontSize: '14px' }}>{calibrationAssessment.icon}</span>
+                  <Typography 
+                    variant="body2" 
+                    style={{ 
+                      color: calibrationAssessment.color, 
+                      fontWeight: 'bold',
+                      fontSize: '0.9rem'
+                    }}
+                  >
+                    {calibrationAssessment.level}:
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    style={{ color: '#666', fontSize: '0.85rem' }}
+                  >
+                    {calibrationAssessment.message}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
         </DialogContent>
       </Dialog>
 

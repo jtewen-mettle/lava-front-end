@@ -65,16 +65,48 @@ const Lava = () => {
   return (
     <div>
       {/* Top Menu Bar */}
-      <AppBar position="static" sx={{ backgroundColor: '#275786' }}>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+      <AppBar 
+        position="static" 
+        sx={{ 
+          backgroundColor: '#275786',
+          boxShadow: '0 4px 12px rgba(39, 87, 134, 0.3)',
+          borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
+          background: 'linear-gradient(135deg, #275786 0%, #1e4a6f 100%)'
+        }}
+      >
+        <Toolbar sx={{ paddingLeft: '24px', paddingRight: '24px' }}>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              flexGrow: 1,
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+              letterSpacing: '0.5px',
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+            }}
+          >
             Lava Application
           </Typography>
+          <Box sx={{ paddingRight: '40px' }}>
           <Button
             color="inherit"
             sx={{
-              backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'inherit', 
-              color: activePage === 'Dashboard' ? '#fff' : 'inherit',
+              backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'transparent', 
+              color: activePage === 'Dashboard' ? '#fff' : '#fff',
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              margin: '0 4px',
+              border: activePage === 'Dashboard' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: activePage === 'Dashboard' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                transform: 'translateY(-1px)'
+              }
             }}
             onClick={() => {
               setSelection(null);
@@ -86,8 +118,22 @@ const Lava = () => {
           <Button
             color="inherit"
             sx={{
-              backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'inherit', 
-              color: activePage === 'ModelAnalysis' ? '#fff' : 'inherit',
+              backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'transparent', 
+              color: activePage === 'ModelAnalysis' ? '#fff' : '#fff',
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              margin: '0 4px',
+              border: activePage === 'ModelAnalysis' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: activePage === 'ModelAnalysis' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                transform: 'translateY(-1px)'
+              }
             }}
             onClick={() => setActivePage('ModelAnalysis')}
           >
@@ -96,13 +142,28 @@ const Lava = () => {
           <Button
             color="inherit"
             sx={{
-              backgroundColor: activePage === 'Settings' ? '#1164ad' : 'inherit', 
-              color: activePage === 'Settings' ? '#fff' : 'inherit',
+              backgroundColor: activePage === 'Settings' ? '#1164ad' : 'transparent', 
+              color: activePage === 'Settings' ? '#fff' : '#fff',
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              margin: '0 4px',
+              border: activePage === 'Settings' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: activePage === 'Settings' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: activePage === 'Settings' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                transform: 'translateY(-1px)'
+              }
             }}
             onClick={() => setActivePage('Settings')}
           >
             Settings
           </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
