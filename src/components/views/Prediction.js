@@ -465,7 +465,7 @@ const Prediction = ({csvData,topic,score}) => {
         alignItems="stretch"
       >
         <Box display="flex" justifyContent="space-between" width="100%">
-        <Typography variant="h5" gutterBottom textAlign="left">
+        <Typography variant="h5" gutterBottom textAlign="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '18px' }}>
           Accuracy Metrics: Development of {topic}
         </Typography>
         </Box>
@@ -497,7 +497,7 @@ const Prediction = ({csvData,topic,score}) => {
                   }}>
                     {/* Gender Chart */}
                     <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column' }}>
-                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px' }}>Gender-wise Visualization</Typography>
+                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Gender-wise Visualization</Typography>
                       <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
                         <InputLabel>Gender</InputLabel>
                         <Select
@@ -522,7 +522,7 @@ const Prediction = ({csvData,topic,score}) => {
 
                     {/* Race Chart */}
                     <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column' }}>
-                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px' }}>Race-wise Precision</Typography>
+                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Race-wise Precision</Typography>
                       <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
                         <InputLabel>Race</InputLabel>
                         <Select

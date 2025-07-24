@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 import { Paper, Typography, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
 
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f7f', '#8dd1e1'];
+const GENDER_COLORS = ['rgb(130, 202, 157)', 'rgb(136, 132, 216)'];
 
 const prepareChartData = (data) =>
     Object.entries(data).map(([name, value]) => ({
@@ -70,9 +70,9 @@ const DistributionPieChart = ({ title, data }) => {
         }
         handleDownloadClose();
     };
-    const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value }) => {
+    const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value, percent }) => {
         const RADIAN = Math.PI / 180;
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.6; // Adjust the label position closer to the center
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -80,21 +80,68 @@ const DistributionPieChart = ({ title, data }) => {
             <text
                 x={x}
                 y={y}
-                fill="white" // Text color
+                fill="white"
                 textAnchor="middle"
                 dominantBaseline="central"
-                fontSize="12px"
+                fontSize="14px"
+                fontWeight="bold"
+                fontFamily="Arial, sans-serif"
             >
-                {value} {/* Display the value */}
+                {`${(percent * 100).toFixed(1)}%`}
             </text>
         );
+    };
+
+    const CustomTooltip = ({ active, payload, label, coordinate }) => {
+        if (active && payload && payload.length && coordinate) {
+            const data = payload[0];
+            
+            // Get the chart container dimensions and center
+            const chartCenter = { x: 200, y: 150 }; 
+            const outerRadius = 100;
+            const tooltipDistance = outerRadius -40;
+            
+            // Position both tooltips at the same place on the right side
+            const tooltipX = chartCenter.x + tooltipDistance;
+            const tooltipY = chartCenter.y;
+            
+            return (
+                <div style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    padding: '12px',
+                    border: `2px solid ${data.payload.fill}`,
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    fontFamily: 'Arial, sans-serif',
+                    position: 'absolute',
+                    left: tooltipX,
+                    top: tooltipY,
+                    pointerEvents: 'none',
+                    zIndex: 1000,
+                    transform: 'translate(-50%, -50%)',
+                    minWidth: '80px',
+                    textAlign: 'center',
+                    backdropFilter: 'blur(5px)'
+                }}>
+                    <p style={{ margin: 0, color: data.payload.fill, fontWeight: 'bold' }}>
+                        {data.name}: {data.value}
+                    </p>
+                    <p style={{ margin: '4px 0 0 0', color: '#333' }}>
+                        {((data.value / chartData.reduce((sum, item) => sum + item.value, 0)) * 100).toFixed(1)}%
+                    </p>
+                </div>
+            );
+        }
+        return null;
     };
 
 
     return (
         <Paper sx={{ p: 2, height: '400px', display: 'flex', flexDirection: 'column' }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                <Typography variant="h6" gutterBottom align="left">
+                <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
                     {title}
                 </Typography>
                 <Box>
@@ -102,15 +149,40 @@ const DistributionPieChart = ({ title, data }) => {
                         size="small" 
                         onClick={handleEnlargeChart}
                         title="Enlarge Chart"
+                        sx={{
+                            backgroundColor: '#f8f9fa',
+                            border: '1px solid #e3f2fd',
+                            borderRadius: '4px',
+                            marginRight: '6px',
+                            minWidth: '28px',
+                            minHeight: '28px',
+                            '&:hover': {
+                                backgroundColor: '#e3f2fd',
+                                border: '1px solid #bbdefb',
+                                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                            }
+                        }}
                     >
-                        <ZoomIn />
+                        <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
                     </IconButton>
                     <IconButton 
                         size="small" 
                         onClick={handleDownloadClick}
                         title="Download Chart"
+                        sx={{
+                            backgroundColor: '#f8f9fa',
+                            border: '1px solid #e3f2fd',
+                            borderRadius: '4px',
+                            minWidth: '28px',
+                            minHeight: '28px',
+                            '&:hover': {
+                                backgroundColor: '#e3f2fd',
+                                border: '1px solid #bbdefb',
+                                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                            }
+                        }}
                     >
-                        <Download />
+                        <Download sx={{ fontSize: 16, color: '#1976d2' }} />
                     </IconButton>
                 </Box>
             </Box>
@@ -123,16 +195,37 @@ const DistributionPieChart = ({ title, data }) => {
                             nameKey="name"
                             cx="50%"
                             cy="50%"
+                            innerRadius={20}
                             outerRadius={100}
+                            startAngle={90}
+                            endAngle={450}
                             label={renderCustomLabel}
                             labelLine={false}
+                            stroke="#fff"
+                            strokeWidth={2}
                         >
                             {chartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                <Cell 
+                                    key={`cell-${index}`} 
+                                    fill={GENDER_COLORS[index % GENDER_COLORS.length]}
+                                    style={{
+                                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+                                        cursor: 'pointer'
+                                    }}
+                                />
                             ))}
                         </Pie>
-                        <Tooltip />
-                        <Legend verticalAlign="bottom" height={36} wrapperStyle={{ paddingTop: '10px',bottom: '20px' }}/>
+                        <Tooltip content={<CustomTooltip />} position={{ x: 0, y: 0 }} />
+                        <Legend 
+                            verticalAlign="bottom" 
+                            height={36} 
+                            wrapperStyle={{ 
+                                paddingTop: '20px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                fontFamily: 'Arial, sans-serif'
+                            }}
+                        />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
@@ -141,21 +234,46 @@ const DistributionPieChart = ({ title, data }) => {
             <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <span>{title}</span>
+                        <span style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>{title}</span>
                         <Box>
                             <IconButton 
                                 size="small" 
                                 onClick={handleDownloadClick}
                                 title="Download Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    marginRight: '6px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <Download />
+                                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                             <IconButton 
                                 size="small" 
                                 onClick={() => setOpenModal(false)}
                                 title="Close"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #ffebee',
+                                    borderRadius: '4px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#ffebee',
+                                        border: '1px solid #ffcdd2',
+                                        boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                                    }
+                                }}
                             >
-                                ✕
+                                <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
                             </IconButton>
                         </Box>
                     </Box>
@@ -170,16 +288,37 @@ const DistributionPieChart = ({ title, data }) => {
                                     nameKey="name"
                                     cx="50%"
                                     cy="50%"
-                                    outerRadius={150}
+                                    innerRadius={30}
+                                    outerRadius={180}
+                                    startAngle={90}
+                                    endAngle={450}
                                     label={renderCustomLabel}
                                     labelLine={false}
+                                    stroke="#fff"
+                                    strokeWidth={3}
                                 >
                                     {chartData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        <Cell 
+                                            key={`cell-${index}`} 
+                                            fill={GENDER_COLORS[index % GENDER_COLORS.length]}
+                                            style={{
+                                                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
+                                                cursor: 'pointer'
+                                            }}
+                                        />
                                     ))}
                                 </Pie>
-                                <Tooltip />
-                                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ paddingTop: '10px' }}/>
+                                <Tooltip content={<CustomTooltip />} position={{ x: 0, y: 0 }} />
+                                <Legend 
+                                    verticalAlign="bottom" 
+                                    height={36} 
+                                    wrapperStyle={{ 
+                                        paddingTop: '20px',
+                                        fontSize: '16px',
+                                        fontWeight: '500',
+                                        fontFamily: 'Arial, sans-serif'
+                                    }}
+                                />
                             </PieChart>
                         </ResponsiveContainer>
                     </Box>

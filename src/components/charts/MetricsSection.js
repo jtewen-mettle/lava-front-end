@@ -125,7 +125,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 {/* Chart 1 - Risk Breakdown */}
                 <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                        <Typography variant="subtitle1" align="left" gutterBottom>
+                        <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
                             {getTitle()} 
                         </Typography>
                     </Box>
@@ -219,21 +219,46 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 {/* Chart 2 - Accuracy Over Time */}
                 <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                        <Typography variant="subtitle1" align="left" gutterBottom>Accuracy Over Time</Typography>
+                        <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Accuracy Over Time</Typography>
                         <Box>
                             <IconButton 
                                 size="small" 
                                 onClick={() => handleEnlargeChart(extendedChart, 'Accuracy Over Time', 'line')}
                                 title="Enlarge Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    marginRight: '6px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <ZoomIn />
+                                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                             <IconButton 
                                 size="small" 
                                 onClick={(e) => handleDownloadClick(e, 'accuracy')}
                                 title="Download Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <Download />
+                                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                         </Box>
                     </Box>
@@ -291,21 +316,46 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 {/* Chart 3 - Accuracy Metrics */}
                 <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                        <Typography variant="subtitle1" align="left" gutterBottom>Accuracy Metrics</Typography>
+                        <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Accuracy Metrics</Typography>
                         <Box>
                             <IconButton 
                                 size="small" 
                                 onClick={() => handleEnlargeChart(barChartData, 'Accuracy Metrics', 'bar')}
                                 title="Enlarge Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    marginRight: '6px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <ZoomIn />
+                                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                             <IconButton 
                                 size="small" 
                                 onClick={(e) => handleDownloadClick(e, 'bar')}
                                 title="Download Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <Download />
+                                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                         </Box>
                     </Box>
@@ -334,21 +384,46 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 {/* Chart 4 - ROC Curve */}
                 <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                        <Typography variant="subtitle1" gutterBottom align="left">ROC Curve</Typography>
+                        <Typography variant="subtitle1" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>ROC Curve</Typography>
                         <Box>
                             <IconButton 
                                 size="small" 
                                 onClick={() => handleEnlargeChart(rocChart, 'ROC Curve', 'line')}
                                 title="Enlarge Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    marginRight: '6px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <ZoomIn />
+                                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                             <IconButton 
                                 size="small" 
                                 onClick={(e) => handleDownloadClick(e, 'roc')}
                                 title="Download Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <Download />
+                                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                         </Box>
                     </Box>
@@ -401,26 +476,102 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     handleDownloadClick(e);
                                 }}
                                 title="Download Chart"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #e3f2fd',
+                                    borderRadius: '4px',
+                                    marginRight: '6px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#e3f2fd',
+                                        border: '1px solid #bbdefb',
+                                        boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                                    }
+                                }}
                             >
-                                <Download />
+                                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
                             </IconButton>
                             <IconButton 
                                 size="small" 
                                 onClick={() => setOpenModal(false)}
                                 title="Close"
+                                sx={{
+                                    backgroundColor: '#f8f9fa',
+                                    border: '1px solid #ffebee',
+                                    borderRadius: '4px',
+                                    minWidth: '28px',
+                                    minHeight: '28px',
+                                    '&:hover': {
+                                        backgroundColor: '#ffebee',
+                                        border: '1px solid #ffcdd2',
+                                        boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                                    }
+                                }}
                             >
-                                ✕
+                                <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
                             </IconButton>
                         </Box>
                     </Box>
                 </DialogTitle>
                 <DialogContent>
-                    <Box style={{ height: '500px', width: '100%' }}>
+                    <Box style={{ height: '500px', width: '100%', padding: '16px', position: 'relative' }}>
                         {modalChart && modalChart.type === 'line' && (
-                            <Line data={modalChart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+                            <Line 
+                                data={modalChart.data} 
+                                options={{ 
+                                    responsive: true, 
+                                    maintainAspectRatio: false,
+                                    layout: {
+                                        padding: {
+                                            top: 20,
+                                            right: 20,
+                                            bottom: 20,
+                                            left: 20
+                                        }
+                                    },
+                                    scales: modalTitle.includes('ROC') ? {
+                                        x: { type:'linear', title: {display:true, text:'False Positive Rate'}, min: 0, max: 1 },
+                                        y: { type:'linear', title: {display:true, text:'True Positive Rate'}, min: 0, max: 1 },
+                                    } : modalTitle.includes('Accuracy') ? {
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: 'Time', 
+                                                font: { size: 14 }
+                                            }
+                                        },
+                                        y: {
+                                            min: 0, 
+                                            ticks: {
+                                                stepSize: 25, 
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: 'Observed Frequency', 
+                                                font: { size: 14 }
+                                            }
+                                        },
+                                    } : {}
+                                }} 
+                            />
                         )}
                         {modalChart && modalChart.type === 'bar' && (
-                            <Bar data={modalChart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+                            <Bar 
+                                data={modalChart.data} 
+                                options={{ 
+                                    responsive: true, 
+                                    maintainAspectRatio: false,
+                                    layout: {
+                                        padding: {
+                                            top: 20,
+                                            right: 20,
+                                            bottom: 20,
+                                            left: 20
+                                        }
+                                    }
+                                }} 
+                            />
                         )}
                     </Box>
                 </DialogContent>

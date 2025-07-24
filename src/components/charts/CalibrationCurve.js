@@ -188,7 +188,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
     <Paper elevation={2} style={{ padding: 16, height: '650px', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <Box mb={1} display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="subtitle1" align="left" gutterBottom>
+        <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
           {title}
         </Typography>
         <Box>
@@ -196,15 +196,40 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             size="small" 
             onClick={handleEnlargeChart}
             title="Enlarge Chart"
+            sx={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e3f2fd',
+              borderRadius: '4px',
+              marginRight: '6px',
+              minWidth: '28px',
+              minHeight: '28px',
+              '&:hover': {
+                backgroundColor: '#e3f2fd',
+                border: '1px solid #bbdefb',
+                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+              }
+            }}
           >
-            <ZoomIn />
+            <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
           </IconButton>
           <IconButton 
             size="small" 
             onClick={handleDownloadClick}
             title="Download Chart"
+            sx={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e3f2fd',
+              borderRadius: '4px',
+              minWidth: '28px',
+              minHeight: '28px',
+              '&:hover': {
+                backgroundColor: '#e3f2fd',
+                border: '1px solid #bbdefb',
+                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+              }
+            }}
           >
-            <Download />
+            <Download sx={{ fontSize: 16, color: '#1976d2' }} />
           </IconButton>
         </Box>
       </Box>
@@ -450,15 +475,40 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 size="small" 
                 onClick={handleDownloadClick}
                 title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
               >
-                <Download />
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
               </IconButton>
               <IconButton 
                 size="small" 
                 onClick={() => setOpenModal(false)}
                 title="Close"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #ffebee',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#ffebee',
+                    border: '1px solid #ffcdd2',
+                    boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                  }
+                }}
               >
-                ✕
+                <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
               </IconButton>
             </Box>
           </Box>

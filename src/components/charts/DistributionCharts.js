@@ -104,7 +104,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
         {/* Age Distribution */}
         <Paper sx={{ p: 2, height: '400px', display: 'flex', flexDirection: 'column' }}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-            <Typography variant="h6" gutterBottom align="left">
+            <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
               Age Distribution
             </Typography>
             <Box>
@@ -112,15 +112,40 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                 size="small" 
                 onClick={() => handleEnlargeChart(ageData, 'Age Distribution', 'bar')}
                 title="Enlarge Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
               >
-                <ZoomIn />
+                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
               </IconButton>
               <IconButton 
                 size="small" 
                 onClick={(e) => handleDownloadClick(e, 'age')}
                 title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
               >
-                <Download />
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
               </IconButton>
             </Box>
           </Box>
@@ -152,7 +177,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
         {/* Race/Ethnicity Distribution - starts new row */}
         <Paper sx={{ p: 2, height: '400px', display: 'flex', flexDirection: 'column', gridColumn: '1 / 2' }}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-            <Typography variant="h6" gutterBottom align="left">
+            <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
               Race/Ethnicity Distribution
             </Typography>
             <Box>
@@ -160,15 +185,40 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                 size="small" 
                 onClick={() => handleEnlargeChart(raceData, 'Race/Ethnicity Distribution', 'bar')}
                 title="Enlarge Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
               >
-                <ZoomIn />
+                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
               </IconButton>
               <IconButton 
                 size="small" 
                 onClick={(e) => handleDownloadClick(e, 'race')}
                 title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
               >
-                <Download />
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
               </IconButton>
             </Box>
           </Box>
@@ -206,15 +256,40 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                 handleDownloadClick(e);
               }}
               title="Download Chart"
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #e3f2fd',
+                borderRadius: '4px',
+                marginRight: '6px',
+                minWidth: '28px',
+                minHeight: '28px',
+                '&:hover': {
+                  backgroundColor: '#e3f2fd',
+                  border: '1px solid #bbdefb',
+                  boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                }
+              }}
             >
-              <Download />
+              <Download sx={{ fontSize: 16, color: '#1976d2' }} />
             </IconButton>
             <IconButton 
               size="small" 
               onClick={() => setOpenModal(false)}
               title="Close"
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #ffebee',
+                borderRadius: '4px',
+                minWidth: '28px',
+                minHeight: '28px',
+                '&:hover': {
+                  backgroundColor: '#ffebee',
+                  border: '1px solid #ffcdd2',
+                  boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                }
+              }}
             >
-              ✕
+              <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
             </IconButton>
           </Box>
         </Box>
