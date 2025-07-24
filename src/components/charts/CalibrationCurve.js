@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { Box, Paper, Typography, Switch, FormControlLabel, Tooltip as MUITooltip } from '@mui/material';
+import { Box, Paper, Typography, Switch, FormControlLabel, Tooltip as MUITooltip, IconButton, Dialog, DialogTitle, DialogContent, Menu, MenuItem } from '@mui/material';
+import { ZoomIn, Download } from '@mui/icons-material';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -18,6 +19,40 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
  */
 const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, title = "Calibration Plot" }) => {
   const [showConfidenceInterval, setShowConfidenceInterval] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [downloadMenuAnchor, setDownloadMenuAnchor] = useState(null);
+  const chartRef = useRef(null);
+
+  const handleEnlargeChart = () => {
+    setOpenModal(true);
+  };
+
+  const handleDownloadClick = (event) => {
+    setDownloadMenuAnchor(event.currentTarget);
+  };
+
+  const handleDownloadClose = () => {
+    setDownloadMenuAnchor(null);
+  };
+
+  const downloadChart = (format) => {
+    if (chartRef.current) {
+      const canvas = chartRef.current.canvas;
+      if (canvas) {
+        let mimeType = 'image/png';
+        if (format === 'jpg' || format === 'jpeg') {
+          mimeType = 'image/jpeg';
+        }
+        
+        const url = canvas.toDataURL(mimeType);
+        const link = document.createElement('a');
+        link.download = `calibration_curve.${format === 'pdf' ? 'png' : format}`;
+        link.href = url;
+        link.click();
+      }
+    }
+    handleDownloadClose();
+  };
   
   const calibrationData = useMemo(() => {
     // Use fixed nBins for calculation
@@ -152,17 +187,33 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
   return (
     <Paper elevation={2} style={{ padding: 16, height: '650px', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <Box mb={1}>
+      <Box mb={1} display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1" align="left" gutterBottom>
           {title}
         </Typography>
+        <Box>
+          <IconButton 
+            size="small" 
+            onClick={handleEnlargeChart}
+            title="Enlarge Chart"
+          >
+            <ZoomIn />
+          </IconButton>
+          <IconButton 
+            size="small" 
+            onClick={handleDownloadClick}
+            title="Download Chart"
+          >
+            <Download />
+          </IconButton>
+        </Box>
       </Box>
 
       {/* Main Content Area */}
       <Box flex={1} display="flex" gap={2} minHeight={0}>
         {/* Left Side: Chart */}
         <Box flex={1} minHeight={0} minWidth={0}>
-          <Line data={chartData} options={options} />
+          <Line ref={chartRef} data={chartData} options={options} />
         </Box>
         
         {/* Right Side: Metrics and Controls */}
@@ -388,6 +439,78 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
           </Box>
         )}
       </Box>
+
+      {/* Modal for enlarged chart */}
+      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
+        <DialogTitle>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <span>{title}</span>
+            <Box>
+              <IconButton 
+                size="small" 
+                onClick={handleDownloadClick}
+                title="Download Chart"
+              >
+                <Download />
+              </IconButton>
+              <IconButton 
+                size="small" 
+                onClick={() => setOpenModal(false)}
+                title="Close"
+              >
+                ✕
+              </IconButton>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          <Box style={{ height: '600px', width: '100%', display: 'flex', gap: '16px' }}>
+            {/* Chart */}
+            <Box flex={1}>
+              <Line data={chartData} options={{ ...options, responsive: true, maintainAspectRatio: false }} />
+            </Box>
+            {/* Metrics Panel */}
+            <Box width="200px" display="flex" flexDirection="column" gap={1.5}>
+              <Box 
+                px={0.5} 
+                py={0.2}
+                bgcolor="#e3f2fd" 
+                borderRadius={1} 
+                textAlign="left"
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showConfidenceInterval}
+                      onChange={(e) => setShowConfidenceInterval(e.target.checked)}
+                      color="primary"
+                      size="small"
+                    />
+                  }
+                  label={
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'bold' }}>
+                      Confidence Intervals
+                    </Typography>
+                  }
+                  sx={{ m: 0 }}
+                />
+              </Box>
+              {/* Add metrics display here if needed */}
+            </Box>
+          </Box>
+        </DialogContent>
+      </Dialog>
+
+      {/* Download Menu */}
+      <Menu
+        anchorEl={downloadMenuAnchor}
+        open={Boolean(downloadMenuAnchor)}
+        onClose={handleDownloadClose}
+      >
+        <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
+        <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
+        <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+      </Menu>
     </Paper>
   );
 };

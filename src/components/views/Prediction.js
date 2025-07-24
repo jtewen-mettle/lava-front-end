@@ -462,8 +462,7 @@ const Prediction = ({csvData,topic,score}) => {
       <Box p={4} m={2} width="calc(100%-32px)" margin="20px"
         display="flex"
         flexDirection="column"
-        alignItems="center"
-        textAlign="center"
+        alignItems="stretch"
       >
         <Box display="flex" justifyContent="space-between" width="100%">
         <Typography variant="h5" gutterBottom textAlign="left">
@@ -473,7 +472,9 @@ const Prediction = ({csvData,topic,score}) => {
 
         {metricsData && (
           <>
-            <MetricsGrid metrics={metrics} />
+            <Box width="100%" mt={2}>
+              <MetricsGrid metrics={metrics} />
+            </Box>
             <Box mt={4} width="100%">
               <Box display="flex" justifyContent="left">
                 <StyledTabs value={tab} onChange={handleTabChange}>
@@ -487,60 +488,70 @@ const Prediction = ({csvData,topic,score}) => {
               )}
               {tab === 1 && (
                 <Box mt={4}>
-                  <Grid container spacing={4}>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 1fr', 
+                    gap: '24px',
+                    width: '100%',
+                    gridAutoRows: 'minmax(400px, auto)'
+                  }}>
                     {/* Gender Chart */}
-                    <Grid item xs={12} md={8} width="45%" height="600px">
-                      <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
-                        <Typography variant="h6">Gender-wise Visualization</Typography>
-                        <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
-                          <InputLabel>Gender</InputLabel>
-                          <Select
-                            value={selectedGender}
-                            label="Gender"
-                            onChange={e => setSelectedGender(e.target.value)}
-                          >
-                            <MenuItem value="">All</MenuItem>
-                            {genderOptions.map(option => (
-                              <MenuItem key={option} value={option}>{option}</MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                    <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px' }}>Gender-wise Visualization</Typography>
+                      <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
+                        <InputLabel>Gender</InputLabel>
+                        <Select
+                          value={selectedGender}
+                          label="Gender"
+                          onChange={e => setSelectedGender(e.target.value)}
+                        >
+                          <MenuItem value="">All</MenuItem>
+                          {genderOptions.map(option => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <div style={{ flex: 1, minHeight: 0 }}>
                         <SubgroupBarChart
-                          title="Gender-wise Visualization"
+                          title=""
                           rawData={filteredGenderData}
                           selectedFeature="Gender"
                         />
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12} md={8} width="45%" height="600px">
-                      <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
-                        <Typography variant="h6">Race-wise Precision</Typography>
-                        <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
-                          <InputLabel>Race</InputLabel>
-                          <Select
-                            value={selectedRace}
-                            label="Race"
-                            onChange={e => setSelectedRace(e.target.value)}
-                          >
-                            <MenuItem value="">All</MenuItem>
-                            {raceOptions.map(option => (
-                              <MenuItem key={option} value={option}>{option}</MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                      </div>
+                    </Paper>
+
+                    {/* Race Chart */}
+                    <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px' }}>Race-wise Precision</Typography>
+                      <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
+                        <InputLabel>Race</InputLabel>
+                        <Select
+                          value={selectedRace}
+                          label="Race"
+                          onChange={e => setSelectedRace(e.target.value)}
+                        >
+                          <MenuItem value="">All</MenuItem>
+                          {raceOptions.map(option => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <div style={{ flex: 1, minHeight: 0 }}>
                         <SubgroupBarChart
-                          title="Race-wise Precision"
+                          title=""
                           rawData={filteredRaceData}
                           selectedFeature="Race"
                         />
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12} md={8} width="45%" paddingTop={4} height="500px">
-                      <Paper elevation={2} style={{ padding: '16px', height: '100%' }}>
+                      </div>
+                    </Paper>
+
+                    {/* Age Group Chart - starts new row */}
+                    <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column', gridColumn: '1 / 2' }}>
+                      <div style={{ flex: 1, minHeight: 0 }}>
                         {ageMetrics && <AgeGroupLineChart data={ageMetrics} />}
-                      </Paper>
-                    </Grid>
-                  </Grid>
+                      </div>
+                    </Paper>
+                  </div>
                 </Box>
               )}
 

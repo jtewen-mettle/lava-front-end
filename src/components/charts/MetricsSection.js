@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-import { Grid, Paper, Typography, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import { Grid, Paper, Typography, Box, Select, MenuItem, FormControl, InputLabel, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu } from '@mui/material';
 import { Bar, Line } from 'react-chartjs-2';
+import { ZoomIn, Download, MoreVert } from '@mui/icons-material';
 import CalibrationCurve from './CalibrationCurve';
 
 const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocChart, recalculateMetrics,predictionValue,onPredictionChange, calibrationData }) => {
-    const [threshold, setThreshold] = useState(20); 
+    const [threshold, setThreshold] = useState(20);
+    const [openModal, setOpenModal] = useState(false);
+    const [modalChart, setModalChart] = useState(null);
+    const [modalTitle, setModalTitle] = useState('');
+    const [downloadMenuAnchor, setDownloadMenuAnchor] = useState(null);
+    const [activeChart, setActiveChart] = useState(null);
+    
+    const accuracyChartRef = useRef(null);
+    const barChartRef = useRef(null);
+    const rocChartRef = useRef(null); 
 
     const total = metricsData.confusion_matrix.true_positive +
         metricsData.confusion_matrix.false_negative +   
@@ -48,110 +58,206 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
           },
         ],
       };
+
+    const handleEnlargeChart = (chartData, title, chartType) => {
+        setModalChart({ data: chartData, type: chartType });
+        setModalTitle(title);
+        setOpenModal(true);
+    };
+
+    const handleDownloadClick = (event, chartType) => {
+        setDownloadMenuAnchor(event.currentTarget);
+        setActiveChart(chartType);
+    };
+
+    const handleDownloadClose = () => {
+        setDownloadMenuAnchor(null);
+        setActiveChart(null);
+    };
+
+    const downloadChart = (format) => {
+        let canvas;
+        let fileName = `${activeChart}_chart`;
+        
+        switch(activeChart) {
+            case 'accuracy':
+                canvas = accuracyChartRef.current?.canvas;
+                fileName = 'accuracy_over_time';
+                break;
+            case 'bar':
+                canvas = barChartRef.current?.canvas;
+                fileName = 'accuracy_metrics';
+                break;
+            case 'roc':
+                canvas = rocChartRef.current?.canvas;
+                fileName = 'roc_curve';
+                break;
+            default:
+                return;
+        }
+
+        if (canvas) {
+            let mimeType = 'image/png';
+            if (format === 'jpg' || format === 'jpeg') {
+                mimeType = 'image/jpeg';
+            }
+            
+            const url = canvas.toDataURL(mimeType);
+            const link = document.createElement('a');
+            link.download = `${fileName}.${format === 'pdf' ? 'png' : format}`;
+            link.href = url;
+            link.click();
+        }
+        handleDownloadClose();
+    };
       
     
 
     return (
         <Box mt={4} width="100%">
-            <Grid container spacing={4} justifyContent="center">
-                {/* Chart 1 */}
-                <Grid item xs={12} md={8} width="45%">
-                    <Paper elevation={2} style={{ padding: 16, height: '100%' }}>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                            <Typography variant="subtitle1" align="left" gutterBottom>
-                                {getTitle()} 
-                            </Typography>
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: '1fr 1fr', 
+                gap: '24px',
+                width: '100%',
+                gridAutoRows: 'minmax(400px, auto)'
+            }}>
+                {/* Chart 1 - Risk Breakdown */}
+                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                        <Typography variant="subtitle1" align="left" gutterBottom>
+                            {getTitle()} 
+                        </Typography>
+                    </Box>
+                    <Box
+                        display="grid"
+                        gridTemplateColumns="repeat(2, 1fr)" 
+                        gap={1.5}
+                        flex={1}
+                        sx={{ 
+                            height: 'calc(100% - 60px)', 
+                            maxHeight: '320px',
+                            paddingX: 2,
+                            paddingY: 1
+                        }}
+                    >
+                        <Box
+                            bgcolor="#e0f2f1"
+                            p={1.5}
+                            borderRadius={2}
+                            textAlign="center"
+                            display="flex" 
+                            justifyContent="center" 
+                            alignItems="center"
+                            minHeight="0"
+                        >
+                            <div>
+                                <Typography variant="h6" sx={{ fontSize: '1rem' }}>
+                                    {metricsData.confusion_matrix.true_positive} 
+                                    ({percent(metricsData.confusion_matrix.true_positive)})
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>Correctly predicted</Typography>
+                            </div>
                         </Box>
                         <Box
-                            display="grid"
-                            gridTemplateColumns="repeat(2, 1fr)" 
-                            gap={2}
+                            bgcolor="#ffebee"
+                            p={1.5}
+                            borderRadius={2}
+                            textAlign="center"
+                            display="flex" 
+                            justifyContent="center" 
+                            alignItems="center"
+                            minHeight="0"
                         >
-                            <Box
-                                bgcolor="#e0f2f1"
-                                p={2}
-                                borderRadius={2}
-                                textAlign="center"
-                                style={{ height: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <div>
-                                    <Typography variant="h6">
-                                        {metricsData.confusion_matrix.true_positive} 
-                                        ({percent(metricsData.confusion_matrix.true_positive)})
-                                    </Typography>
-                                    <Typography variant="body2">Correctly predicted</Typography>
-                                </div>
-                            </Box>
-                            <Box
-                                bgcolor="#ffebee"
-                                p={2}
-                                borderRadius={2}
-                                textAlign="center"
-                                style={{ height: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <div>
-                                    <Typography variant="h6">
-                                        {metricsData.confusion_matrix.false_negative} 
-                                        ({percent(metricsData.confusion_matrix.false_negative)})
-                                    </Typography>
-                                    <Typography variant="body2">Missed Predictions</Typography>
-                                </div>
-                            </Box>
-                            <Box
-                                bgcolor="#ffebee"
-                                p={2}
-                                borderRadius={2}
-                                textAlign="center"
-                                style={{ height: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <div>
-                                    <Typography variant="h6">
-                                        {metricsData.confusion_matrix.false_positive} 
-                                        ({percent(metricsData.confusion_matrix.false_positive)})
-                                    </Typography>
-                                    <Typography variant="body2">Wrongly predicted positive</Typography>
-                                </div>
-                            </Box>
-                            <Box
-                                bgcolor="#e0f2f1"
-                                p={2}
-                                borderRadius={2}
-                                textAlign="center"
-                                style={{ height: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <div>
-                                    <Typography variant="h6">
-                                        {metricsData.confusion_matrix.true_negative} 
-                                        ({percent(metricsData.confusion_matrix.true_negative)})
-                                    </Typography>
-                                    <Typography variant="body2">Correctly predicted negative</Typography>
-                                </div>
-                            </Box>
+                            <div>
+                                <Typography variant="h6" sx={{ fontSize: '1rem' }}>
+                                    {metricsData.confusion_matrix.false_negative} 
+                                    ({percent(metricsData.confusion_matrix.false_negative)})
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>Missed Predictions</Typography>
+                            </div>
                         </Box>
-                    </Paper>
-                </Grid>
+                        <Box
+                            bgcolor="#ffebee"
+                            p={1.5}
+                            borderRadius={2}
+                            textAlign="center"
+                            display="flex" 
+                            justifyContent="center" 
+                            alignItems="center"
+                            minHeight="0"
+                        >
+                            <div>
+                                <Typography variant="h6" sx={{ fontSize: '1rem' }}>
+                                    {metricsData.confusion_matrix.false_positive} 
+                                    ({percent(metricsData.confusion_matrix.false_positive)})
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>Wrongly predicted positive</Typography>
+                            </div>
+                        </Box>
+                        <Box
+                            bgcolor="#e0f2f1"
+                            p={1.5}
+                            borderRadius={2}
+                            textAlign="center"
+                            display="flex" 
+                            justifyContent="center" 
+                            alignItems="center"
+                            minHeight="0"
+                        >
+                            <div>
+                                <Typography variant="h6" sx={{ fontSize: '1rem' }}>
+                                    {metricsData.confusion_matrix.true_negative} 
+                                    ({percent(metricsData.confusion_matrix.true_negative)})
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>Correctly predicted negative</Typography>
+                            </div>
+                        </Box>
+                    </Box>
+                </Paper>
 
-                {/* Chart 2 */}
-                <Grid item xs={12} md={8} width="45%">
-                    <Paper elevation={2} style={{ padding: 16, height: '100%' }}>
-                        <Typography variant="subtitle1" align="left" sx={{ marginBottom: '10%',bottom: '20px' }}gutterBottom>Accuracy Over Time</Typography>
-                        <FormControl sx={{ marginBottom: 2, width:"80%" }}>
-                            <InputLabel id="prediction-label">Provider defined threshold</InputLabel>
-                            <Select
-                            labelId="prediction-label"
-                            value={predictionValue}
-                            label="Provider defined threshold"
-                            onChange={onPredictionChange}
+                {/* Chart 2 - Accuracy Over Time */}
+                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                        <Typography variant="subtitle1" align="left" gutterBottom>Accuracy Over Time</Typography>
+                        <Box>
+                            <IconButton 
+                                size="small" 
+                                onClick={() => handleEnlargeChart(extendedChart, 'Accuracy Over Time', 'line')}
+                                title="Enlarge Chart"
                             >
-                            {[50, 60, 70, 80, 90, 100].map((val) => (
-                                <MenuItem key={val} value={val}>{val}</MenuItem>
-                            ))}
-                            </Select>
-                        </FormControl>
+                                <ZoomIn />
+                            </IconButton>
+                            <IconButton 
+                                size="small" 
+                                onClick={(e) => handleDownloadClick(e, 'accuracy')}
+                                title="Download Chart"
+                            >
+                                <Download />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    <FormControl sx={{ marginBottom: 2, width:"80%" }}>
+                        <InputLabel id="prediction-label">Provider defined threshold</InputLabel>
+                        <Select
+                        labelId="prediction-label"
+                        value={predictionValue}
+                        label="Provider defined threshold"
+                        onChange={onPredictionChange}
+                        >
+                        {[50, 60, 70, 80, 90, 100].map((val) => (
+                            <MenuItem key={val} value={val}>{val}</MenuItem>
+                        ))}
+                        </Select>
+                    </FormControl>
 
-                        <Line  data={extendedChart} 
+                    <div style={{ flex: 1, height: '250px' }}>
+                        <Line 
+                        ref={accuracyChartRef}
+                        data={extendedChart} 
                         options={{
                             responsive: true,
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     display: true,
@@ -179,17 +285,37 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                 },
                             },
                         }} />
-                    </Paper>
-                </Grid>
+                    </div>
+                </Paper>
 
-                {/* Chart 3 */}
-                <Grid item xs={12} md={8} width="45%" paddingTop={2}>
-                    <Paper elevation={2} style={{ padding: 16, height: '100%' }}>
+                {/* Chart 3 - Accuracy Metrics */}
+                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" align="left" gutterBottom>Accuracy Metrics</Typography>
+                        <Box>
+                            <IconButton 
+                                size="small" 
+                                onClick={() => handleEnlargeChart(barChartData, 'Accuracy Metrics', 'bar')}
+                                title="Enlarge Chart"
+                            >
+                                <ZoomIn />
+                            </IconButton>
+                            <IconButton 
+                                size="small" 
+                                onClick={(e) => handleDownloadClick(e, 'bar')}
+                                title="Download Chart"
+                            >
+                                <Download />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    <div style={{ flex: 1, height: '320px' }}>
                         <Bar
+                            ref={barChartRef}
                             data={barChartData}
                             options={{
                                 responsive: true,
+                                maintainAspectRatio: false,
                                 plugins: {
                                     legend: { display: false },
                                 },
@@ -202,28 +328,48 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                 },
                             }}
                         />
-                    </Paper>
-                </Grid>
+                    </div>
+                </Paper>
 
-                {/* Chart 4 */}
-                <Grid item xs={12} md={8} width="45%" paddingTop={2}>
-                    <Paper elevation={2} style={{ padding: 16, height: '100%' }}>
+                {/* Chart 4 - ROC Curve */}
+                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" gutterBottom align="left">ROC Curve</Typography>
+                        <Box>
+                            <IconButton 
+                                size="small" 
+                                onClick={() => handleEnlargeChart(rocChart, 'ROC Curve', 'line')}
+                                title="Enlarge Chart"
+                            >
+                                <ZoomIn />
+                            </IconButton>
+                            <IconButton 
+                                size="small" 
+                                onClick={(e) => handleDownloadClick(e, 'roc')}
+                                title="Download Chart"
+                            >
+                                <Download />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    <div style={{ flex: 1, height: '320px' }}>
                         <Line
+                            ref={rocChartRef}
                             data={rocChart}
                             options={{
                                 responsive: true,
+                                maintainAspectRatio: false,
                                 scales: {
                                     x: { type:'linear',title : {display:true,text:'False Positive Rate'}, min: 0, max: 1 },
                                     y: { type:'linear',title : {display:true,text:'True Positive Rate'}, min: 0, max: 1 },
                                 },
                             }}
                         />
-                    </Paper>
-                </Grid>
+                    </div>
+                </Paper>
 
-                {/* Chart 5 */}
-                <Grid item xs={12} md={8} width="45%" paddingTop={2}>
+                {/* Chart 5 - Calibration Curve - Full Width */}
+                <div style={{ gridColumn: '1 / -1' }}>
                     {calibrationData && calibrationData.predictions && calibrationData.actual ? (
                         <CalibrationCurve 
                             predictions={calibrationData.predictions}
@@ -233,14 +379,63 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             title="Calibration Curve"
                         />
                     ) : (
-                        <Paper elevation={2} style={{ padding: 16, height: '400px' }}>
+                        <Paper elevation={2} style={{ padding: 16, height: '400px', width: '100%' }}>
                             <Typography variant="subtitle1" align="center" style={{ marginTop: '180px' }}>
                                 Calibration data not available
                             </Typography>
                         </Paper>
                     )}
-                </Grid>
-            </Grid>
+                </div>
+            </div>
+
+            {/* Modal for enlarged charts */}
+            <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="lg" fullWidth>
+                <DialogTitle>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        <span>{modalTitle}</span>
+                        <Box>
+                            <IconButton 
+                                size="small" 
+                                onClick={(e) => {
+                                    setActiveChart(modalChart?.type === 'line' ? (modalTitle.includes('Accuracy') ? 'accuracy' : 'roc') : 'bar');
+                                    handleDownloadClick(e);
+                                }}
+                                title="Download Chart"
+                            >
+                                <Download />
+                            </IconButton>
+                            <IconButton 
+                                size="small" 
+                                onClick={() => setOpenModal(false)}
+                                title="Close"
+                            >
+                                ✕
+                            </IconButton>
+                        </Box>
+                    </Box>
+                </DialogTitle>
+                <DialogContent>
+                    <Box style={{ height: '500px', width: '100%' }}>
+                        {modalChart && modalChart.type === 'line' && (
+                            <Line data={modalChart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+                        )}
+                        {modalChart && modalChart.type === 'bar' && (
+                            <Bar data={modalChart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+                        )}
+                    </Box>
+                </DialogContent>
+            </Dialog>
+
+            {/* Download Menu */}
+            <Menu
+                anchorEl={downloadMenuAnchor}
+                open={Boolean(downloadMenuAnchor)}
+                onClose={handleDownloadClose}
+            >
+                <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
+                <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
+                <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+            </Menu>
         </Box>
     );
 };
