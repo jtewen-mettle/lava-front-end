@@ -135,7 +135,37 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
     plugins: {
       legend: {
         display: true,
-        position: 'bottom'
+        position: 'bottom',
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial, sans-serif'
+          },
+          color: '#333',
+          usePointStyle: true,
+          padding: 20,
+          generateLabels: function(chart) {
+            const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+            const labels = original.call(this, chart);
+            
+            labels.forEach((label, index) => {
+              const dataset = chart.data.datasets[index];
+              label.pointStyle = 'line';
+              label.pointStyleWidth = 50;
+              label.strokeStyle = dataset.borderColor || label.fillStyle;
+              label.fillStyle = dataset.borderColor || label.fillStyle;
+              label.lineWidth = 5;
+              
+              // Make red dotted line for Perfect Calibration
+              if (dataset.label === 'Perfect Calibration' || dataset.borderColor === 'red') {
+                label.lineDash = [8, 4];
+              }
+            });
+            
+            return labels;
+          }
+        }
       },
       title: {
         display: false
@@ -156,32 +186,63 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
         }
       }
     },
+    elements: {
+      line: {
+        borderWidth: 4
+      },
+      point: {
+        radius: 4,
+        hoverRadius: 6
+      }
+    },
     scales: {
       x: {
         type: 'linear',
         title: {
           display: true,
           text: 'Mean Predicted Probability',
-          font: { size: 14 }
+          font: { 
+            size: 14, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#333'
+        },
+        ticks: {
+          stepSize: 0.1,
+          font: { 
+            size: 12, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#333'
         },
         min: 0,
-        max: 1,
-        ticks: {
-          stepSize: 0.1
-        }
+        max: 1
       },
       y: {
         type: 'linear',
         title: {
           display: true,
           text: 'Fraction of Positives',
-          font: { size: 14 }
+          font: { 
+            size: 14, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#333'
+        },
+        ticks: {
+          stepSize: 0.1,
+          font: { 
+            size: 12, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#333'
         },
         min: 0,
-        max: 1,
-        ticks: {
-          stepSize: 0.1
-        }
+        max: 1
       }
     }
   };
@@ -204,7 +265,24 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
   }, [calibrationError, calibrationData]);
 
   return (
-    <Paper elevation={2} style={{ padding: 16, height: '650px', display: 'flex', flexDirection: 'column' }}>
+    <Paper 
+      elevation={2} 
+      style={{ 
+        padding: 16, 
+        height: '650px', 
+        display: 'flex', 
+        flexDirection: 'column',
+        transition: 'all 0.3s ease',
+        cursor: 'pointer'
+      }}
+      sx={{
+        '&:hover': {
+          elevation: 8,
+          transform: 'translateY(-4px)',
+          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+        }
+      }}
+    >
       {/* Header */}
       <Box mb={1} display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
@@ -532,11 +610,52 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             </Box>
           </Box>
         </DialogTitle>
-        <DialogContent>
-          <Box style={{ height: '600px', width: '100%', display: 'flex', gap: '16px' }}>
+        <DialogContent sx={{ overflow: 'hidden' }}>
+          <Box style={{ height: '600px', width: '100%', display: 'flex', gap: '16px', overflow: 'hidden' }}>
             {/* Chart */}
             <Box flex={1}>
-              <Line data={chartData} options={{ ...options, responsive: true, maintainAspectRatio: false }} />
+              <Line data={chartData} options={{ 
+                ...options, 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: {
+                  ...options.plugins,
+                  legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                      font: {
+                        size: 14,
+                        weight: 'bold',
+                        family: 'Arial, sans-serif'
+                      },
+                      color: '#333',
+                      usePointStyle: true,
+                      padding: 20,
+                      generateLabels: function(chart) {
+                        const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+                        const labels = original.call(this, chart);
+                        
+                        labels.forEach((label, index) => {
+                          const dataset = chart.data.datasets[index];
+                          label.pointStyle = 'line';
+                          label.pointStyleWidth = 50;
+                          label.strokeStyle = dataset.borderColor || label.fillStyle;
+                          label.fillStyle = dataset.borderColor || label.fillStyle;
+                          label.lineWidth = 5;
+                          
+                          // Make red dotted line for Perfect Calibration
+                          if (dataset.label === 'Perfect Calibration' || dataset.borderColor === 'red') {
+                            label.lineDash = [8, 4];
+                          }
+                        });
+                        
+                        return labels;
+                      }
+                    }
+                  }
+                }
+              }} />
             </Box>
             {/* Metrics Panel */}
             <Box width="200px" display="flex" flexDirection="column" gap={1.5}>

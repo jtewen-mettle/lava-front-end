@@ -131,15 +131,63 @@ const AgeGroupLineChart = ({ data }) => {
                     <XAxis
                     dataKey="Subgroup"
                     type="category"
-                    label={{ value: "Age Group", position: "insideBottomRight", offset: -5 }}
+                    tick={{ 
+                        fontSize: 12, 
+                        fontWeight: 'bold', 
+                        fontFamily: 'Arial, sans-serif',
+                        fill: '#333'
+                    }}
+                    label={{ 
+                        value: "Age Group", 
+                        position: "insideBottom", 
+                        offset: -5,
+                        style: { 
+                            textAnchor: 'middle', 
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            fontFamily: 'Arial, sans-serif',
+                            fill: '#333'
+                        }
+                    }}
                     />
                     <YAxis
                     domain={[0, 120]}
                     ticks={[0, 20, 40, 60, 80, 100, 120]}
-                    label={{ value: "Rate (%)", angle: -90, position: "insideLeft" }}
+                    tick={{ 
+                        fontSize: 12, 
+                        fontWeight: 'bold', 
+                        fontFamily: 'Arial, sans-serif',
+                        fill: '#333'
+                    }}
+                    label={{ 
+                        value: "Rate (%)", 
+                        angle: -90, 
+                        position: "insideLeft",
+                        style: { 
+                            textAnchor: 'middle', 
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            fontFamily: 'Arial, sans-serif',
+                            fill: '#333'
+                        }
+                    }}
                     />
-                    <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
-                    <Legend formatter={legendFormatter} />
+                    <Tooltip 
+                        formatter={(value) => `${value.toFixed(1)}%`}
+                        contentStyle={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            color: '#fff',
+                            borderColor: '#333',
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                        }}
+                        labelStyle={{ color: '#fff' }}
+                    />
+                    <Legend 
+                        formatter={legendFormatter} 
+                        wrapperStyle={{ fontSize: '14px', fontWeight: 'bold', paddingTop: '10px' }}
+                    />
                     <Line type="monotone" dataKey="True Positive Rate" stroke="#ff0000" name="True Positive Rate" />
                     <Line type="monotone" dataKey="True Negative Rate" stroke="#cc8400" name="True Negative Rate" />
                     <Line type="monotone" dataKey="False Positive Rate" stroke="#0000ff" name="False Positive Rate" />
@@ -196,8 +244,8 @@ const AgeGroupLineChart = ({ data }) => {
                         </Box>
                     </Box>
                 </DialogTitle>
-                <DialogContent>
-                    <Box style={{ height: '500px', width: '100%' }}>
+                <DialogContent sx={{ overflow: 'hidden' }}>
+                    <Box style={{ height: '600px', width: '100%', overflow: 'hidden' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart
                                 data={processedData}
@@ -207,15 +255,63 @@ const AgeGroupLineChart = ({ data }) => {
                                 <XAxis
                                 dataKey="Subgroup"
                                 type="category"
-                                label={{ value: "Age Group", position: "insideBottomRight", offset: -5 }}
+                                tick={{ 
+                                    fontSize: 12, 
+                                    fontWeight: 'bold', 
+                                    fontFamily: 'Arial, sans-serif',
+                                    fill: '#333'
+                                }}
+                                label={{ 
+                                    value: "Age Group", 
+                                    position: "insideBottom", 
+                                    offset: -5,
+                                    style: { 
+                                        textAnchor: 'middle', 
+                                        fontSize: '14px',
+                                        fontWeight: 'bold',
+                                        fontFamily: 'Arial, sans-serif',
+                                        fill: '#333'
+                                    }
+                                }}
                                 />
                                 <YAxis
                                 domain={[0, 120]}
                                 ticks={[0, 20, 40, 60, 80, 100, 120]}
-                                label={{ value: "Rate (%)", angle: -90, position: "insideLeft" }}
+                                tick={{ 
+                                    fontSize: 12, 
+                                    fontWeight: 'bold', 
+                                    fontFamily: 'Arial, sans-serif',
+                                    fill: '#333'
+                                }}
+                                label={{ 
+                                    value: "Rate (%)", 
+                                    angle: -90, 
+                                    position: "insideLeft",
+                                    style: { 
+                                        textAnchor: 'middle', 
+                                        fontSize: '14px',
+                                        fontWeight: 'bold',
+                                        fontFamily: 'Arial, sans-serif',
+                                        fill: '#333'
+                                    }
+                                }}
                                 />
-                                <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
-                                <Legend formatter={legendFormatter} />
+                                <Tooltip 
+                        formatter={(value) => `${value.toFixed(1)}%`}
+                        contentStyle={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            color: '#fff',
+                            borderColor: '#333',
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                        }}
+                        labelStyle={{ color: '#fff' }}
+                    />
+                                <Legend 
+                        formatter={legendFormatter} 
+                        wrapperStyle={{ fontSize: '14px', fontWeight: 'bold', paddingTop: '10px' }}
+                    />
                                 <Line type="monotone" dataKey="True Positive Rate" stroke="#ff0000" name="True Positive Rate" />
                                 <Line type="monotone" dataKey="True Negative Rate" stroke="#cc8400" name="True Negative Rate" />
                                 <Line type="monotone" dataKey="False Positive Rate" stroke="#0000ff" name="False Positive Rate" />

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Grid, Paper, Typography, Box, Select, MenuItem, FormControl, InputLabel, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu } from '@mui/material';
 import { Bar, Line } from 'react-chartjs-2';
+import { Chart as ChartJS } from 'chart.js';
 import { ZoomIn, Download, MoreVert } from '@mui/icons-material';
 import CalibrationCurve from './CalibrationCurve';
 import { downloadCanvasChart } from './ChartDownloadUtils';
@@ -144,7 +145,24 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 gridAutoRows: 'minmax(400px, auto)'
             }}>
                 {/* Chart 1 - Risk Breakdown */}
-                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                <Paper 
+                    elevation={2} 
+                    style={{ 
+                        padding: 16, 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                    }}
+                    sx={{
+                        '&:hover': {
+                            elevation: 8,
+                            transform: 'translateY(-4px)',
+                            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                    }}
+                >
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
                             {getTitle()} 
@@ -238,7 +256,24 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 </Paper>
 
                 {/* Chart 2 - Accuracy Over Time */}
-                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                <Paper 
+                    elevation={2} 
+                    style={{ 
+                        padding: 16, 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                    }}
+                    sx={{
+                        '&:hover': {
+                            elevation: 8,
+                            transform: 'translateY(-4px)',
+                            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                    }}
+                >
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Accuracy Over Time</Typography>
                         <Box>
@@ -307,27 +342,90 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             plugins: {
                                 legend: {
                                     display: true,
-                                    position: 'bottom', 
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        pointStyle: 'line',
+                                        pointStyleWidth: 50,
+                                        font: {
+                                            size: 14,
+                                            weight: 'bold'
+                                        },
+                                        padding: 15,
+                                        generateLabels: function(chart) {
+                                            const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+                                            const labels = original.call(this, chart);
+                                            
+                                            labels.forEach((label, index) => {
+                                                const dataset = chart.data.datasets[index];
+                                                label.pointStyle = 'line';
+                                                label.pointStyleWidth = 50;
+                                                label.strokeStyle = dataset.borderColor || label.fillStyle;
+                                                label.fillStyle = dataset.borderColor || label.fillStyle;
+                                                label.lineWidth = 5;
+                                                
+                                                // Make dotted line for dashed datasets (green threshold line)
+                                                if (dataset.borderDash && dataset.borderDash.length > 0) {
+                                                    label.lineDash = [8, 4];
+                                                }
+                                            });
+                                            
+                                            return labels;
+                                        }
+                                    }
                                 },
+                            },
+                            elements: {
+                                line: {
+                                    borderWidth: 4
+                                },
+                                point: {
+                                    radius: 4,
+                                    hoverRadius: 6
+                                }
                             },
                             scales: {
                                 x: {
                                     title: {
                                         display: true,
                                         text: 'Time', 
-                                        font: { size: 14 }
-                                      }
+                                        font: { 
+                                            size: 14, 
+                                            weight: 'bold', 
+                                            family: 'Arial, sans-serif' 
+                                        },
+                                        color: '#333'
+                                    },
+                                    ticks: {
+                                        font: { 
+                                            size: 12, 
+                                            weight: 'bold', 
+                                            family: 'Arial, sans-serif' 
+                                        },
+                                        color: '#333'
+                                    }
                                 },
                                 y: {
                                     min: 0, 
                                     ticks: {
-                                        stepSize: 25, 
+                                        stepSize: 25,
+                                        font: { 
+                                            size: 12, 
+                                            weight: 'bold', 
+                                            family: 'Arial, sans-serif' 
+                                        },
+                                        color: '#333'
                                     },
                                     title: {
                                         display: true,
                                         text: 'Observed Frequency', 
-                                        font: { size: 14 }
-                                      }
+                                        font: { 
+                                            size: 14, 
+                                            weight: 'bold', 
+                                            family: 'Arial, sans-serif' 
+                                        },
+                                        color: '#333'
+                                    }
                                 },
                             },
                         }} />
@@ -335,7 +433,24 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 </Paper>
 
                 {/* Chart 3 - Accuracy Metrics */}
-                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                <Paper 
+                    elevation={2} 
+                    style={{ 
+                        padding: 16, 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                    }}
+                    sx={{
+                        '&:hover': {
+                            elevation: 8,
+                            transform: 'translateY(-4px)',
+                            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                    }}
+                >
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Accuracy Metrics</Typography>
                         <Box>
@@ -409,6 +524,24 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                 },
                                 scales: {
                                     x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Metrics',
+                                            font: { 
+                                                size: 14, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
+                                        ticks: {
+                                            font: { 
+                                                size: 12, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
                                         grid: {
                                             display: false
                                         }
@@ -416,7 +549,25 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                     y: {
                                         min: 0,
                                         max: 1.2,
-                                        ticks: { stepSize: 0.2 },
+                                        ticks: { 
+                                            stepSize: 0.2,
+                                            font: { 
+                                                size: 12, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Score',
+                                            font: { 
+                                                size: 14, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
                                         grid: {
                                             color: 'rgba(0, 0, 0, 0.1)'
                                         }
@@ -440,7 +591,24 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                 </Paper>
 
                 {/* Chart 4 - ROC Curve */}
-                <Paper elevation={2} style={{ padding: 16, height: '400px', display: 'flex', flexDirection: 'column' }}>
+                <Paper 
+                    elevation={2} 
+                    style={{ 
+                        padding: 16, 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                    }}
+                    sx={{
+                        '&:hover': {
+                            elevation: 8,
+                            transform: 'translateY(-4px)',
+                            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                    }}
+                >
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>ROC Curve</Typography>
                         <Box>
@@ -492,9 +660,93 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             options={{
                                 responsive: true,
                                 maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'top',
+                                        labels: {
+                                            usePointStyle: true,
+                                            pointStyle: 'line',
+                                            pointStyleWidth: 50,
+                                            font: {
+                                                size: 14,
+                                                weight: 'bold'
+                                            },
+                                            padding: 15,
+                                            generateLabels: function(chart) {
+                                                const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+                                                const labels = original.call(this, chart);
+                                                
+                                                labels.forEach((label, index) => {
+                                                    const dataset = chart.data.datasets[index];
+                                                    label.pointStyle = 'line';
+                                                    label.pointStyleWidth = 50;
+                                                    label.strokeStyle = dataset.borderColor || label.fillStyle;
+                                                    label.fillStyle = dataset.borderColor || label.fillStyle;
+                                                    label.lineWidth = 5;
+                                                });
+                                                
+                                                return labels;
+                                            }
+                                        }
+                                    }
+                                },
+                                elements: {
+                                    line: {
+                                        borderWidth: 4
+                                    },
+                                    point: {
+                                        radius: 4,
+                                        hoverRadius: 6
+                                    }
+                                },
                                 scales: {
-                                    x: { type:'linear',title : {display:true,text:'False Positive Rate'}, min: 0, max: 1 },
-                                    y: { type:'linear',title : {display:true,text:'True Positive Rate'}, min: 0, max: 1 },
+                                    x: { 
+                                        type:'linear',
+                                        title: {
+                                            display:true,
+                                            text:'False Positive Rate',
+                                            font: { 
+                                                size: 14, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
+                                        ticks: {
+                                            font: { 
+                                                size: 12, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
+                                        min: 0, 
+                                        max: 1 
+                                    },
+                                    y: { 
+                                        type:'linear',
+                                        title: {
+                                            display:true,
+                                            text:'True Positive Rate',
+                                            font: { 
+                                                size: 14, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
+                                        ticks: {
+                                            font: { 
+                                                size: 12, 
+                                                weight: 'bold', 
+                                                family: 'Arial, sans-serif' 
+                                            },
+                                            color: '#333'
+                                        },
+                                        min: 0, 
+                                        max: 1 
+                                    },
                                 },
                             }}
                         />
@@ -522,7 +774,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
             </div>
 
             {/* Modal for enlarged charts */}
-            <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="lg" fullWidth>
+            <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
                 <DialogTitle>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                         <span>{modalTitle}</span>
@@ -572,8 +824,8 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                         </Box>
                     </Box>
                 </DialogTitle>
-                <DialogContent>
-                    <Box style={{ height: '500px', width: '100%', padding: '16px', position: 'relative' }}>
+                <DialogContent sx={{ overflow: 'hidden' }}>
+                    <Box style={{ height: '600px', width: '100%', padding: '16px', position: 'relative', overflow: 'hidden' }}>
                         {modalChart && modalChart.type === 'line' && (
                             <Line 
                                 data={modalChart.data} 
@@ -588,26 +840,167 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                             left: 20
                                         }
                                     },
+                                    plugins: {
+                                        legend: modalTitle.includes('ROC') ? {
+                                            display: true,
+                                            position: 'top',
+                                            labels: {
+                                                usePointStyle: true,
+                                                pointStyle: 'line',
+                                                pointStyleWidth: 50,
+                                                font: {
+                                                    size: 14,
+                                                    weight: 'bold'
+                                                },
+                                                padding: 15,
+                                                generateLabels: function(chart) {
+                                                    const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+                                                    const labels = original.call(this, chart);
+                                                    
+                                                    labels.forEach((label, index) => {
+                                                        const dataset = chart.data.datasets[index];
+                                                        label.pointStyle = 'line';
+                                                        label.pointStyleWidth = 50;
+                                                        label.strokeStyle = dataset.borderColor || label.fillStyle;
+                                                        label.fillStyle = dataset.borderColor || label.fillStyle;
+                                                        label.lineWidth = 5;
+                                                    });
+                                                    
+                                                    return labels;
+                                                }
+                                            }
+                                        } : modalTitle.includes('Accuracy') ? {
+                                            display: true,
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                pointStyle: 'line',
+                                                pointStyleWidth: 50,
+                                                font: {
+                                                    size: 14,
+                                                    weight: 'bold'
+                                                },
+                                                padding: 15,
+                                                generateLabels: function(chart) {
+                                                    const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+                                                    const labels = original.call(this, chart);
+                                                    
+                                                    labels.forEach((label, index) => {
+                                                        const dataset = chart.data.datasets[index];
+                                                        label.pointStyle = 'line';
+                                                        label.pointStyleWidth = 50;
+                                                        label.strokeStyle = dataset.borderColor || label.fillStyle;
+                                                        label.fillStyle = dataset.borderColor || label.fillStyle;
+                                                        label.lineWidth = 5;
+                                                        
+                                                        // Make dotted line for dashed datasets (green threshold line)
+                                                        if (dataset.borderDash && dataset.borderDash.length > 0) {
+                                                            label.lineDash = [8, 4];
+                                                        }
+                                                    });
+                                                    
+                                                    return labels;
+                                                }
+                                            }
+                                        } : { display: false }
+                                    },
+                                    elements: {
+                                        line: {
+                                            borderWidth: 4
+                                        },
+                                        point: {
+                                            radius: 4,
+                                            hoverRadius: 6
+                                        }
+                                    },
                                     scales: modalTitle.includes('ROC') ? {
-                                        x: { type:'linear', title: {display:true, text:'False Positive Rate'}, min: 0, max: 1 },
-                                        y: { type:'linear', title: {display:true, text:'True Positive Rate'}, min: 0, max: 1 },
+                                        x: { 
+                                            type:'linear', 
+                                            title: {
+                                                display:true, 
+                                                text:'False Positive Rate',
+                                                font: { 
+                                                    size: 14, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            ticks: {
+                                                font: { 
+                                                    size: 12, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            min: 0, 
+                                            max: 1 
+                                        },
+                                        y: { 
+                                            type:'linear', 
+                                            title: {
+                                                display:true, 
+                                                text:'True Positive Rate',
+                                                font: { 
+                                                    size: 14, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            ticks: {
+                                                font: { 
+                                                    size: 12, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            min: 0, 
+                                            max: 1 
+                                        },
                                     } : modalTitle.includes('Accuracy') ? {
                                         x: {
                                             title: {
                                                 display: true,
                                                 text: 'Time', 
-                                                font: { size: 14 }
+                                                font: { 
+                                                    size: 14, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            ticks: {
+                                                font: { 
+                                                    size: 12, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
                                             }
                                         },
                                         y: {
                                             min: 0, 
                                             ticks: {
-                                                stepSize: 25, 
+                                                stepSize: 25,
+                                                font: { 
+                                                    size: 12, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
                                             },
                                             title: {
                                                 display: true,
                                                 text: 'Observed Frequency', 
-                                                font: { size: 14 }
+                                                font: { 
+                                                    size: 14, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
                                             }
                                         },
                                     } : {}
@@ -626,6 +1019,81 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                                             right: 20,
                                             bottom: 20,
                                             left: 20
+                                        }
+                                    },
+                                    plugins: {
+                                        legend: { display: false },
+                                        tooltip: {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                            titleColor: '#fff',
+                                            bodyColor: '#fff',
+                                            borderColor: '#333',
+                                            borderWidth: 1,
+                                            cornerRadius: 8,
+                                            displayColors: true
+                                        }
+                                    },
+                                    scales: {
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: 'Metrics',
+                                                font: { 
+                                                    size: 14, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            ticks: {
+                                                font: { 
+                                                    size: 12, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            grid: {
+                                                display: false
+                                            }
+                                        },
+                                        y: {
+                                            min: 0,
+                                            max: 1.2,
+                                            ticks: { 
+                                                stepSize: 0.2,
+                                                font: { 
+                                                    size: 12, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: 'Score',
+                                                font: { 
+                                                    size: 14, 
+                                                    weight: 'bold', 
+                                                    family: 'Arial, sans-serif' 
+                                                },
+                                                color: '#333'
+                                            },
+                                            grid: {
+                                                color: 'rgba(0, 0, 0, 0.1)'
+                                            }
+                                        },
+                                    },
+                                    elements: {
+                                        bar: {
+                                            borderWidth: 2,
+                                            hoverBorderWidth: 2,
+                                            hoverBackgroundColor: undefined,
+                                            hoverBorderColor: undefined,
+                                            shadowColor: 'rgba(0, 0, 0, 0.15)',
+                                            shadowBlur: 8,
+                                            shadowOffsetX: 0,
+                                            shadowOffsetY: 4
                                         }
                                     }
                                 }} 

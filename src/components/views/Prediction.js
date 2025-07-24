@@ -30,37 +30,52 @@ import AgeGroupLineChart from '../charts/AgeGroupLineChart';
 import { styled } from '@mui/material/styles';
 
 const StyledTabs = styled(Tabs)({
-  borderBottom: '1px solid #ccc',
   minHeight: 'auto',
   width: '100%',
   position: 'relative',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '1px',
-    backgroundColor: '#ccc',
-    zIndex: 1,
-  },
+  backgroundColor: '#fafbfc',
+  borderRadius: '12px',
+  padding: '6px',
+  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+  border: '1px solid #f0f4f8',
   '& .MuiTabs-indicator': {
-    display: 'none', // Remove the bottom indicator
+    display: 'none',
+  },
+  '& .MuiTabs-flexContainer': {
+    gap: '10px',
   },
 });
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   textTransform: 'none',
-  fontWeight: 500,
-  borderRadius: '8px 8px 0 0',
-  minHeight: 'auto',
-  padding: '10px 16px',
-  marginRight: '4px',
-  backgroundColor: '#e0e0e0', // Default background for inactive
-  color: '#333', // Dark text for inactive tabs
+  fontWeight: 600,
+  fontSize: '13px',
+  fontFamily: 'Arial, sans-serif',
+  borderRadius: '8px',
+  minHeight: '34px',
+  padding: '8px 14px',
+  marginRight: 0,
+  position: 'relative',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  backgroundColor: 'transparent',
+  color: '#64748b',
+  border: '1px solid transparent',
+  '&:hover': {
+    backgroundColor: '#e3f2fd',
+    color: '#1976d2',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 12px rgba(25, 118, 210, 0.15)',
+  },
   '&.Mui-selected': {
-    backgroundColor: '#2f75b5', // Blue background for active tab
-    color: '#fff',
+    backgroundColor: '#1976d2',
+    color: '#ffffff',
+    boxShadow: '0 6px 20px rgba(25, 118, 210, 0.3)',
+    border: '1px solid #1976d2',
+    transform: 'translateY(-2px)',
+    '&:hover': {
+      backgroundColor: '#1565c0',
+      transform: 'translateY(-2px)',
+    },
   },
 }));
 
@@ -509,7 +524,24 @@ const Prediction = ({csvData,topic,score}) => {
                     gridAutoRows: 'minmax(400px, auto)'
                   }}>
                     {/* Gender Chart */}
-                    <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <Paper 
+                      elevation={2} 
+                      style={{ 
+                        padding: '16px', 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                      }}
+                      sx={{
+                        '&:hover': {
+                          elevation: 8,
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                      }}
+                    >
                       <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Gender-wise Visualization</Typography>
                       <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
                         <InputLabel>Gender</InputLabel>
@@ -534,7 +566,24 @@ const Prediction = ({csvData,topic,score}) => {
                     </Paper>
 
                     {/* Race Chart */}
-                    <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <Paper 
+                      elevation={2} 
+                      style={{ 
+                        padding: '16px', 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                      }}
+                      sx={{
+                        '&:hover': {
+                          elevation: 8,
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                      }}
+                    >
                       <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Race-wise Precision</Typography>
                       <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
                         <InputLabel>Race</InputLabel>
@@ -559,7 +608,25 @@ const Prediction = ({csvData,topic,score}) => {
                     </Paper>
 
                     {/* Age Group Chart - starts new row */}
-                    <Paper elevation={2} style={{ padding: '16px', height: '400px', display: 'flex', flexDirection: 'column', gridColumn: '1 / 2' }}>
+                    <Paper 
+                      elevation={2} 
+                      style={{ 
+                        padding: '16px', 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gridColumn: '1 / 2',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                      }}
+                      sx={{
+                        '&:hover': {
+                          elevation: 8,
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                      }}
+                    >
                       <div style={{ flex: 1, minHeight: 0 }}>
                         {ageMetrics && <AgeGroupLineChart data={ageMetrics} />}
                       </div>

@@ -140,52 +140,90 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
       {title && (
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
           <h3 style={{ margin: 0, textAlign: 'left', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Subgroup Analysis across {selectedFeature}</h3>
-          <Box>
-            <IconButton 
-              size="small" 
-              onClick={handleEnlargeChart}
-              title="Enlarge Chart"
-              sx={{
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #e3f2fd',
-                borderRadius: '4px',
-                marginRight: '6px',
-                minWidth: '28px',
-                minHeight: '28px',
-                '&:hover': {
-                  backgroundColor: '#e3f2fd',
-                  border: '1px solid #bbdefb',
-                  boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
-                }
-              }}
-            >
-              <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
-            </IconButton>
-            <IconButton 
-              size="small" 
-              onClick={handleDownloadClick}
-              title="Download Chart"
-              sx={{
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #e3f2fd',
-                borderRadius: '4px',
-                minWidth: '28px',
-                minHeight: '28px',
-                '&:hover': {
-                  backgroundColor: '#e3f2fd',
-                  border: '1px solid #bbdefb',
-                  boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
-                }
-              }}
-            >
-              <Download sx={{ fontSize: 16, color: '#1976d2' }} />
-            </IconButton>
+          <Box display="flex" alignItems="center" gap={2}>
+            {/* Custom Legend */}
+            <Box display="flex" alignItems="center" gap={1}>
+              {subgroups.map((subgroup) => (
+                <Box key={subgroup} display="flex" alignItems="center" gap={0.5}>
+                  <Box
+                    sx={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: colorMap[subgroup],
+                      borderRadius: '2px'
+                    }}
+                  />
+                  <span style={{ fontSize: '12px', fontWeight: 'bold', fontFamily: 'Arial, sans-serif', color: '#333' }}>
+                    {subgroup.charAt(0).toUpperCase() + subgroup.slice(1)}
+                  </span>
+                </Box>
+              ))}
+            </Box>
+            <Box>
+              <IconButton 
+                size="small" 
+                onClick={handleEnlargeChart}
+                title="Enlarge Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+              <IconButton 
+                size="small" 
+                onClick={handleDownloadClick}
+                title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+            </Box>
           </Box>
         </Box>
       )}
       
       {!title && (
-        <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+          {/* Custom Legend */}
+          <Box display="flex" alignItems="center" gap={1}>
+            {subgroups.map((subgroup) => (
+              <Box key={subgroup} display="flex" alignItems="center" gap={0.5}>
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: colorMap[subgroup],
+                    borderRadius: '2px'
+                  }}
+                />
+                <span style={{ fontSize: '12px', fontWeight: 'bold', fontFamily: 'Arial, sans-serif', color: '#333' }}>
+                  {subgroup.charAt(0).toUpperCase() + subgroup.slice(1)}
+                </span>
+              </Box>
+            ))}
+          </Box>
           <Box>
             <IconButton 
               size="small" 
@@ -243,7 +281,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
               });
               return updated;
             })}
-            margin={{ top: 30, right: 20, left: 10, bottom: 20 }}
+            margin={{ top: 20, right: 20, left: 10, bottom: 80 }}
             style={{ fontSize: '10px' }}
           >
           <CartesianGrid strokeDasharray="3 3" />
@@ -253,9 +291,48 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
             textAnchor="end"
             interval={0}
             height={60}
-            tickFormatter={(value) => (value.includes('Separator') ? '' : value)} 
+            tickFormatter={(value) => (value.includes('Separator') ? '' : value)}
+            tick={{ 
+              fontSize: 12, 
+              fontWeight: 'bold', 
+              fontFamily: 'Arial, sans-serif',
+              fill: '#333'
+            }}
+            label={{ 
+              value: 'Performance Metrics', 
+              position: 'insideBottom', 
+              offset: -50,
+              style: { 
+                textAnchor: 'middle', 
+                fontSize: '14px',
+                fontWeight: 'bold',
+                fontFamily: 'Arial, sans-serif',
+                fill: '#333'
+              } 
+            }}
           />
-          <YAxis domain={[0, 120]} ticks={[0, 20, 40, 60, 80, 100, 120]} />
+          <YAxis 
+            domain={[0, 120]} 
+            ticks={[0, 20, 40, 60, 80, 100, 120]}
+            tick={{ 
+              fontSize: 12, 
+              fontWeight: 'bold', 
+              fontFamily: 'Arial, sans-serif',
+              fill: '#333'
+            }}
+            label={{ 
+              value: 'Percentage (%)', 
+              angle: -90, 
+              position: 'insideLeft',
+              style: { 
+                textAnchor: 'middle', 
+                fontSize: '14px',
+                fontWeight: 'bold',
+                fontFamily: 'Arial, sans-serif',
+                fill: '#333'
+              } 
+            }}
+          />
           <Tooltip 
             formatter={(value) => `${value.toFixed(1)}%`}
             contentStyle={{
@@ -267,13 +344,6 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
               boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
             }}
             labelStyle={{ color: '#fff' }}
-          />
-          <Legend
-            verticalAlign="top"
-            layout="horizontal"
-            align="right"
-            wrapperStyle={{ marginTop: '-20px', fontSize: '9px' }}
-            formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
           />
           {subgroups.map((subgroup) => (
             <Bar
@@ -303,55 +373,75 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
       </div>
 
       {/* Modal for enlarged chart */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="lg" fullWidth>
+      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
         <DialogTitle>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <span>Subgroup Analysis across {selectedFeature}</span>
-            <Box>
-              <IconButton 
-                size="small" 
-                onClick={handleDownloadClick}
-                title="Download Chart"
-                sx={{
-                  backgroundColor: '#f8f9fa',
-                  border: '1px solid #e3f2fd',
-                  borderRadius: '4px',
-                  marginRight: '6px',
-                  minWidth: '28px',
-                  minHeight: '28px',
-                  '&:hover': {
-                    backgroundColor: '#e3f2fd',
-                    border: '1px solid #bbdefb',
-                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
-                  }
-                }}
-              >
-                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
-              </IconButton>
-              <IconButton 
-                size="small" 
-                onClick={() => setOpenModal(false)}
-                title="Close"
-                sx={{
-                  backgroundColor: '#f8f9fa',
-                  border: '1px solid #ffebee',
-                  borderRadius: '4px',
-                  minWidth: '28px',
-                  minHeight: '28px',
-                  '&:hover': {
-                    backgroundColor: '#ffebee',
-                    border: '1px solid #ffcdd2',
-                    boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
-                  }
-                }}
-              >
-                <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
-              </IconButton>
+            <Box display="flex" alignItems="center" gap={2}>
+              {/* Custom Legend for Modal */}
+              <Box display="flex" alignItems="center" gap={1}>
+                {subgroups.map((subgroup) => (
+                  <Box key={subgroup} display="flex" alignItems="center" gap={0.5}>
+                    <Box
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        backgroundColor: colorMap[subgroup],
+                        borderRadius: '2px'
+                      }}
+                    />
+                    <span style={{ fontSize: '12px', fontWeight: 'bold', fontFamily: 'Arial, sans-serif', color: '#333' }}>
+                      {subgroup.charAt(0).toUpperCase() + subgroup.slice(1)}
+                    </span>
+                  </Box>
+                ))}
+              </Box>
+              <Box>
+                <IconButton 
+                  size="small" 
+                  onClick={handleDownloadClick}
+                  title="Download Chart"
+                  sx={{
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #e3f2fd',
+                    borderRadius: '4px',
+                    marginRight: '6px',
+                    minWidth: '28px',
+                    minHeight: '28px',
+                    '&:hover': {
+                      backgroundColor: '#e3f2fd',
+                      border: '1px solid #bbdefb',
+                      boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                    }
+                  }}
+                >
+                  <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+                </IconButton>
+                <IconButton 
+                  size="small" 
+                  onClick={() => setOpenModal(false)}
+                  title="Close"
+                  sx={{
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #ffebee',
+                    borderRadius: '4px',
+                    minWidth: '28px',
+                    minHeight: '28px',
+                    '&:hover': {
+                      backgroundColor: '#ffebee',
+                      border: '1px solid #ffcdd2',
+                      boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                    }
+                  }}
+                >
+                  <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
+                </IconButton>
+              </Box>
             </Box>
           </Box>
         </DialogTitle>
-        <DialogContent>
-          <Box style={{ height: '500px', width: '100%', padding: '16px' }}>
+        <DialogContent sx={{ overflow: 'hidden' }}>
+          <Box style={{ height: '600px', width: '100%', padding: '16px', overflow: 'hidden' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData.map(d => {
@@ -363,7 +453,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                   });
                   return updated;
                 })}
-                margin={{ top: 40, right: 40, left: 40, bottom: 80 }}
+                margin={{ top: 20, right: 40, left: 40, bottom: 100 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
@@ -372,9 +462,48 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                   textAnchor="end"
                   interval={0}
                   height={100}
-                  tickFormatter={(value) => (value.includes('Separator') ? '' : value)} 
+                  tickFormatter={(value) => (value.includes('Separator') ? '' : value)}
+                  tick={{ 
+                    fontSize: 12, 
+                    fontWeight: 'bold', 
+                    fontFamily: 'Arial, sans-serif',
+                    fill: '#333'
+                  }}
+                  label={{ 
+                    value: 'Performance Metrics', 
+                    position: 'insideBottom', 
+                    offset: -50,
+                    style: { 
+                      textAnchor: 'middle', 
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      fontFamily: 'Arial, sans-serif',
+                      fill: '#333'
+                    } 
+                  }}
                 />
-                <YAxis domain={[0, 120]} ticks={[0, 20, 40, 60, 80, 100, 120]} />
+                <YAxis 
+                  domain={[0, 120]} 
+                  ticks={[0, 20, 40, 60, 80, 100, 120]}
+                  tick={{ 
+                    fontSize: 12, 
+                    fontWeight: 'bold', 
+                    fontFamily: 'Arial, sans-serif',
+                    fill: '#333'
+                  }}
+                  label={{ 
+                    value: 'Percentage (%)', 
+                    angle: -90, 
+                    position: 'insideLeft',
+                    style: { 
+                      textAnchor: 'middle', 
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      fontFamily: 'Arial, sans-serif',
+                      fill: '#333'
+                    } 
+                  }}
+                />
                 <Tooltip 
                   formatter={(value) => `${value.toFixed(1)}%`}
                   contentStyle={{
@@ -386,13 +515,6 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                     boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                   }}
                   labelStyle={{ color: '#fff' }}
-                />
-                <Legend
-                  verticalAlign="top"
-                  layout="horizontal"
-                  align="right"
-                  wrapperStyle={{ marginTop: '-30px' }}
-                  formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
                 />
                 {subgroups.map((subgroup) => (
                   <Bar

@@ -140,7 +140,20 @@ const DistributionPieChart = ({ title, data }) => {
 
 
     return (
-        <Paper sx={{ p: 2, height: '400px', display: 'flex', flexDirection: 'column' }}>
+        <Paper 
+            sx={{ 
+                p: 2, 
+                height: '400px', 
+                display: 'flex', 
+                flexDirection: 'column',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                }
+            }}
+        >
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                 <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
                     {title}
@@ -223,7 +236,7 @@ const DistributionPieChart = ({ title, data }) => {
                             wrapperStyle={{ 
                                 paddingTop: '20px',
                                 fontSize: '14px',
-                                fontWeight: '500',
+                                fontWeight: 'bold',
                                 fontFamily: 'Arial, sans-serif'
                             }}
                         />
@@ -232,7 +245,7 @@ const DistributionPieChart = ({ title, data }) => {
             </div>
 
             {/* Modal for enlarged chart */}
-            <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="md" fullWidth>
+            <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
                 <DialogTitle>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                         <span style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>{title}</span>
@@ -279,8 +292,8 @@ const DistributionPieChart = ({ title, data }) => {
                         </Box>
                     </Box>
                 </DialogTitle>
-                <DialogContent>
-                    <Box style={{ height: '500px', width: '100%' }}>
+                <DialogContent sx={{ overflow: 'hidden' }}>
+                    <Box style={{ height: '600px', width: '100%', overflow: 'hidden' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
@@ -316,8 +329,8 @@ const DistributionPieChart = ({ title, data }) => {
                                     height={36} 
                                     wrapperStyle={{ 
                                         paddingTop: '20px',
-                                        fontSize: '16px',
-                                        fontWeight: '500',
+                                        fontSize: '14px',
+                                        fontWeight: 'bold',
                                         fontFamily: 'Arial, sans-serif'
                                     }}
                                 />

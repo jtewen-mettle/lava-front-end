@@ -162,7 +162,20 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
         gridAutoRows: 'minmax(400px, auto)'
       }}>
         {/* Age Distribution */}
-        <Paper sx={{ p: 2, height: '400px', display: 'flex', flexDirection: 'column' }}>
+        <Paper 
+          sx={{ 
+            p: 2, 
+            height: '400px', 
+            display: 'flex', 
+            flexDirection: 'column',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+            }
+          }}
+        >
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
             <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
               Age Distribution
@@ -220,14 +233,15 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                   legend: { 
                     display: true,
                     position: 'top',
-                    align: 'center',
+                    align: 'end',
                     labels: {
                       usePointStyle: true,
                       pointStyle: 'rect',
                       color: '#333',
                       font: {
                         family: 'Arial, sans-serif',
-                        size: 12
+                        size: 14,
+                        weight: 'bold'
                       }
                     }
                   },
@@ -246,13 +260,44 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                     title: {
                       display: true,
                       text: 'Age Group',
-                      font: { size: 14 }
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
                     },
                     grid: {
                       display: false
                     }
                   },
                   y: {
+                    title: {
+                      display: true,
+                      text: 'Number of Patients',
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
                     grid: {
                       color: 'rgba(0, 0, 0, 0.1)'
                     }
@@ -280,7 +325,21 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
         </div>
 
         {/* Race/Ethnicity Distribution - starts new row */}
-        <Paper sx={{ p: 2, height: '400px', display: 'flex', flexDirection: 'column', gridColumn: '1 / 2' }}>
+        <Paper 
+          sx={{ 
+            p: 2, 
+            height: '400px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gridColumn: '1 / 2',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+            }
+          }}
+        >
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
             <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
               Race/Ethnicity Distribution
@@ -338,14 +397,15 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                   legend: { 
                     display: true,
                     position: 'top',
-                    align: 'center',
+                    align: 'end',
                     labels: {
                       usePointStyle: true,
                       pointStyle: 'rect',
                       color: '#333',
                       font: {
                         family: 'Arial, sans-serif',
-                        size: 12
+                        size: 14,
+                        weight: 'bold'
                       }
                     }
                   },
@@ -364,13 +424,44 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
                     title: {
                       display: true,
                       text: 'Race/Ethnicity Group',
-                      font: { size: 14 }
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
                     },
                     grid: {
                       display: false
                     }
                   },
                   y: {
+                    title: {
+                      display: true,
+                      text: 'Number of Patients',
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
                     grid: {
                       color: 'rgba(0, 0, 0, 0.1)'
                     }
@@ -394,7 +485,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
       </div>
 
     {/* Modal for enlarged charts */}
-    <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="lg" fullWidth>
+    <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <span>{modalTitle}</span>
@@ -444,10 +535,97 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
           </Box>
         </Box>
       </DialogTitle>
-      <DialogContent>
-        <Box style={{ height: '500px', width: '100%' }}>
+      <DialogContent sx={{ overflow: 'hidden' }}>
+        <Box style={{ height: '600px', width: '100%', overflow: 'hidden' }}>
           {modalChart && modalChart.type === 'bar' && (
-            <Bar data={modalChart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+            <Bar data={modalChart.data} options={{ 
+              responsive: true, 
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { 
+                  display: true,
+                  position: 'top',
+                  align: 'end',
+                  labels: {
+                    usePointStyle: true,
+                    pointStyle: 'rect',
+                    color: '#333',
+                    font: {
+                      family: 'Arial, sans-serif',
+                      size: 14,
+                      weight: 'bold'
+                    }
+                  }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  titleColor: '#fff',
+                  bodyColor: '#fff',
+                  borderColor: '#333',
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  displayColors: true
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: modalTitle.includes('Age') ? 'Age Group' : 'Race/Ethnicity Group',
+                    font: { 
+                      size: 14, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  ticks: {
+                    font: { 
+                      size: 12, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  grid: {
+                    display: false
+                  }
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'Number of Patients',
+                    font: { 
+                      size: 14, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  ticks: {
+                    font: { 
+                      size: 12, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  grid: {
+                    color: 'rgba(0, 0, 0, 0.1)'
+                  }
+                }
+              },
+              elements: {
+                bar: {
+                  borderWidth: 2,
+                  hoverBorderWidth: 2,
+                  shadowColor: 'rgba(0, 0, 0, 0.15)',
+                  shadowBlur: 8,
+                  shadowOffsetX: 0,
+                  shadowOffsetY: 4
+                }
+              }
+            }} />
           )}
         </Box>
       </DialogContent>
