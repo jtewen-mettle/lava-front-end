@@ -39,14 +39,12 @@ const StyledTabs = styled(Tabs)({
   padding: '0',
   margin: '0',
   borderBottom: '2.5px solid #e5e7eb',
-  zIndex: 1,
   '& .MuiTabs-indicator': {
     display: 'none',
   },
   '& .MuiTabs-flexContainer': {
-    gap: '12px',
+    gap: '0', // No gap between tabs
     position: 'relative',
-    zIndex: 1,
   },
 });
 
@@ -64,44 +62,27 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   backgroundColor: '#e5e7eb',
   color: '#6b7280',
   border: 'none',
+  borderBottom: '2.5px solid transparent', // So parent border shows through
   width: '180px',
   minWidth: '180px',
   maxWidth: '180px',
   position: 'relative',
-  marginBottom: '-2.5px',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    bottom: '-2.5px',
-    left: 0,
-    width: '100%',
-    height: '2.5px',
-    backgroundColor: 'transparent',
-    transition: 'all 0.3s ease',
-    zIndex: 100,
-  },
   '&:hover': {
     backgroundColor: '#d1d5db',
     color: '#374151',
     transform: 'scale(1.05)',
-    '&::before': {
-      backgroundColor: '#93c5fd',
-    },
+    borderBottom: '2.5px solid #93c5fd', // Light blue underline on hover
   },
   '&.Mui-selected': {
     backgroundColor: '#3b82f6',
     color: '#ffffff',
+    borderBottom: '2.5px solid #1d4ed8', // Dark blue underline
     transform: 'scale(1.02)',
-    '&::before': {
-      backgroundColor: '#1d4ed8',
-    },
     '&:hover': {
       backgroundColor: '#2563eb',
       color: '#ffffff',
+      borderBottom: '2.5px solid #1d4ed8',
       transform: 'scale(1.05)',
-      '&::before': {
-        backgroundColor: '#1d4ed8',
-      },
     },
   },
 }));
