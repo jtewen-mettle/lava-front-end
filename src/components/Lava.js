@@ -58,7 +58,14 @@ const Lava = () => {
         renderTopicComponent()
       );
     } else if (activePage === 'Settings') {
-      return <div>Settings Page Coming Soon...</div>;
+      return <div style={{ 
+        position: 'static',
+        right: '50%',
+        justifyContent: 'center', 
+        height: '100vh',
+        fontSize: '24px',
+        fontWeight: 'bold',
+      }}> Settings Page Coming Soon...</div>;
     }
   };
 
@@ -84,106 +91,132 @@ const Lava = () => {
           boxSizing: 'border-box'
         }}
       >
-        <Toolbar 
+        <Box 
           sx={{ 
-            maxWidth: '1400px',
+            maxWidth: '1600px',
             width: '100%',
             margin: '0 auto',
-            paddingLeft: { xs: 2, sm: 3, md: 3 },
-            paddingRight: { xs: 2, sm: 3, md: 3 }
+            px: { xs: 2, sm: 3, md: 3 },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            minHeight: '64px'
           }}
         >
           <Typography 
             variant="h6" 
             sx={{ 
-              flexGrow: 1,
-              textAlign: 'left',
               fontFamily: 'Arial, sans-serif',
               fontWeight: 'bold',
               letterSpacing: '0.5px',
-              textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+              color: '#fff',
+              flexShrink: 0
             }}
           >
             Lava Application
           </Typography>
-          <Box>
-          <Button
-            color="inherit"
-            sx={{
-              backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'transparent', 
-              color: activePage === 'Dashboard' ? '#fff' : '#fff',
-              fontFamily: 'Arial, sans-serif',
-              fontWeight: 'bold',
-              textTransform: 'none',
-              borderRadius: '6px',
-              padding: '8px 16px',
-              margin: '0 4px',
-              border: activePage === 'Dashboard' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: activePage === 'Dashboard' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                transform: 'translateY(-1px)'
-              }
-            }}
-            onClick={() => {
-              setSelection(null);
-              setActivePage('Dashboard');
+          
+          <Box 
+            sx={{ 
+              display: 'flex',
+              alignItems: 'center',
+              gap: { xs: 0.5, sm: 1, md: 1.5 },
+              flexShrink: 0,
+              flexWrap: { xs: 'wrap', sm: 'nowrap' },
+              justifyContent: 'flex-end',
+              marginRight: { xs: '26px', sm: '26px', md: '26px' }
             }}
           >
-            Home
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'transparent', 
-              color: activePage === 'ModelAnalysis' ? '#fff' : '#fff',
-              fontFamily: 'Arial, sans-serif',
-              fontWeight: 'bold',
-              textTransform: 'none',
-              borderRadius: '6px',
-              padding: '8px 16px',
-              margin: '0 4px',
-              border: activePage === 'ModelAnalysis' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: activePage === 'ModelAnalysis' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                transform: 'translateY(-1px)'
-              }
-            }}
-            onClick={() => setActivePage('ModelAnalysis')}
-          >
-            Topic Dashboard
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              backgroundColor: activePage === 'Settings' ? '#1164ad' : 'transparent', 
-              color: activePage === 'Settings' ? '#fff' : '#fff',
-              fontFamily: 'Arial, sans-serif',
-              fontWeight: 'bold',
-              textTransform: 'none',
-              borderRadius: '6px',
-              padding: '8px 16px',
-              margin: '0 4px',
-              border: activePage === 'Settings' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: activePage === 'Settings' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: activePage === 'Settings' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                transform: 'translateY(-1px)'
-              }
-            }}
-            onClick={() => setActivePage('Settings')}
-          >
-            Settings
-          </Button>
+            <Button
+              color="inherit"
+              sx={{
+                backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'transparent', 
+                color: '#fff',
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                borderRadius: '12px',
+                padding: { xs: '6px 12px', sm: '8px 16px', md: '8px 24px' },
+                fontSize: { xs: '0.8rem', sm: '0.875rem', md: '0.875rem' },
+                minWidth: { xs: 'auto', sm: 'auto', md: 'auto' },
+                border: activePage === 'Dashboard' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: activePage === 'Dashboard' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: activePage === 'Dashboard' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                  transform: 'translateY(-1px)'
+                }
+              }}
+              onClick={() => {
+                setSelection(null);
+                setActivePage('Dashboard');
+              }}
+            >
+              Home
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'transparent', 
+                color: '#fff',
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                borderRadius: '12px',
+                padding: { xs: '6px 8px', sm: '8px 12px', md: '8px 16px' },
+                fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.875rem' },
+                minWidth: { xs: 'auto', sm: 'auto', md: 'auto' },
+                border: activePage === 'ModelAnalysis' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: activePage === 'ModelAnalysis' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: activePage === 'ModelAnalysis' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                  transform: 'translateY(-1px)'
+                }
+              }}
+              onClick={() => setActivePage('ModelAnalysis')}
+            >
+              {/* Responsive text for Topic Dashboard */}
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'none', md: 'inline' } }}>
+                Topic Dashboard
+              </Box>
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline', md: 'none' } }}>
+              Dashboard
+              </Box>
+              <Box component="span" sx={{ display: { xs: 'inline', sm: 'none', md: 'none' } }}>
+              Dashboard
+              </Box>
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                backgroundColor: activePage === 'Settings' ? '#1164ad' : 'transparent', 
+                color: '#fff',
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                borderRadius: '12px',
+                padding: { xs: '6px 12px', sm: '8px 16px', md: '8px 24px' },
+                fontSize: { xs: '0.8rem', sm: '0.875rem', md: '0.875rem' },
+                minWidth: { xs: 'auto', sm: 'auto', md: 'auto' },
+                border: activePage === 'Settings' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: activePage === 'Settings' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: activePage === 'Settings' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                  transform: 'translateY(-1px)'
+                }
+              }}
+              onClick={() => setActivePage('Settings')}
+            >
+              Settings
+            </Button>
           </Box>
-        </Toolbar>
+        </Box>
       </AppBar>
 
       {/* Main Content */}
