@@ -1,6 +1,6 @@
 export const modelCardData = {
   cardiovascular: {
-    modelName: "Cerner ASCVD Risk Calculator",
+    modelName: "Cerner ASCVD Risk Assessment",
     version: "v2.1.3",
     developer: "Oracle Cerner Corporation",
     releaseDate: "March 15, 2024",
@@ -19,7 +19,7 @@ export const modelCardData = {
       specificity: "68.9%",
       ppv: "8.2%",
       npv: "98.1%",
-      calibration: "Good"
+      calibration: "Poor"
     },
     internalValidation: "Cross-validation on 48,000 patients from original cohorts (ARIC, CHS, CARDIA, JHS)",
     externalValidation: "Validated on MESA, WHI, and REGARDS cohorts (n=31,000)",
@@ -43,10 +43,10 @@ export const modelCardData = {
       "Does not account for family history or novel biomarkers"
     ],
     biasConsiderations: "Performance monitoring across racial/ethnic groups ongoing. May underestimate risk in South Asian populations.",
-    biasStatus: "Under Review"
-  },
+      biasStatus: "Under Review"
+    },
   ckd: {
-    modelName: "Cerner CKD Risk Predictor",
+    modelName: "Cerner CKD Risk Assessment",
     version: "v1.8.2",
     developer: "Oracle Cerner Corporation",
     releaseDate: "January 20, 2024",
@@ -65,7 +65,7 @@ export const modelCardData = {
       specificity: "74.2%",
       ppv: "15.3%",
       npv: "98.7%",
-      calibration: "Excellent"
+      calibration: "Good"
     },
     internalValidation: "Cross-validation on 35,000 patients from USRDS and CKD-EPI cohorts",
     externalValidation: "Validated on NHANES and Kaiser Permanente cohorts (n=25,000)",
@@ -89,7 +89,7 @@ export const modelCardData = {
       "Performance decreases in patients with fluctuating kidney function"
     ],
     biasConsiderations: "Model performance varies across racial groups. Enhanced monitoring for Hispanic and Native American populations.",
-    biasStatus: "Active Monitoring"
+    biasStatus: "Complete"
   },
   prostate: {
     modelName: "Cerner Prostate Cancer Risk Assessment",
@@ -135,10 +135,10 @@ export const modelCardData = {
       "Does not replace shared decision-making conversations"
     ],
     biasConsiderations: "Enhanced focus on African American men who have higher prostate cancer risk. Ongoing studies in diverse populations.",
-    biasStatus: "Enhanced Monitoring"
+    biasStatus: "Complete"
   },
   hospitalization: {
-    modelName: "Cerner Hospitalization Risk Predictor",
+    modelName: "Cerner Hospitalization Risk Assessment",
     version: "v2.3.4",
     developer: "Oracle Cerner Corporation",
     releaseDate: "April 8, 2024",
@@ -181,6 +181,6 @@ export const modelCardData = {
       "May not capture all patient-specific risk factors"
     ],
     biasConsiderations: "Active monitoring for disparities across socioeconomic and racial groups. Enhanced data collection for social determinants.",
-    biasStatus: "Active Mitigation"
+    biasStatus: "Complete"
   }
 };

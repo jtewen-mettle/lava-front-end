@@ -4,14 +4,16 @@ import { styled } from '@mui/material/styles';
 import { modelCardData } from '../../data/modelCardData';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: '20px',
-  marginBottom: '20px',
-  backgroundColor: '#f8f9fa',
-  borderRadius: '12px',
+  padding: '16px',
+  border: '1px solid #e1e8ed',
+  marginBottom: '24px',
+  backgroundColor: '#ffffff',
+  borderRadius: '6px',
   transition: 'all 0.3s ease',
+  cursor: 'pointer',
   '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+    transform: 'translateY(-4px)',
+    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
   },
 }));
 
@@ -38,14 +40,17 @@ const SubSectionTitle = styled(Typography)(({ theme }) => ({
 
 const FieldContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
-  padding: '15px',
+  padding: '16px',
   borderRadius: '8px',
   border: '1px solid #e1e8ed',
   transition: 'all 0.3s ease',
-  minHeight: '100px',
+  minHeight: '120px',
   width: '100%',
+  height: '100%',
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'flex-start',
+  boxSizing: 'border-box',
   '&:hover': {
     borderColor: '#275786',
     boxShadow: '0 4px 12px rgba(39, 87, 134, 0.1)',
@@ -57,18 +62,24 @@ const FieldLabel = styled('span')(({ theme }) => ({
   color: '#000',
   marginBottom: '5px',
   display: 'block',
-  fontSize: '14px',
+  fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
 }));
 
 const FieldValue = styled('div')(({ theme }) => ({
   color: '#000',
-  fontSize: '14px',
+  fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
-  lineHeight: 1.4,
+  fontWeight: 'normal',
+  lineHeight: 1.5,
   wordWrap: 'break-word',
-  marginTop: '5px',
+  wordBreak: 'break-word',
+  overflowWrap: 'break-word',
+  whiteSpace: 'normal',
+  marginTop: '8px',
   flex: 1,
+  display: 'flex',
+  alignItems: 'flex-start',
 }));
 
 const MetricContainer = styled('div')(({ theme }) => ({
@@ -101,61 +112,177 @@ const MetricLabel = styled('div')(({ theme }) => ({
 const StatusBadge = styled('span')(({ theme, variant }) => ({
   display: 'inline-block',
   padding: '6px 12px',
-  borderRadius: '20px',
   fontSize: '12px',
-  fontWeight: 600,
+  fontWeight: 'bold',
+  borderRadius: '6px',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.3s ease',
   textTransform: 'uppercase',
   letterSpacing: '0.5px',
   fontFamily: 'Arial, sans-serif',
+  color: 'white',
+  '&:hover': {
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+  },
   ...(variant === 'certified' && {
     backgroundColor: '#2ecc71',
-    color: 'white',
   }),
   ...(variant === 'warning' && {
     backgroundColor: '#f39c12',
-    color: 'white',
   }),
   ...(variant === 'review' && {
     backgroundColor: '#e74c3c',
-    color: 'white',
   }),
   ...(variant === 'monitoring' && {
     backgroundColor: '#3498db',
-    color: 'white',
   }),
 }));
 
 const LimitationBox = styled('div')(({ theme }) => ({
-  backgroundColor: '#fff3cd',
-  border: '1px solid #ffeaa7',
+  backgroundColor: '#fef7e6',
+  border: '1px solid #f4c430',
   borderRadius: '8px',
   padding: '20px',
   margin: '15px 0',
+  borderLeft: '4px solid #d4930a',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 4px 12px rgba(212, 147, 10, 0.2)',
+    borderColor: '#d4930a',
+  },
 }));
 
 const LimitationTitle = styled('h4')(({ theme }) => ({
   color: '#000',
-  marginBottom: '10px',
+  marginBottom: '16px',
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  fontSize: '14px',
+  fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
   fontWeight: 'bold',
 }));
 
 const LimitationList = styled('ul')(({ theme }) => ({
   color: '#000',
-  marginLeft: '20px',
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
   '& li': {
-    fontSize: '13px',
+    fontSize: '16px',
     fontFamily: 'Arial, sans-serif',
-    marginBottom: '5px',
+    fontWeight: 'normal',
+    marginBottom: '8px',
+    paddingLeft: '25px',
+    position: 'relative',
+    lineHeight: 1.6,
+    '&::before': {
+      content: '"➤"',
+      position: 'absolute',
+      left: '0',
+      top: '0',
+      fontSize: '14px',
+      color: '#FAD473',
+      fontWeight: 'bold',
+    },
+    '&:nth-child(even)::before': {
+      color: '#2196f3',
+    },
   },
 }));
 
-const ModelCardSection = ({ topic = 'cardiovascular' }) => {
-  const data = modelCardData[topic] || modelCardData.cardiovascular;
+const ModelCardSection = ({ topic }) => {
+  // Map topic names to modelCardData keys - no fallback
+  const getModelCardKey = (topicName) => {
+    const normalizedTopic = topicName.toLowerCase();
+    if (normalizedTopic.includes('cardiovascular') || normalizedTopic.includes('cardio')) {
+      return 'cardiovascular';
+    } else if (normalizedTopic.includes('chronic kidney disease') || normalizedTopic.includes('kidney') || normalizedTopic.includes('ckd')) {
+      return 'ckd';
+    } else if (normalizedTopic.includes('prostate cancer') || normalizedTopic.includes('prostate')) {
+      return 'prostate';
+    } else if (normalizedTopic.includes('hospitalization') || normalizedTopic.includes('hospital')) {
+      return 'hospitalization';
+    }
+    return null; // no fallback
+  };
+
+  const modelCardKey = getModelCardKey(topic);
+  const data = modelCardData[modelCardKey];
+
+  // If no valid topic found, don't render the component
+  if (!data) {
+    return null;
+  }
+
+  // Reusable Dynamic Card Grid Function
+  const DynamicCardGrid = ({ items }) => (
+    <Box 
+      sx={{ 
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          md: 'repeat(2, 1fr)', 
+          lg: 'repeat(3, 1fr)'
+        },
+        gap: 2,
+        width: '100%'
+      }}
+    >
+      {items.map((item, index) => (
+        <Box
+          key={index}
+          sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e1e8ed',
+            borderRadius: '8px',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '60px',
+            maxHeight: '120px',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              borderColor: '#275786',
+              boxShadow: '0px 4px 12px rgba(39, 87, 134, 0.1)',
+            }
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: 600,
+              color: '#000',
+              fontSize: '16px',
+              fontFamily: 'Arial, sans-serif',
+              marginBottom: '8px'
+            }}
+          >
+            {item.label}
+          </Typography>
+          <Box
+            sx={{
+              color: '#000',
+              fontSize: '16px',
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'normal',
+              lineHeight: 1.5,
+              wordWrap: 'break-word',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'normal',
+              flex: 1,
+              display: 'flex',
+              alignItems: 'flex-start'
+            }}
+          >
+            {item.value}
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  );
 
   const getBiasStatusVariant = (status) => {
     switch (status) {
@@ -185,7 +312,7 @@ const ModelCardSection = ({ topic = 'cardiovascular' }) => {
           marginBottom: '24px'
         }}
       >
-        Model Card - {data.modelName}
+        Risk Assessment
       </Typography>
 
       {/* Model Identification Section */}
@@ -194,46 +321,19 @@ const ModelCardSection = ({ topic = 'cardiovascular' }) => {
           Model Identification
         </SectionTitle>
         
-        <Grid container spacing={2} sx={{ width: '100%' }}>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Model Name</FieldLabel>
-              <FieldValue>{data.modelName}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Version</FieldLabel>
-              <FieldValue>{data.version}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Developer / Manufacturer</FieldLabel>
-              <FieldValue>{data.developer}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Release Date</FieldLabel>
-              <FieldValue>{data.releaseDate}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Intended Use</FieldLabel>
-              <FieldValue>{data.intendedUse}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Certification Status</FieldLabel>
-              <FieldValue>
-                <StatusBadge variant="certified">{data.certificationStatus}</StatusBadge>
-              </FieldValue>
-            </FieldContainer>
-          </Grid>
-        </Grid>
+        <DynamicCardGrid 
+          items={[
+            { label: 'Model Name', value: data.modelName },
+            { label: 'Version', value: data.version },
+            { label: 'Developer / Manufacturer', value: data.developer },
+            { label: 'Release Date', value: data.releaseDate },
+            { label: 'Intended Use', value: data.intendedUse },
+            { 
+              label: 'Certification Status', 
+              value: <StatusBadge variant="certified">{data.certificationStatus}</StatusBadge> 
+            }
+          ]}
+        />
       </StyledPaper>
 
       {/* Algorithm Transparency Section */}
@@ -242,115 +342,108 @@ const ModelCardSection = ({ topic = 'cardiovascular' }) => {
           Algorithm Transparency
         </SectionTitle>
         
-        <Grid container spacing={2} sx={{ width: '100%' }}>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Model Type</FieldLabel>
-              <FieldValue>{data.modelType}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Output Provided</FieldLabel>
-              <FieldValue>{data.outputProvided}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>End Users</FieldLabel>
-              <FieldValue>{data.endUsers}</FieldValue>
-            </FieldContainer>
-          </Grid>
-        </Grid>
+        <DynamicCardGrid 
+          items={[
+            { label: 'Model Type', value: data.modelType },
+            { label: 'Output Provided', value: data.outputProvided },
+            { label: 'End Users', value: data.endUsers }
+          ]}
+        />
 
         <SubSectionTitle>Inputs Required (USCDI Aligned)</SubSectionTitle>
-        <Grid container spacing={2} sx={{ width: '100%' }}>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Demographics</FieldLabel>
-              <FieldValue>{data.demographicsInputs}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Laboratory Values</FieldLabel>
-              <FieldValue>{data.laboratoryInputs}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Clinical Measurements</FieldLabel>
-              <FieldValue>{data.clinicalInputs}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Medical History</FieldLabel>
-              <FieldValue>{data.medicalHistoryInputs}</FieldValue>
-            </FieldContainer>
-          </Grid>
-        </Grid>
+        <DynamicCardGrid 
+          items={[
+            { label: 'Demographics', value: data.demographicsInputs },
+            { label: 'Laboratory Values', value: data.laboratoryInputs },
+            { label: 'Clinical Measurements', value: data.clinicalInputs },
+            { label: 'Medical History', value: data.medicalHistoryInputs }
+          ]}
+        />
 
         <SubSectionTitle>Performance Metrics</SubSectionTitle>
-        <Grid container spacing={2}>
-          <Grid item xs={6} md={2}>
-            <MetricContainer>
-              <MetricValue>{data.performanceMetrics.auroc}</MetricValue>
-              <MetricLabel>AUROC/AUC</MetricLabel>
-            </MetricContainer>
-          </Grid>
-          <Grid item xs={6} md={2}>
-            <MetricContainer>
-              <MetricValue>{data.performanceMetrics.sensitivity}</MetricValue>
-              <MetricLabel>Sensitivity</MetricLabel>
-            </MetricContainer>
-          </Grid>
-          <Grid item xs={6} md={2}>
-            <MetricContainer>
-              <MetricValue>{data.performanceMetrics.specificity}</MetricValue>
-              <MetricLabel>Specificity</MetricLabel>
-            </MetricContainer>
-          </Grid>
-          <Grid item xs={6} md={2}>
-            <MetricContainer>
-              <MetricValue>{data.performanceMetrics.ppv}</MetricValue>
-              <MetricLabel>PPV</MetricLabel>
-            </MetricContainer>
-          </Grid>
-          <Grid item xs={6} md={2}>
-            <MetricContainer>
-              <MetricValue>{data.performanceMetrics.npv}</MetricValue>
-              <MetricLabel>NPV</MetricLabel>
-            </MetricContainer>
-          </Grid>
-          <Grid item xs={6} md={2}>
-            <MetricContainer>
-              <MetricValue>{data.performanceMetrics.calibration}</MetricValue>
-              <MetricLabel>Calibration</MetricLabel>
-            </MetricContainer>
-          </Grid>
-        </Grid>
+        <Box 
+          sx={{ 
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'repeat(2, 1fr)',
+              sm: 'repeat(3, 1fr)',
+              md: 'repeat(6, 1fr)'
+            },
+            gap: 2,
+            width: '100%'
+          }}
+        >
+          {[
+            { value: data.performanceMetrics.auroc, label: 'AUROC/AUC' },
+            { value: data.performanceMetrics.sensitivity, label: 'Sensitivity' },
+            { value: data.performanceMetrics.specificity, label: 'Specificity' },
+            { value: data.performanceMetrics.ppv, label: 'PPV' },
+            { value: data.performanceMetrics.npv, label: 'NPV' },
+            { value: data.performanceMetrics.calibration, label: 'Calibration' }
+          ].map((metric, index) => (
+            <Box
+              key={index}
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '2px solid #e3f2fd',
+                borderRadius: '12px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                height: '40px',
+                minHeight: '40px',
+                maxHeight: '60px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                '&:hover': {
+                  backgroundColor: '#e3f2fd',
+                  borderColor: '#275786',
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 25px rgba(39, 87, 134, 0.2)',
+                }
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  color: '#275786',
+                  fontFamily: 'Arial, sans-serif',
+                  marginBottom: '12px',
+                  lineHeight: 1
+                }}
+              >
+                {metric.value}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'normal',
+                  color: '#666',
+                  fontFamily: 'Arial, sans-serif',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  lineHeight: 1
+                }}
+              >
+                {metric.label}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
 
-        <Grid container spacing={2} sx={{ mt: 2, width: '100%' }}>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Internal Validation</FieldLabel>
-              <FieldValue>{data.internalValidation}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>External Validation</FieldLabel>
-              <FieldValue>{data.externalValidation}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Real-world Performance</FieldLabel>
-              <FieldValue>{data.realWorldPerformance}</FieldValue>
-            </FieldContainer>
-          </Grid>
-        </Grid>
+        <Box sx={{ mt: 3 }}>
+          <DynamicCardGrid 
+            items={[
+              { label: 'Internal Validation', value: data.internalValidation },
+              { label: 'External Validation', value: data.externalValidation },
+              { label: 'Real-world Performance', value: data.realWorldPerformance }
+            ]}
+          />
+        </Box>
       </StyledPaper>
 
       {/* Clinical Context & Limitations Section */}
@@ -359,26 +452,13 @@ const ModelCardSection = ({ topic = 'cardiovascular' }) => {
           Clinical Context & Limitations
         </SectionTitle>
         
-        <Grid container spacing={2} sx={{ width: '100%' }}>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Target Use</FieldLabel>
-              <FieldValue>{data.targetUse}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Intended Population</FieldLabel>
-              <FieldValue>{data.intendedPopulation}</FieldValue>
-            </FieldContainer>
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ display: 'flex' }}>
-            <FieldContainer>
-              <FieldLabel>Clinical Setting</FieldLabel>
-              <FieldValue>{data.clinicalSetting}</FieldValue>
-            </FieldContainer>
-          </Grid>
-        </Grid>
+        <DynamicCardGrid 
+          items={[
+            { label: 'Target Use', value: data.targetUse },
+            { label: 'Intended Population', value: data.intendedPopulation },
+            { label: 'Clinical Setting', value: data.clinicalSetting }
+          ]}
+        />
 
         <SubSectionTitle>Exclusions</SubSectionTitle>
         <LimitationBox>
@@ -404,15 +484,78 @@ const ModelCardSection = ({ topic = 'cardiovascular' }) => {
           </LimitationList>
         </LimitationBox>
 
-        <FieldContainer>
-          <FieldLabel>Bias Considerations</FieldLabel>
-          <FieldValue>
-            <StatusBadge variant={getBiasStatusVariant(data.biasStatus)}>
-              {data.biasStatus}
-            </StatusBadge>
-            <span style={{ marginLeft: '10px' }}>{data.biasConsiderations}</span>
-          </FieldValue>
-        </FieldContainer>
+        <Box sx={{ mt: 2 }}>
+          <Box
+            sx={{
+              backgroundColor: 'white',
+              border: '1px solid #e1e8ed',
+              borderRadius: '8px',
+              padding: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              boxSizing: 'border-box',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                borderColor: '#275786',
+                boxShadow: '0 4px 12px rgba(39, 87, 134, 0.1)',
+              }
+            }}
+          >
+            <Box 
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                gap: 2,
+                marginBottom: '16px',
+                flexWrap: 'wrap'
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  color: '#000',
+                  fontSize: '16px',
+                  fontFamily: 'Arial, sans-serif'
+                }}
+              >
+                Bias Considerations
+              </Typography>
+              <Box
+                sx={{
+                  padding: '6px 12px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  borderRadius: '6px',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                  backgroundColor: data.biasStatus === 'Under Review' ? '#FACC52' : '#4caf50',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  '&:hover': {
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+                  }
+                }}
+              >
+                {data.biasStatus}
+              </Box>
+            </Box>
+            <Typography
+              sx={{
+                color: '#000',
+                fontSize: '16px',
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 'normal',
+                lineHeight: 1.6,
+                textAlign: 'left'
+              }}
+            >
+              {data.biasConsiderations}
+            </Typography>
+          </Box>
+        </Box>
       </StyledPaper>
     </Box>
   );

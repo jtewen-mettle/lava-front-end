@@ -4254,7 +4254,7 @@ const CKDPrediction = (props) => {
     <div>
       {/* <CKDPredictionCsvFromFhir onCsvReady={handleCsvReady} /> */}
       { csvData && csvData.length > 0 && (
-        <Prediction csvData={csvData} topic="CKD Prediction"/>
+        <Prediction csvData={csvData} topic="Chronic Kidney Disease Prediction"/>
       )}
     </div>
   );

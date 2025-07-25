@@ -159,7 +159,7 @@ const HospitalizationRiskPrediction = (props) => {
     </Button>
     </Box>
       <Typography variant="h5" gutterBottom>
-        Accuracy Metrics: CKD Hospitalization Risk Prediction
+        Accuracy Metrics: Chronic Kidney Disease Hospitalization Risk Prediction
       </Typography>
 
       {metricsData && (

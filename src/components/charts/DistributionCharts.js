@@ -321,18 +321,24 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
         </Paper>
 
         {/* Gender Distribution */}
-        <div style={{ height: '400px' }}>
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          minWidth: 0,
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box'
+        }}>
           <DistributionPieChart title="Gender Distribution" data={genderCounts}/>
         </div>
 
-        {/* Race/Ethnicity Distribution - starts new row */}
+        {/* Race/Ethnicity Distribution */}
         <Paper 
           sx={{ 
             p: 2, 
             height: '400px', 
             display: 'flex', 
-            flexDirection: 'column', 
-            gridColumn: '1 / 2',
+            flexDirection: 'column',
             transition: 'all 0.3s ease',
             cursor: 'pointer',
             '&:hover': {

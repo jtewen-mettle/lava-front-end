@@ -22,12 +22,12 @@ const SelectionPage = ({ onSubmit }) => {
   const getTopicsForVendor = () => {
     if (vendor === 'Vendor1') {
       return [
-        { value: 'CardioVascularPrediction', label: 'CardioVascular Predictor Evaluation' },
+        { value: 'CardioVascularPrediction', label: 'Cardiovascular Predictor Evaluation' },
       ];
     } else if (vendor === 'Vendor2') {
       return [
-        { value: 'CKD', label: 'Kidney Failure Estimator' },
-        { value: 'ProstateCancerPrediction', label: 'ProstateCancer Predictor Evaluation' },
+        { value: 'CKD', label: 'Chronic Kidney Disease Estimator' },
+        { value: 'ProstateCancerPrediction', label: 'Prostate Cancer Predictor Evaluation' },
       ];
     }
     return [];

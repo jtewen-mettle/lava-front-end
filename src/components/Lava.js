@@ -80,7 +80,7 @@ const Lava = () => {
     }}>
       {/* Top Menu Bar */}
       <AppBar 
-        position="static" 
+        position="fixed" 
         sx={{ 
           backgroundColor: '#275786',
           boxShadow: '0 4px 12px rgba(39, 87, 134, 0.3)',
@@ -222,7 +222,7 @@ const Lava = () => {
       {/* Main Content */}
       <Box 
         sx={{ 
-          mt: 2, 
+          mt: '80px', 
           width: '100%', 
           maxWidth: '100%',
           overflow: 'hidden',

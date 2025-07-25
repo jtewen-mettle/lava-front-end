@@ -32,9 +32,9 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
 
     const getTitle = () => {
         console.log("topic---" + topic)
-        if (topic.includes("CKD")) {
-            return "CKD Risk Breakdown";
-        } else if (topic.includes("CardioVascularDisease")) {
+        if (topic.includes("Chronic Kidney Disease") || topic.includes("CKD")) {
+            return "Chronic Kidney Disease Risk Breakdown";
+        } else if (topic.includes("Cardiovascular Disease") || topic.includes("CardioVascularDisease")) {
             return "Cardiovascular Risk Breakdown";
         } else {
             return "Metrics Breakdown";

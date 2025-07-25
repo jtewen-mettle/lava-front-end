@@ -166,7 +166,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                 title="Enlarge Chart"
                 sx={{
                   backgroundColor: '#f8f9fa',
-                  border: '1px solid #e3f2fd',
+                  border: '1px solid #e1e8ed',
                   borderRadius: '4px',
                   marginRight: '6px',
                   minWidth: '28px',
@@ -186,7 +186,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                 title="Download Chart"
                 sx={{
                   backgroundColor: '#f8f9fa',
-                  border: '1px solid #e3f2fd',
+                  border: '1px solid #e1e8ed',
                   borderRadius: '4px',
                   minWidth: '28px',
                   minHeight: '28px',
