@@ -25,6 +25,7 @@ import SubgroupBarChart from '../charts/SubgroupBarChart';
 import MetricsSection from '../charts/MetricsSection';
 import DistributionCharts from '../charts/DistributionCharts';
 import InfoIcon from '@mui/icons-material/Info';
+import { ZoomIn, Download } from '@mui/icons-material';
 import MetricsGrid from '../views/MetricsGrid';
 import AgeGroupLineChart from '../charts/AgeGroupLineChart';
 import ModelCardSection from '../charts/ModelCardSection';
@@ -536,26 +537,23 @@ const Prediction = ({csvData,topic,score}) => {
                   <div style={{ 
                     display: 'grid', 
                     gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 600px), 1fr))',
-                    gap: '24px',
+                    gap: '16px',
                     width: '100%',
                     gridAutoRows: 'minmax(400px, auto)',
                     maxWidth: '100%',
-                    overflow: 'hidden'
+                    overflow: 'visible'
                   }}>
                     {/* Gender Chart */}
                     <Paper 
                       elevation={2} 
                       style={{ 
-                        padding: '16px', 
+                        padding: 16, 
                         height: '400px', 
-                        width: '100%',
-                        maxWidth: '100%',
-                        boxSizing: 'border-box',
                         display: 'flex', 
                         flexDirection: 'column',
                         transition: 'all 0.3s ease',
                         cursor: 'pointer',
-                        overflow: 'hidden'
+                        border: '1px solid #e0e0e0'
                       }}
                       sx={{
                         '&:hover': {
@@ -565,25 +563,15 @@ const Prediction = ({csvData,topic,score}) => {
                         }
                       }}
                     >
-                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Gender-wise Visualization</Typography>
-                      <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
-                        <InputLabel>Gender</InputLabel>
-                        <Select
-                          value={selectedGender}
-                          label="Gender"
-                          onChange={e => setSelectedGender(e.target.value)}
-                        >
-                          <MenuItem value="">All</MenuItem>
-                          {genderOptions.map(option => (
-                            <MenuItem key={option} value={option}>{option}</MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <div style={{ flex: 1, minHeight: 0 }}>
+                      <div style={{ flex: 1, height: '350px' }}>
                         <SubgroupBarChart
-                          title=""
+                          title="Gender-wise Visualization"
                           rawData={filteredGenderData}
                           selectedFeature="Gender"
+                          allSubgroupsData={genderMetrics}
+                          selectedValue={selectedGender}
+                          onValueChange={setSelectedGender}
+                          options={genderOptions}
                         />
                       </div>
                     </Paper>
@@ -592,16 +580,13 @@ const Prediction = ({csvData,topic,score}) => {
                     <Paper 
                       elevation={2} 
                       style={{ 
-                        padding: '16px', 
+                        padding: 16, 
                         height: '400px', 
-                        width: '100%',
-                        maxWidth: '100%',
-                        boxSizing: 'border-box',
                         display: 'flex', 
                         flexDirection: 'column',
                         transition: 'all 0.3s ease',
                         cursor: 'pointer',
-                        overflow: 'hidden'
+                        border: '1px solid #e0e0e0'
                       }}
                       sx={{
                         '&:hover': {
@@ -611,25 +596,15 @@ const Prediction = ({csvData,topic,score}) => {
                         }
                       }}
                     >
-                      <Typography variant="h6" style={{ marginBottom: '8px', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Race-wise Precision</Typography>
-                      <FormControl fullWidth size="small" style={{ marginBottom: '12px' }}>
-                        <InputLabel>Race</InputLabel>
-                        <Select
-                          value={selectedRace}
-                          label="Race"
-                          onChange={e => setSelectedRace(e.target.value)}
-                        >
-                          <MenuItem value="">All</MenuItem>
-                          {raceOptions.map(option => (
-                            <MenuItem key={option} value={option}>{option}</MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <div style={{ flex: 1, minHeight: 0 }}>
+                      <div style={{ flex: 1, height: '350px' }}>
                         <SubgroupBarChart
-                          title=""
+                          title="Race-wise Precision"
                           rawData={filteredRaceData}
                           selectedFeature="Race"
+                          allSubgroupsData={raceMetrics}
+                          selectedValue={selectedRace}
+                          onValueChange={setSelectedRace}
+                          options={raceOptions}
                         />
                       </div>
                     </Paper>
@@ -638,13 +613,14 @@ const Prediction = ({csvData,topic,score}) => {
                     <Paper 
                       elevation={2} 
                       style={{ 
-                        padding: '16px', 
+                        padding: 16, 
                         height: '400px', 
                         display: 'flex', 
                         flexDirection: 'column', 
                         gridColumn: '1 / 2',
                         transition: 'all 0.3s ease',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        border: '1px solid #e0e0e0'
                       }}
                       sx={{
                         '&:hover': {
@@ -654,7 +630,51 @@ const Prediction = ({csvData,topic,score}) => {
                         }
                       }}
                     >
-                      <div style={{ flex: 1, minHeight: 0 }}>
+                      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                        <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
+                          Age Group Analysis
+                        </Typography>
+                        <Box>
+                          <IconButton 
+                            size="small" 
+                            title="Enlarge Chart"
+                            sx={{
+                              backgroundColor: '#f8f9fa',
+                              border: '1px solid #e3f2fd',
+                              borderRadius: '4px',
+                              marginRight: '6px',
+                              minWidth: '28px',
+                              minHeight: '28px',
+                              '&:hover': {
+                                backgroundColor: '#e3f2fd',
+                                border: '1px solid #bbdefb',
+                                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                              }
+                            }}
+                          >
+                            <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+                          </IconButton>
+                          <IconButton 
+                            size="small" 
+                            title="Download Chart"
+                            sx={{
+                              backgroundColor: '#f8f9fa',
+                              border: '1px solid #e3f2fd',
+                              borderRadius: '4px',
+                              minWidth: '28px',
+                              minHeight: '28px',
+                              '&:hover': {
+                                backgroundColor: '#e3f2fd',
+                                border: '1px solid #bbdefb',
+                                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                              }
+                            }}
+                          >
+                            <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <div style={{ flex: 1, height: '320px' }}>
                         {ageMetrics && <AgeGroupLineChart data={ageMetrics} />}
                       </div>
                     </Paper>

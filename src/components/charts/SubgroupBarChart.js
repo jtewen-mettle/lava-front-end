@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, ResponsiveContainer
 } from 'recharts';
-import { Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
+import { Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem, FormControl, InputLabel, Select, Typography } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
 import { downloadChart as downloadChartUtil } from './ChartDownloadUtils';
 
@@ -33,15 +33,19 @@ function transformSubgroupMetricsData(rawData) {
   return chartData;
 }
 
-const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
+const SubgroupBarChart = ({ rawData, selectedFeature, title, allSubgroupsData, selectedValue, onValueChange, options }) => {
   const [openModal, setOpenModal] = useState(false);
   const [downloadMenuAnchor, setDownloadMenuAnchor] = useState(null);
+  const [enlargedViewFilter, setEnlargedViewFilter] = useState('');
   const chartRef = useRef(null);
 
   if (!rawData || rawData.length === 0) return null;
 
   const chartData = transformSubgroupMetricsData(rawData);
   const subgroups = [...new Set(rawData.map(d => d.Subgroup))];
+  
+  // Use allSubgroupsData to get all possible subgroups for stable color mapping
+  const allSubgroups = allSubgroupsData ? [...new Set(allSubgroupsData.map(d => d.Subgroup))] : subgroups;
 
   const handleEnlargeChart = () => {
     setOpenModal(true);
@@ -103,28 +107,28 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
   };
 
   // Create stable color mapping based on subgroup names instead of array index
-  const createStableColorMapping = (subgroups, selectedFeature) => {
+  const createStableColorMapping = (allSubgroups, selectedFeature) => {
     const colorPalette = colorSchemes[selectedFeature] || colorSchemes.Default;
     const colorMap = {};
 
     if (selectedFeature === 'Gender') {
       // Stable mapping for gender subgroups
       const genderOrder = ['Male', 'Female'];
-      subgroups.forEach(subgroup => {
+      allSubgroups.forEach(subgroup => {
         const index = genderOrder.indexOf(subgroup);
         colorMap[subgroup] = colorPalette[index !== -1 ? index : 0];
       });
     } else if (selectedFeature === 'Race') {
       // Stable mapping for race subgroups - use alphabetical order for consistency
       // This ensures each race gets the same color as in Race/Ethnicity Distribution
-      const allRaces = [...new Set(subgroups)].sort();
-      subgroups.forEach(subgroup => {
+      const allRaces = [...new Set(allSubgroups)].sort();
+      allSubgroups.forEach(subgroup => {
         const index = allRaces.indexOf(subgroup);
         colorMap[subgroup] = colorPalette[index % colorPalette.length];
       });
     } else {
       // Default mapping for other features
-      subgroups.forEach((subgroup, index) => {
+      allSubgroups.forEach((subgroup, index) => {
         colorMap[subgroup] = colorPalette[index % colorPalette.length];
       });
     }
@@ -132,75 +136,121 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
     return colorMap;
   };
 
-  // Get stable color mapping
-  const colorMap = createStableColorMapping(subgroups, selectedFeature);
+  // Get stable color mapping using all possible subgroups, not just filtered ones
+  const colorMap = createStableColorMapping(allSubgroups, selectedFeature);
+  
+  // Create options for the enlarged view dropdown
+  const getFilterOptions = () => {
+    if (selectedFeature === 'Gender') {
+      return ['Male', 'Female'];
+    } else if (selectedFeature === 'Race') {
+      return allSubgroups.sort();
+    }
+    return allSubgroups;
+  };
+  
+  // Filter data for enlarged view based on selected filter
+  const getEnlargedViewData = () => {
+    if (!enlargedViewFilter || !allSubgroupsData) return allSubgroupsData;
+    
+    if (selectedFeature === 'Gender') {
+      return allSubgroupsData.filter(item => 
+        item.Subgroup.toLowerCase() === enlargedViewFilter.toLowerCase()
+      );
+    } else if (selectedFeature === 'Race') {
+      return allSubgroupsData.filter(item => item.Subgroup === enlargedViewFilter);
+    }
+    
+    return allSubgroupsData.filter(item => item.Subgroup === enlargedViewFilter);
+  };
+  
+  const enlargedViewData = getEnlargedViewData();
+  const enlargedChartData = enlargedViewData ? transformSubgroupMetricsData(enlargedViewData) : chartData;
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {title && (
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <h3 style={{ margin: 0, textAlign: 'left', fontSize: '16px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>Subgroup Analysis across {selectedFeature}</h3>
-          <Box display="flex" alignItems="center" gap={2}>
-            {/* Custom Legend */}
-            <Box display="flex" alignItems="center" gap={1}>
-              {subgroups.map((subgroup) => (
-                <Box key={subgroup} display="flex" alignItems="center" gap={0.5}>
-                  <Box
-                    sx={{
-                      width: 12,
-                      height: 12,
-                      backgroundColor: colorMap[subgroup],
-                      borderRadius: '2px'
-                    }}
-                  />
-                  <span style={{ fontSize: '12px', fontWeight: 'bold', fontFamily: 'Arial, sans-serif', color: '#333' }}>
-                    {subgroup.charAt(0).toUpperCase() + subgroup.slice(1)}
-                  </span>
-                </Box>
-              ))}
-            </Box>
-            <Box>
-              <IconButton 
-                size="small" 
-                onClick={handleEnlargeChart}
-                title="Enlarge Chart"
-                sx={{
-                  backgroundColor: '#f8f9fa',
-                  border: '1px solid #e1e8ed',
-                  borderRadius: '4px',
-                  marginRight: '6px',
-                  minWidth: '28px',
-                  minHeight: '28px',
-                  '&:hover': {
-                    backgroundColor: '#e3f2fd',
-                    border: '1px solid #bbdefb',
-                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
-                  }
-                }}
-              >
-                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
-              </IconButton>
-              <IconButton 
-                size="small" 
-                onClick={handleDownloadClick}
-                title="Download Chart"
-                sx={{
-                  backgroundColor: '#f8f9fa',
-                  border: '1px solid #e1e8ed',
-                  borderRadius: '4px',
-                  minWidth: '28px',
-                  minHeight: '28px',
-                  '&:hover': {
-                    backgroundColor: '#e3f2fd',
-                    border: '1px solid #bbdefb',
-                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
-                  }
-                }}
-              >
-                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
-              </IconButton>
-            </Box>
+          <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
+            {title}
+          </Typography>
+          <Box>
+            <IconButton 
+              size="small" 
+              onClick={handleEnlargeChart}
+              title="Enlarge Chart"
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #e3f2fd',
+                borderRadius: '4px',
+                marginRight: '6px',
+                minWidth: '28px',
+                minHeight: '28px',
+                '&:hover': {
+                  backgroundColor: '#e3f2fd',
+                  border: '1px solid #bbdefb',
+                  boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                }
+              }}
+            >
+              <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+            </IconButton>
+            <IconButton 
+              size="small" 
+              onClick={handleDownloadClick}
+              title="Download Chart"
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #e3f2fd',
+                borderRadius: '4px',
+                minWidth: '28px',
+                minHeight: '28px',
+                '&:hover': {
+                  backgroundColor: '#e3f2fd',
+                  border: '1px solid #bbdefb',
+                  boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                }
+              }}
+            >
+              <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+            </IconButton>
           </Box>
+        </Box>
+      )}
+      
+      {title && selectedValue !== undefined && onValueChange && options && (
+        <FormControl sx={{ marginBottom: 2, width:"80%" }}>
+          <InputLabel>{selectedFeature}</InputLabel>
+          <Select
+            value={selectedValue}
+            label={selectedFeature}
+            onChange={e => onValueChange(e.target.value)}
+          >
+            <MenuItem value="">All</MenuItem>
+            {options.map(option => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+      
+      {title && (
+        <Box display="flex" alignItems="center" gap={1} mb={1}>
+          {subgroups.map((subgroup) => (
+            <Box key={subgroup} display="flex" alignItems="center" gap={0.5}>
+              <Box
+                sx={{
+                  width: 12,
+                  height: 12,
+                  backgroundColor: colorMap[subgroup],
+                  borderRadius: '2px'
+                }}
+              />
+              <span style={{ fontSize: '12px', fontWeight: 'bold', fontFamily: 'Arial, sans-serif', color: '#333' }}>
+                {subgroup.charAt(0).toUpperCase() + subgroup.slice(1)}
+              </span>
+            </Box>
+          ))}
         </Box>
       )}
       
@@ -380,7 +430,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
             <Box display="flex" alignItems="center" gap={2}>
               {/* Custom Legend for Modal */}
               <Box display="flex" alignItems="center" gap={1}>
-                {subgroups.map((subgroup) => (
+                {(enlargedViewData ? [...new Set(enlargedViewData.map(item => item.Subgroup))] : subgroups).map((subgroup) => (
                   <Box key={subgroup} display="flex" alignItems="center" gap={0.5}>
                     <Box
                       sx={{
@@ -441,12 +491,28 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
           </Box>
         </DialogTitle>
         <DialogContent sx={{ overflow: 'hidden' }}>
-          <Box style={{ height: '600px', width: '100%', padding: '16px', overflow: 'hidden' }}>
+          <Box sx={{ mb: 2, p: 1 }}>
+            <FormControl size="small" sx={{ minWidth: 200 }}>
+              <InputLabel>{selectedFeature}</InputLabel>
+              <Select
+                value={enlargedViewFilter}
+                label={selectedFeature}
+                onChange={(e) => setEnlargedViewFilter(e.target.value)}
+              >
+                <MenuItem value="">All</MenuItem>
+                {getFilterOptions().map(option => (
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box style={{ height: '600px', width: '100%', padding: '16px', position: 'relative', overflow: 'hidden' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={chartData.map(d => {
+                data={enlargedChartData.map(d => {
                   const updated = { ...d };
-                  subgroups.forEach(sg => {
+                  const enlargedSubgroups = enlargedViewData ? [...new Set(enlargedViewData.map(item => item.Subgroup))] : subgroups;
+                  enlargedSubgroups.forEach(sg => {
                     if (!d.isSeparator && !isNaN(d[sg])) {
                       updated[sg] = d[sg] * 100;
                     }
@@ -516,7 +582,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title }) => {
                   }}
                   labelStyle={{ color: '#fff' }}
                 />
-                {subgroups.map((subgroup) => (
+                {(enlargedViewData ? [...new Set(enlargedViewData.map(item => item.Subgroup))] : subgroups).map((subgroup) => (
                   <Bar
                     key={subgroup}
                     dataKey={subgroup}
