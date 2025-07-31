@@ -5,6 +5,7 @@ import { Chart as ChartJS } from 'chart.js';
 import { ZoomIn, Download, MoreVert } from '@mui/icons-material';
 import CalibrationCurve from './CalibrationCurve';
 import { downloadCanvasChart } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocChart, recalculateMetrics,predictionValue,onPredictionChange, calibrationData }) => {
     const [threshold, setThreshold] = useState(20);
@@ -248,13 +249,13 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
             case 'roc':
                 canvas = rocChartRef.current?.canvas;
                 fileName = 'roc_curve';
-                title = 'ROC Curve';
+                title = 'Prediction Quality (ROC) Curve';
                 tooltipData = {
                     label: 'ROC Analysis',
                     value: `AUC: ${metricsData.auroc ? (metricsData.auroc * 100).toFixed(1) + '%' : 'N/A'}`
                 };
                 legendData = [
-                    { label: 'ROC Curve', color: '#42a5f5' },
+                    { label: 'Prediction Quality (ROC) Curve', color: '#42a5f5' },
                     { label: 'Random Classifier', color: '#ff7c7c' }
                 ];
                 break;
@@ -303,6 +304,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                             {getTitle()} 
                         </Typography>
                         <Box>
+                            <HelpIcon tooltip="Learn more about confusion matrix in the Glossary" section="confusion-matrix" />
                             <IconButton 
                                 size="small" 
                                 onClick={() => handleEnlargeChart(null, getTitle(), 'breakdown')}
@@ -490,6 +492,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Accuracy Over Time</Typography>
                         <Box>
+                            <HelpIcon tooltip="Learn more about accuracy trends in the Glossary" section="accuracy-over-time" />
                             <IconButton 
                                 size="small" 
                                 onClick={() => handleEnlargeChart(extendedChart, 'Accuracy Over Time', 'line')}
@@ -667,6 +670,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Accuracy Metrics</Typography>
                         <Box>
+                            <HelpIcon tooltip="Learn more about accuracy metrics in the Glossary" section="accuracy-metrics-chart" />
                             <IconButton 
                                 size="small" 
                                 onClick={() => handleEnlargeChart(barChartData, 'Accuracy Metrics', 'bar')}
@@ -823,11 +827,12 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                     }}
                 >
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                        <Typography variant="subtitle1" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>ROC Curve</Typography>
+                        <Typography variant="subtitle1" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>Prediction Quality (ROC) Curve</Typography>
                         <Box>
+                            <HelpIcon tooltip="Learn more about ROC curves in the Glossary" section="roc-curve" />
                             <IconButton 
                                 size="small" 
-                                onClick={() => handleEnlargeChart(rocChart, 'ROC Curve', 'line')}
+                                onClick={() => handleEnlargeChart(rocChart, 'Prediction Quality (ROC) Curve', 'line')}
                                 title="Enlarge Chart"
                                 sx={{
                                     backgroundColor: '#f8f9fa',

@@ -26,6 +26,7 @@ import MetricsSection from '../charts/MetricsSection';
 import DistributionCharts from '../charts/DistributionCharts';
 import InfoIcon from '@mui/icons-material/Info';
 import { ZoomIn, Download } from '@mui/icons-material';
+import HelpIcon from '../HelpIcon';
 import MetricsGrid from '../views/MetricsGrid';
 import AgeGroupLineChart from '../charts/AgeGroupLineChart';
 import ModelCardSection from '../charts/ModelCardSection';
@@ -482,7 +483,7 @@ const Prediction = ({csvData,topic,score}) => {
   const rocChart = {
     datasets: [
       {
-        label: `ROC curve (area = ${metricsData?.roc_curve.auc.toFixed(2)})`,
+        label: `Prediction Quality (ROC) curve (area = ${metricsData?.roc_curve.auc.toFixed(2)})`,
         data: metricsData?.roc_curve.fpr.map((fpr, i) => ({
           x: fpr,
           y: metricsData.roc_curve.tpr[i]
@@ -635,6 +636,7 @@ const Prediction = ({csvData,topic,score}) => {
                           Age Group Analysis
                         </Typography>
                         <Box>
+                          <HelpIcon tooltip="Learn more about age group performance analysis in the Glossary" section="age-group-performance" />
                           <IconButton 
                             size="small" 
                             title="Enlarge Chart"

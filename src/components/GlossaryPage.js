@@ -232,9 +232,77 @@ const ChartVisualization = styled(Box)(({ theme }) => ({
   marginBottom: '16px',
 }));
 
-const GlossaryPage = () => {
+const GlossaryPage = ({ initialSection = null }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [expanded, setExpanded] = useState(false);
+
+  // Handle section-specific navigation
+  React.useEffect(() => {
+    if (initialSection === 'scroll-to-top') {
+      // Context-aware navigation - stay on current tab but scroll to top
+      setTimeout(() => {
+        window.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' 
+        });
+      }, 100);
+    } else if (initialSection) {
+      const sectionToTabMap = {
+        // Performance Metrics Tab (1)
+        'roc-curve': { tab: 1, elementId: 'roc-curve-section' },
+        'confusion-matrix': { tab: 1, elementId: 'confusion-matrix-section' },
+        'calibration-curve': { tab: 1, elementId: 'calibration-curve-section' },
+        'accuracy-over-time': { tab: 1, elementId: 'accuracy-over-time-section' },
+        'accuracy-metrics-chart': { tab: 1, elementId: 'accuracy-metrics-section' },
+        
+        // Accuracy Metrics Tab (0) - Individual metrics
+        'precision': { tab: 0, elementId: 'accuracy-metrics-main' },
+        'recall': { tab: 0, elementId: 'accuracy-metrics-main' },
+        'sensitivity': { tab: 0, elementId: 'accuracy-metrics-main' },
+        'specificity': { tab: 0, elementId: 'accuracy-metrics-main' },
+        'f1-score': { tab: 0, elementId: 'accuracy-metrics-main' },
+        'overall-accuracy': { tab: 0, elementId: 'accuracy-metrics-main' },
+        
+        // Subgroup Analysis Tab (2)
+        'subgroup-analysis': { tab: 2, elementId: 'subgroup-analysis-main' },
+        'gender-performance': { tab: 2, elementId: 'gender-performance-section' },
+        'race-performance': { tab: 2, elementId: 'race-performance-section' },
+        'age-group-performance': { tab: 2, elementId: 'age-group-section' },
+        
+        // Data Distribution Tab (3)
+        'data-distribution': { tab: 3, elementId: 'data-distribution-main' },
+        'age-distribution': { tab: 3, elementId: 'age-distribution-section' },
+        'gender-distribution': { tab: 3, elementId: 'gender-distribution-section' },
+        'race-distribution': { tab: 3, elementId: 'race-distribution-section' }
+      };
+      
+      const sectionInfo = sectionToTabMap[initialSection];
+      if (sectionInfo) {
+        setActiveTab(sectionInfo.tab);
+        
+        // Scroll to element after tab change
+        setTimeout(() => {
+          const element = document.getElementById(sectionInfo.elementId);
+          if (element) {
+            element.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            });
+          }
+        }, 100); // Small delay to allow tab content to render
+      }
+    } else {
+      // Fresh navigation from other pages - go to default tab (0) and scroll to top
+      setActiveTab(0);
+      setTimeout(() => {
+        window.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' 
+        });
+      }, 100);
+    }
+  }, [initialSection]);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -510,7 +578,7 @@ const GlossaryPage = () => {
   );
 
   const renderAccuracyMetrics = () => (
-    <Box>
+    <Box id="accuracy-metrics-main">
       <Typography variant="h5" gutterBottom sx={{ 
         fontWeight: 'bold', 
         color: '#275786', 
@@ -558,7 +626,7 @@ const GlossaryPage = () => {
       </Box>
 
              {/* Confusion Matrix Section */}
-       <Box sx={{ mb: 2 }}>
+       <Box id="confusion-matrix-section" sx={{ mb: 2 }}>
          <FieldContainer sx={{ 
            minHeight: 'auto',
            borderLeft: '4px solid #2c5aa0'
@@ -644,7 +712,7 @@ const GlossaryPage = () => {
        </Box>
 
              {/* Accuracy over Time Section */}
-       <Box sx={{ mb: 2 }}>
+       <Box id="accuracy-over-time-section" sx={{ mb: 2 }}>
          <FieldContainer sx={{ 
            minHeight: 'auto',
            borderLeft: '4px solid #2c5aa0'
@@ -729,7 +797,7 @@ const GlossaryPage = () => {
        </Box>
 
              {/* Accuracy Metrics Chart Section */}
-       <Box sx={{ mb: 2 }}>
+       <Box id="accuracy-metrics-section" sx={{ mb: 2 }}>
          <FieldContainer sx={{ 
            minHeight: 'auto',
            borderLeft: '4px solid #2c5aa0'
@@ -814,7 +882,7 @@ const GlossaryPage = () => {
        </Box>
 
       {/* ROC Curve Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="roc-curve-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1007,7 +1075,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Calibration Curve Section */}
-      <Box>
+      <Box id="calibration-curve-section">
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1240,7 +1308,7 @@ const GlossaryPage = () => {
   );
 
   const renderSubgroupAnalysis = () => (
-    <Box>
+    <Box id="subgroup-analysis-main">
       <Typography variant="h5" gutterBottom sx={{ 
         fontWeight: 'bold', 
         color: '#275786', 
@@ -1262,7 +1330,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Gender Performance Analysis Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="gender-performance-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1348,7 +1416,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Race/Ethnicity Performance Analysis Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="race-performance-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1434,7 +1502,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Age Group Performance Analysis Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="age-group-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1522,7 +1590,7 @@ const GlossaryPage = () => {
   );
 
   const renderDataDistribution = () => (
-    <Box>
+    <Box id="data-distribution-main">
       <Typography variant="h5" gutterBottom sx={{ 
         fontWeight: 'bold', 
         color: '#275786', 
@@ -1544,7 +1612,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Age Distribution Chart Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="age-distribution-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1630,7 +1698,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Gender Distribution Chart Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="gender-distribution-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'
@@ -1716,7 +1784,7 @@ const GlossaryPage = () => {
       </Box>
 
       {/* Race/Ethnicity Distribution Chart Section */}
-      <Box sx={{ mb: 2 }}>
+      <Box id="race-distribution-section" sx={{ mb: 2 }}>
         <FieldContainer sx={{ 
           minHeight: 'auto',
           borderLeft: '4px solid #2c5aa0'

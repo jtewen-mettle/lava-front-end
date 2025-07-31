@@ -12,7 +12,7 @@ import ProstateCancerPrediction from './topics/ProstateCancerPrediciton';
 
 const Lava = () => {
   //const [selection, setSelection] = useState(null);
-  const {activePage, setActivePage,selection,setSelection} = useAppContext();
+  const {activePage, setActivePage, selection, setSelection, glossarySection, navigateToGlossaryHome} = useAppContext();
   const [ready, setReady] = useState(false);
 
 
@@ -59,7 +59,7 @@ const Lava = () => {
         renderTopicComponent()
       );
     } else if (activePage === 'Glossary') {
-      return <GlossaryPage />;
+      return <GlossaryPage initialSection={glossarySection} />;
     }
   };
 
@@ -205,7 +205,7 @@ const Lava = () => {
                   transform: 'translateY(-1px)'
                 }
               }}
-              onClick={() => setActivePage('Glossary')}
+              onClick={() => navigateToGlossaryHome(activePage)}
             >
               Glossary
             </Button>

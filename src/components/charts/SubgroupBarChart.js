@@ -5,6 +5,7 @@ import {
 import { Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem, FormControl, InputLabel, Select, Typography } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
 import { downloadChart as downloadChartUtil } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 function transformSubgroupMetricsData(rawData) {
   console.log(rawData);
@@ -175,6 +176,15 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title, allSubgroupsData, s
             {title}
           </Typography>
           <Box>
+            <HelpIcon 
+              tooltip="Learn more about subgroup analysis in the Glossary" 
+              section={
+                title && title.toLowerCase().includes('gender') ? 'gender-performance' :
+                title && title.toLowerCase().includes('race') ? 'race-performance' :
+                title && title.toLowerCase().includes('age') ? 'age-group-performance' :
+                'subgroup-analysis'
+              } 
+            />
             <IconButton 
               size="small" 
               onClick={handleEnlargeChart}

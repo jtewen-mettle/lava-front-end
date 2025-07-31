@@ -4,6 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Box, Paper, Typography, Switch, FormControlLabel, Tooltip as MUITooltip, IconButton, Dialog, DialogTitle, DialogContent, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
 import { downloadCanvasChart } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -289,6 +290,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
           {title}
         </Typography>
         <Box>
+          <HelpIcon tooltip="Learn more about calibration curves in the Glossary" section="calibration-curve" />
           <IconButton 
             size="small" 
             onClick={handleEnlargeChart}

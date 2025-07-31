@@ -5,6 +5,7 @@ import { Box, Grid, Paper, Typography, IconButton, Dialog, DialogTitle, DialogCo
 import { ZoomIn, Download } from '@mui/icons-material';
 import DistributionPieChart from './DistributionPieChart';
 import { downloadCanvasChart } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -182,6 +183,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
               Age Distribution
             </Typography>
             <Box>
+              <HelpIcon tooltip="Learn more about age distribution in the Glossary" section="age-distribution" />
               <IconButton 
                 size="small" 
                 onClick={() => handleEnlargeChart(ageData, 'Age Distribution', 'bar')}
@@ -352,6 +354,7 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
               Race/Ethnicity Distribution
             </Typography>
             <Box>
+              <HelpIcon tooltip="Learn more about race/ethnicity distribution in the Glossary" section="race-distribution" />
               <IconButton 
                 size="small" 
                 onClick={() => handleEnlargeChart(raceData, 'Race/Ethnicity Distribution', 'bar')}

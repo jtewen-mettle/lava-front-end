@@ -10,9 +10,11 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
+import { useAppContext } from '../../context/AppContext';
 
 const MetricsGrid = ({ metrics }) => {
   const colors = ['#f9f9f9', '#f0f4f8'];
+  const { navigateToGlossary } = useAppContext();
 
   return (
     <div style={{ 
@@ -72,11 +74,31 @@ const MetricsGrid = ({ metrics }) => {
                     <span color="white" style={{ fontStyle: 'italic' }}>
                       {metric.formula}
                     </span>
+                    <br />
+                    <span style={{ fontSize: '0.85em', color: '#e0e0e0' }}>
+                      Click for more details
+                    </span>
                   </>
                 }
                 arrow
               >
-                <IconButton size="small">
+                <IconButton 
+                  size="small" 
+                  onClick={() => {
+                    // Map metric labels to section names
+                    const metricSectionMap = {
+                      'Overall Accuracy': 'overall-accuracy',
+                      'Positive Predictive Value': 'precision',
+                      'Precision': 'precision',
+                      'Sensitivity': 'sensitivity',
+                      'Recall': 'recall',
+                      'Specificity': 'specificity',
+                      'F1 Score': 'f1-score'
+                    };
+                    const section = metricSectionMap[metric.label] || 'precision';
+                    navigateToGlossary(section);
+                  }}
+                >
                   <InfoIcon fontSize="small" color="primary" />
                 </IconButton>
               </Tooltip>

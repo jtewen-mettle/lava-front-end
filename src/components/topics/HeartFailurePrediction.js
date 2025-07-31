@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Grid, Typography, Card, CardContent, Tabs, Tab, Button } from '@mui/material';
 import { Line, Bar } from 'react-chartjs-2';
+import HelpIcon from '../HelpIcon';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -142,7 +143,7 @@ const HeartFailurePrediction = (props) => {
     labels: metricsData?.roc_curve.fpr || [],
     datasets: [
       {
-        label: `ROC curve (area = ${metricsData?.roc_curve.auc.toFixed(2)})`,
+        label: `Prediction Quality (ROC) curve (area = ${metricsData?.roc_curve.auc.toFixed(2)})`,
         data: metricsData?.roc_curve.tpr || [],
         borderColor: 'blue',
         fill: false
@@ -189,7 +190,10 @@ const HeartFailurePrediction = (props) => {
               <Box mt={4}>
                 <Grid container spacing={4} maxWidth="xl">
                   <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Admission Decision Breakdown</Typography>
+                    <Box display="flex" alignItems="center" gap={1} mb={1}>
+                      <Typography variant="subtitle1">Admission Decision Breakdown</Typography>
+                      <HelpIcon tooltip="Learn more about prediction breakdowns in the Glossary" section="subgroup-analysis" />
+                    </Box>
                     <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mt={2}>
                       <Box bgcolor="#e0f2f1" p={2} borderRadius={2} textAlign="center">
                         <Typography variant="h6">{metricsData.confusion_matrix.true_positive} ({metricsData.confusion_matrix.true_positive_rate}%)</Typography>
@@ -211,7 +215,10 @@ const HeartFailurePrediction = (props) => {
                   </Grid>
 
                   <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Accuracy Over Time</Typography>
+                    <Box display="flex" alignItems="center" gap={1} mb={1}>
+                      <Typography variant="subtitle1">Accuracy Over Time</Typography>
+                      <HelpIcon tooltip="Learn more about accuracy trends in the Glossary" section="accuracy-metrics" />
+                    </Box>
                     <Line data={accuracyChart} />
                   </Grid>
                 </Grid>
@@ -219,11 +226,17 @@ const HeartFailurePrediction = (props) => {
                 <Box mt={4}>
                   <Grid container spacing={4} maxWidth="xl">
                     <Grid item xs={12} md={6}>
-                      <Typography variant="subtitle1">Accuracy Metrics</Typography>
+                      <Box display="flex" alignItems="center" gap={1} mb={1}>
+                        <Typography variant="subtitle1">Accuracy Metrics</Typography>
+                        <HelpIcon tooltip="Learn more about accuracy metrics in the Glossary" section="accuracy-metrics" />
+                      </Box>
                       <Bar data={barChartData} options={{ responsive: true, plugins: { legend: { display: false } }, scales: { y: { min: 0, max: 1 } } }} />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <Typography variant="subtitle1">ROC Curve</Typography>
+                      <Box display="flex" alignItems="center" gap={1} mb={1}>
+                        <Typography variant="subtitle1">Prediction Quality (ROC) Curve</Typography>
+                        <HelpIcon tooltip="Learn more about ROC curves in the Glossary" section="roc-curve" />
+                      </Box>
                       <Line data={rocChart} options={{ responsive: true, scales: { x: { min: 0, max: 1 }, y: { min: 0, max: 1 } } }} />
                     </Grid>
                   </Grid>

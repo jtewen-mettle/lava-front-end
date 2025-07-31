@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 import { Paper, Typography, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
 import { ZoomIn, Download } from '@mui/icons-material';
 import { downloadChart as downloadChartUtil } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 const GENDER_COLORS = ['rgb(130, 202, 157)', 'rgb(136, 132, 216)']; // Female: green, Male: purple-blue
 
@@ -159,6 +160,7 @@ const DistributionPieChart = ({ title, data }) => {
                     {title}
                 </Typography>
                 <Box>
+                    <HelpIcon tooltip="Learn more about gender distribution in the Glossary" section="gender-distribution" />
                     <IconButton 
                         size="small" 
                         onClick={handleEnlargeChart}
