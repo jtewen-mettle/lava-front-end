@@ -12,7 +12,7 @@ function transformSubgroupMetricsData(rawData) {
   const metrics = Object.keys(rawData[0]).filter(key => key !== 'Subgroup' && !excludeMetrics.includes(key));
 
   const groupedMetrics = [
-    { group: 'Performance Metrics', metrics: ['Accuracy', 'Recall', 'Precision', 'F1 Score','AUROC'] },
+    { group: 'Performance Metrics', metrics: ['Accuracy', 'Sensitivity', 'Postive Predictive Value', 'F1 Score','AUROC'] },
     { group: 'Rate Metrics', metrics: ['True Positive Rate', 'False Positive Rate', 'True Negative Rate', 'False Negative Rate'] },
   ];
 

@@ -46,7 +46,7 @@ const SelectionPage = ({ onSubmit }) => {
         minHeight: '60vh',
         backgroundColor: 'transparent',
         mx: 'auto',
-        maxWidth: '1600px',
+        maxWidth: '1400px',
         px: { xs: 2, sm: 3, md: 3 },
         py: { xs: 2, sm: 3, md: 4 }
       }}

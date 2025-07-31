@@ -398,7 +398,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "Correct predictions",
     },
     {
-      label: 'Prediction Reliability (Postive Predictive Value)',
+      label: 'Postive Predictive Value (Precision)',
       field: 'alert_reliability',
       format: (v) => `${(v * 100).toFixed(1)}%`,
       tooltip: 'When the model predicts "yes", how often is it actually correct?',
@@ -406,7 +406,7 @@ const Prediction = ({csvData,topic,score}) => {
       info: "% of predictive positives that are correct",
     },
     {
-      label: 'Prediction Detection Rate (Sensitivity)',
+      label: 'Sensitivity (Recall)',
       field: 'need_detection_rate',
       format: (v) => `${(v * 100).toFixed(1)}%`,
       tooltip: 'How well the model identifies all actual "yes" cases.',
@@ -463,7 +463,7 @@ const Prediction = ({csvData,topic,score}) => {
   };
 
   const barChartData = {
-    labels: ['Accuracy', 'Precision', 'Recall', 'F1 Score', 'Brier Score'],
+                labels: ['Accuracy', 'PPV', 'Sensitivity', 'F1 Score', 'Brier Score'],
     datasets: [
       {
         label: 'Score',
@@ -500,7 +500,7 @@ const Prediction = ({csvData,topic,score}) => {
         sx={{ 
           p: { xs: 2, sm: 3, md: 3 }, 
           mx: 'auto',
-          maxWidth: '1600px',
+          maxWidth: '1400px',
           width: '100%',
           boxSizing: 'border-box',
           display: 'flex',

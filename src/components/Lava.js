@@ -4,6 +4,7 @@ import SelectionPage from './SelectionPage';
 import CKDPrediction from './topics/CKDPrediction';
 import HospitalizationRiskPrediction from './topics/HospitalizationRiskPrediction';
 import CardioVascularPrediction from './topics/CardioVascularPrediction';
+import GlossaryPage from './GlossaryPage';
 import * as tf from '@tensorflow/tfjs';
 import * as sk from 'scikitjs';
 import { useAppContext } from '../context/AppContext';
@@ -57,15 +58,8 @@ const Lava = () => {
       ) : (
         renderTopicComponent()
       );
-    } else if (activePage === 'Settings') {
-      return <div style={{ 
-        position: 'static',
-        right: '50%',
-        justifyContent: 'center', 
-        height: '100vh',
-        fontSize: '24px',
-        fontWeight: 'bold',
-      }}> Settings Page Coming Soon...</div>;
+    } else if (activePage === 'Glossary') {
+      return <GlossaryPage />;
     }
   };
 
@@ -93,7 +87,7 @@ const Lava = () => {
       >
         <Box 
           sx={{ 
-            maxWidth: '1600px',
+            maxWidth: '1400px',
             width: '100%',
             margin: '0 auto',
             px: { xs: 2, sm: 3, md: 3 },
@@ -193,7 +187,7 @@ const Lava = () => {
             <Button
               color="inherit"
               sx={{
-                backgroundColor: activePage === 'Settings' ? '#1164ad' : 'transparent', 
+                backgroundColor: activePage === 'Glossary' ? '#1164ad' : 'transparent', 
                 color: '#fff',
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 'bold',
@@ -202,18 +196,18 @@ const Lava = () => {
                 padding: { xs: '6px 12px', sm: '8px 16px', md: '8px 24px' },
                 fontSize: { xs: '0.8rem', sm: '0.875rem', md: '0.875rem' },
                 minWidth: { xs: 'auto', sm: 'auto', md: 'auto' },
-                border: activePage === 'Settings' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
-                boxShadow: activePage === 'Settings' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
+                border: activePage === 'Glossary' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: activePage === 'Glossary' ? '0 2px 8px rgba(0, 0, 0, 0.2)' : 'none',
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  backgroundColor: activePage === 'Settings' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
+                  backgroundColor: activePage === 'Glossary' ? '#1164ad' : 'rgba(255, 255, 255, 0.1)',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                   transform: 'translateY(-1px)'
                 }
               }}
-              onClick={() => setActivePage('Settings')}
+              onClick={() => setActivePage('Glossary')}
             >
-              Settings
+              Glossary
             </Button>
           </Box>
         </Box>

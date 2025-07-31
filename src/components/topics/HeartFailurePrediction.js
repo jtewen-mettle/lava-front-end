@@ -122,7 +122,7 @@ const HeartFailurePrediction = (props) => {
   };
 
   const barChartData = {
-    labels: ['Accuracy', 'Precision', 'Recall', 'F1 Score', 'Brier Score'],
+            labels: ['Accuracy', 'Postive Predictive Value', 'Sensitivity', 'F1 Score', 'Brier Score'],
     datasets: [
       {
         label: 'Score',
