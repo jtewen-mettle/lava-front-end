@@ -575,8 +575,38 @@ const GlossaryPage = () => {
               {/* Overview Text */}
               <Box sx={{ mb: 2 }}>
                 <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  The confusion matrix breaks down all model predictions into four categories. Understanding these helps evaluate how well the Lava ML models perform for CKD, cardiovascular, prostate cancer, and hospitalization risk predictions.
+                  A visual breakdown of model prediction results showing the four prediction categories: correct positive predictions, correct negative predictions, false alarms, and missed cases.
                 </Typography>
+              </Box>
+              
+              {/* What You See */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  What you see:
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  A 2x2 grid showing four prediction outcomes. Correct predictions (True Positives and True Negatives) appear in green, while incorrect predictions (False Positives and False Negatives) appear in red. Each section displays both the count and percentage of predictions.
+                </Typography>
+              </Box>
+              
+              {/* Purpose */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  Why it matters:
+                </Typography>
+                <InfoSection bgColor="#f0f8ff">
+                  This matrix helps you understand where the model succeeds and fails. A good model should have large green sections (correct predictions) and small red sections (errors). The balance between different types of errors helps determine if the model is suitable for clinical use.
+                </InfoSection>
+              </Box>
+              
+              {/* Clinical Value */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  ✅ How to interpret:
+                </Typography>
+                <InfoSection bgColor="#d4edda">
+                  Healthcare administrators can quickly assess model reliability by seeing the balance between correct predictions and errors. If false negatives are high, the model might miss patients who need care. If false positives are high, the model might create unnecessary alerts and workload.
+                </InfoSection>
               </Box>
               
               {/* Four Confusion Matrix Term Cards */}
@@ -601,69 +631,41 @@ const GlossaryPage = () => {
                 </SubHeading>
               </Box>
               
-              {/* What is Accuracy over Time */}
+              {/* What You See */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">What is an Accuracy over Time Chart?</SubHeading>
                 <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  An <strong>Accuracy over Time chart</strong> shows how your model's performance metrics change across different time periods. This helps identify if model performance is stable, improving, or degrading over time.
+                  A line chart tracking model performance over time, comparing the vendor's claimed accuracy against the actual performance measured in your healthcare environment.
                 </Typography>
-                
-                <InfoSection bgColor="#fff3cd">
-                  <strong>Key insight:</strong> Models can become less accurate over time due to data drift, changing patient populations, or evolving medical practices. Regular monitoring is essential.
+              </Box>
+              
+              {/* Chart Components */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  What you see:
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  Two lines showing performance trends over several months. One line shows the vendor's claimed accuracy, while the other shows the actual measured accuracy in your patient population. A threshold line helps you see if performance meets your clinical requirements.
+                </Typography>
+              </Box>
+
+              {/* Purpose */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  Why it matters:
+                </Typography>
+                <InfoSection bgColor="#f0f8ff">
+                  Model performance can change over time as patient populations shift or clinical practices evolve. This chart helps you monitor whether the model maintains its effectiveness and alerts you to performance degradation that might require recalibration or replacement.
                 </InfoSection>
               </Box>
 
-              {/* How to Read */}
+              {/* Clinical Value */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">How to Read the Time Chart</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  The chart typically displays:
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  ✅ How to interpret:
                 </Typography>
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>X-axis (Time Period):</strong> Dates, months, or prediction batches
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Y-axis (Performance Score):</strong> Accuracy, AUROC, or other metrics as percentages
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Trend Lines:</strong> Show whether performance is stable, declining, or improving
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* Performance Patterns */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Common Performance Patterns</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Stable Performance: Flat line indicates consistent model reliability over time",
-                    "Gradual Decline: Downward trend suggests data drift or changing patient characteristics",
-                    "Sudden Drop: Sharp decline may indicate data quality issues or system changes",
-                    "Seasonal Patterns: Regular fluctuations may reflect cyclical health trends"
-                  ].map((pattern, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {pattern}
-                    </Typography>
-                  ))}
-                </Box>
-              </Box>
-
-              {/* Key Takeaways */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Key Takeaways</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Monitor trends, not just individual data points",
-                    "Investigate sudden performance drops immediately",
-                    "Expect some natural variation in performance metrics",
-                    "Use time charts to plan model retraining schedules"
-                  ].map((point, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {point}
-                    </Typography>
-                  ))}
-                </Box>
+                <InfoSection bgColor="#d4edda">
+                  Look for gaps between claimed and measured accuracy. Large gaps may indicate the model doesn't perform as expected in your specific environment. Declining trends suggest the model may need updating or retraining. Consistent performance above your threshold indicates reliable clinical support.
+                </InfoSection>
               </Box>
             </Box>
           </FieldValue>
@@ -685,64 +687,41 @@ const GlossaryPage = () => {
                 </SubHeading>
               </Box>
               
-              {/* What is Accuracy Metrics Chart */}
+              {/* What You See */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">What is an Accuracy Metrics Chart?</SubHeading>
                 <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  An <strong>Accuracy Metrics Chart</strong> provides a visual comparison of different performance metrics (Accuracy, Precision, Recall, F1-Score, AUROC) in a single view. This helps you quickly assess overall model performance.
+                  A bar chart displaying five key performance metrics that provide a comprehensive view of how well the model performs across different evaluation criteria.
                 </Typography>
-                
-                <InfoSection bgColor="#e8f4f8">
-                  <strong>Purpose:</strong> Shows how well-balanced your model is across different evaluation criteria, helping identify strengths and weaknesses.
+              </Box>
+              
+              {/* Metrics Display */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  What you see:
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  Five vertical bars showing Accuracy, PPV (Positive Predictive Value), Sensitivity, F1 Score, and Brier Score. Each bar's height represents how well the model performs on that specific metric, with higher bars generally indicating better performance.
+                </Typography>
+              </Box>
+
+              {/* Purpose */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  Why it matters:
+                </Typography>
+                <InfoSection bgColor="#f0f8ff">
+                  Different metrics reveal different aspects of model performance. Together, they help you understand not just if the model is accurate overall, but whether it's reliable for your specific clinical needs and patient population.
                 </InfoSection>
               </Box>
 
-              {/* Chart Types */}
+              {/* Clinical Decision Support */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Common Chart Types</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  Accuracy metrics can be displayed as:
+                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                  ✅ How to interpret:
                 </Typography>
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Bar Charts:</strong> Side-by-side comparison of different metrics
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Radar/Spider Charts:</strong> Multi-dimensional view showing metric balance
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Gauge Charts:</strong> Individual metrics displayed as performance dials
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* How to Interpret */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">How to Interpret the Charts</SubHeading>
                 <InfoSection bgColor="#d4edda">
-                  <strong>✅ Good Performance:</strong> All metrics above 70%, with balanced scores across Precision and Recall (no extreme differences >20%)
+                  Look for balanced performance across metrics. High accuracy with low sensitivity might miss critical cases, while high sensitivity with low PPV might create too many false alarms. The F1 Score helps you see overall balance, while Brier Score indicates prediction confidence quality.
                 </InfoSection>
-                
-                <InfoSection bgColor="#f8d7da">
-                  <strong>⚠️ Concerning Patterns:</strong> One metric much lower than others, or overall scores below 60% indicating poor model performance
-                </InfoSection>
-              </Box>
-
-              {/* Practical Tips */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Practical Tips</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Look for balanced performance across all metrics, not just high accuracy",
-                    "Pay attention to Precision vs Recall trade-offs for your specific medical use case",
-                    "AUROC values above 0.8 generally indicate good discriminative ability",
-                    "F1-Score provides a good overall balance between Precision and Recall"
-                  ].map((tip, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {tip}
-                    </Typography>
-                  ))}
-                </Box>
               </Box>
             </Box>
           </FieldValue>
@@ -766,30 +745,42 @@ const GlossaryPage = () => {
               
               {/* What is ROC Curve */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">What is a Prediction Quality (ROC) Curve?</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  A <strong>Prediction Quality Curve</strong> (ROC - Receiver Operating Characteristic) is a graph that shows how well a classification model performs.
-                </Typography>
+                <FieldContainer sx={{ minHeight: 'auto', padding: '12px 18px' }}>
+                  <FieldValue>
+                    <Box>
+                      <SubHeading component="h6">What is a Prediction Quality (ROC) Curve?</SubHeading>
+                      <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                        A <strong>Prediction Quality Curve</strong> (ROC - Receiver Operating Characteristic) is a graph that shows how well a classification model performs.
+                      </Typography>
+                    </Box>
+                  </FieldValue>
+                </FieldContainer>
               </Box>
 
               {/* How to Read */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">How to Read a Prediction Quality Curve</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  The prediction quality curve plots two important rates:
-                </Typography>
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Y-axis (True Positive Rate):</strong> How good is the model at catching the "yes" cases? (Higher is better)
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>X-axis (False Positive Rate):</strong> How often does the model incorrectly say "yes"? (Lower is better)
-                  </Typography>
-                </Box>
-                
-                <InfoSection bgColor="#fff3cd">
-                  <strong>The ideal model</strong> would catch all the "yes" cases (high true positive rate) while rarely making false alarms (low false positive rate).
-                </InfoSection>
+                <FieldContainer sx={{ minHeight: 'auto', padding: '12px 18px' }}>
+                  <FieldValue>
+                    <Box>
+                      <SubHeading component="h6">How to Read a Prediction Quality Curve</SubHeading>
+                      <Typography variant="body2" sx={{ fontSize: '16px', mb: 2, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                        The prediction quality curve plots two important rates:
+                      </Typography>
+                      <Box sx={{ ml: 2, mb: 2 }}>
+                        <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                          • <strong>Y-axis (True Positive Rate):</strong> How good is the model at catching the "yes" cases? (Higher is better)
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                          • <strong>X-axis (False Positive Rate):</strong> How often does the model incorrectly say "yes"? (Lower is better)
+                        </Typography>
+                      </Box>
+                      
+                      <InfoSection bgColor="#fff3cd">
+                        <strong>The ideal model</strong> would catch all the "yes" cases (high true positive rate) while rarely making false alarms (low false positive rate).
+                      </InfoSection>
+                    </Box>
+                  </FieldValue>
+                </FieldContainer>
               </Box>
 
               {/* Comparing Different Model Performance */}
@@ -908,20 +899,26 @@ const GlossaryPage = () => {
 
               {/* Key Takeaways */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Key Takeaways</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Area Under Curve (AUC): Single number summarizing performance (0 to 1)",
-                    "Perfect model: AUC = 1.0 (curve goes to top-left corner)",
-                    "Useless model: AUC = 0.5 (diagonal line = random guessing)",
-                    "Good models: AUC > 0.7 (curve bends toward top-left)",
-                    "The closer to the top-left corner, the better the model"
-                  ].map((point, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {point}
-                    </Typography>
-                  ))}
-                </Box>
+                <FieldContainer sx={{ minHeight: 'auto', padding: '12px 18px' }}>
+                  <FieldValue>
+                    <Box>
+                      <SubHeading component="h6">Key Takeaways</SubHeading>
+                      <Box sx={{ ml: 2 }}>
+                        {[
+                          "Area Under Curve (AUC): Single number summarizing performance (0 to 1)",
+                          "Perfect model: AUC = 1.0 (curve goes to top-left corner)",
+                          "Useless model: AUC = 0.5 (diagonal line = random guessing)",
+                          "Good models: AUC > 0.7 (curve bends toward top-left)",
+                          "The closer to the top-left corner, the better the model"
+                        ].map((point, index) => (
+                          <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                            • {point}
+                          </Typography>
+                        ))}
+                      </Box>
+                    </Box>
+                  </FieldValue>
+                </FieldContainer>
               </Box>
               </Box>
             </FieldValue>
@@ -945,33 +942,45 @@ const GlossaryPage = () => {
               
               {/* What is Calibration Curve */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">What is a Calibration Curve?</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  A <strong>calibration curve</strong> shows whether your model's confidence scores match reality. When a model says "I'm 80% confident a patient will develop a certain condition," a well-calibrated model should be right about 80% of the time.
-                </Typography>
-                
-                <InfoSection bgColor="#fff3cd">
-                  <strong>Key insight:</strong> A model can have high accuracy Prediction Quality (ROC) but poor calibration. Calibration tells you if you can trust the confidence scores, not just the final predictions.
-                </InfoSection>
+                <FieldContainer sx={{ minHeight: 'auto', padding: '12px 18px' }}>
+                  <FieldValue>
+                    <Box>
+                      <SubHeading component="h6">What is a Calibration Curve?</SubHeading>
+                      <Typography variant="body2" sx={{ fontSize: '16px', mb: 2, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                        A <strong>calibration curve</strong> shows whether your model's confidence scores match reality. When a model says "I'm 80% confident a patient will develop a certain condition," a well-calibrated model should be right about 80% of the time.
+                      </Typography>
+                      
+                      <InfoSection bgColor="#fff3cd">
+                        <strong>Key insight:</strong> A model can have high accuracy Prediction Quality (ROC) but poor calibration. Calibration tells you if you can trust the confidence scores, not just the final predictions.
+                      </InfoSection>
+                    </Box>
+                  </FieldValue>
+                </FieldContainer>
               </Box>
 
               {/* How to Read */}
               <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">How to Read a Calibration Curve</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  The calibration curve plots:
-                </Typography>
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>X-axis (Mean Predicted Probability):</strong> What the model says the probability is
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Y-axis (Fraction of Positives):</strong> What actually happens in reality
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Diagonal line:</strong> Perfect calibration (predictions match reality)
-                  </Typography>
-                </Box>
+                <FieldContainer sx={{ minHeight: 'auto', padding: '12px 18px' }}>
+                  <FieldValue>
+                    <Box>
+                      <SubHeading component="h6">How to Read a Calibration Curve</SubHeading>
+                      <Typography variant="body2" sx={{ fontSize: '16px', mb: 2, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                        The calibration curve plots:
+                      </Typography>
+                      <Box sx={{ ml: 2 }}>
+                        <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                          • <strong>X-axis (Mean Predicted Probability):</strong> What the model says the probability is
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                          • <strong>Y-axis (Fraction of Positives):</strong> What actually happens in reality
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                          • <strong>Diagonal line:</strong> Perfect calibration (predictions match reality)
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </FieldValue>
+                </FieldContainer>
               </Box>
 
               {/* Types of Calibration Performance */}
@@ -1121,189 +1130,33 @@ const GlossaryPage = () => {
                   </Box>
                 </Box>
 
-              {/* Key Takeaways */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Key Takeaways</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Perfect calibration: Curve follows the diagonal line exactly",
-                    "Over-confident: Curve below diagonal (model overestimates probabilities)",
-                    "Under-confident: Curve above diagonal (model underestimates probabilities)",
-                    "Calibration matters when you need to trust the probability scores, not just the final decision"
-                  ].map((point, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {point}
-                    </Typography>
-                  ))}
-                </Box>
-              </Box>
+                             {/* Key Takeaways */}
+               <Box sx={{ mb: 2 }}>
+                 <FieldContainer sx={{ minHeight: 'auto', padding: '12px 18px' }}>
+                   <FieldValue>
+                     <Box>
+                       <SubHeading component="h6">Key Takeaways</SubHeading>
+                       <Box sx={{ ml: 2 }}>
+                         {[
+                           "Perfect calibration: Curve follows the diagonal line exactly",
+                           "Over-confident: Curve below diagonal (model overestimates probabilities)",
+                           "Under-confident: Curve above diagonal (model underestimates probabilities)",
+                           "Calibration matters when you need to trust the probability scores, not just the final decision"
+                         ].map((point, index) => (
+                           <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                             • {point}
+                           </Typography>
+                         ))}
+                       </Box>
+                     </Box>
+                   </FieldValue>
+                 </FieldContainer>
+               </Box>
               </Box>
             </FieldValue>
           </FieldContainer>
       </Box>
 
-      {/* Accuracy over Time Section */}
-      <Box sx={{ mb: 2 }}>
-        <FieldContainer sx={{ 
-          minHeight: 'auto',
-          borderLeft: '4px solid #2c5aa0'
-        }}>
-          <FieldValue>
-            <Box>
-              {/* Main Heading */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
-                  Understanding Accuracy over Time Charts
-                </SubHeading>
-              </Box>
-              
-              {/* What is Accuracy over Time */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">What is an Accuracy over Time Chart?</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  An <strong>Accuracy over Time chart</strong> shows how your model's performance metrics change across different time periods. This helps identify if model performance is stable, improving, or degrading over time.
-                </Typography>
-                
-                <InfoSection bgColor="#fff3cd">
-                  <strong>Key insight:</strong> Models can become less accurate over time due to data drift, changing patient populations, or evolving medical practices. Regular monitoring is essential.
-                </InfoSection>
-              </Box>
-
-              {/* How to Read */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">How to Read the Time Chart</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  The chart typically displays:
-                </Typography>
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>X-axis (Time Period):</strong> Dates, months, or prediction batches
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Y-axis (Performance Score):</strong> Accuracy, AUROC, or other metrics as percentages
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Trend Lines:</strong> Show whether performance is stable, declining, or improving
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* Performance Patterns */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Common Performance Patterns</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Stable Performance: Flat line indicates consistent model reliability over time",
-                    "Gradual Decline: Downward trend suggests data drift or changing patient characteristics",
-                    "Sudden Drop: Sharp decline may indicate data quality issues or system changes",
-                    "Seasonal Patterns: Regular fluctuations may reflect cyclical health trends"
-                  ].map((pattern, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {pattern}
-                    </Typography>
-                  ))}
-                </Box>
-              </Box>
-
-              {/* Key Takeaways */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Key Takeaways</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Monitor trends, not just individual data points",
-                    "Investigate sudden performance drops immediately",
-                    "Expect some natural variation in performance metrics",
-                    "Use time charts to plan model retraining schedules"
-                  ].map((point, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {point}
-                    </Typography>
-                  ))}
-                </Box>
-              </Box>
-            </Box>
-          </FieldValue>
-        </FieldContainer>
-      </Box>
-
-      {/* Accuracy Metrics Chart Section */}
-      <Box>
-        <FieldContainer sx={{ 
-          minHeight: 'auto',
-          borderLeft: '4px solid #2c5aa0'
-        }}>
-          <FieldValue>
-            <Box>
-              {/* Main Heading */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
-                  Understanding Accuracy Metrics Charts
-                </SubHeading>
-              </Box>
-              
-              {/* What is Accuracy Metrics Chart */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">What is an Accuracy Metrics Chart?</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  An <strong>Accuracy Metrics Chart</strong> provides a visual comparison of different performance metrics (Accuracy, Precision, Recall, F1-Score, AUROC) in a single view. This helps you quickly assess overall model performance.
-                </Typography>
-                
-                <InfoSection bgColor="#e8f4f8">
-                  <strong>Purpose:</strong> Shows how well-balanced your model is across different evaluation criteria, helping identify strengths and weaknesses.
-                </InfoSection>
-              </Box>
-
-              {/* Chart Types */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Common Chart Types</SubHeading>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                  Accuracy metrics can be displayed as:
-                </Typography>
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Bar Charts:</strong> Side-by-side comparison of different metrics
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Radar/Spider Charts:</strong> Multi-dimensional view showing metric balance
-                  </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                    • <strong>Gauge Charts:</strong> Individual metrics displayed as performance dials
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* How to Interpret */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">How to Interpret the Charts</SubHeading>
-                <InfoSection bgColor="#d4edda">
-                  <strong>✅ Good Performance:</strong> All metrics above 70%, with balanced scores across Precision and Recall (no extreme differences >20%)
-                </InfoSection>
-                
-                <InfoSection bgColor="#f8d7da">
-                  <strong>⚠️ Concerning Patterns:</strong> One metric much lower than others, or overall scores below 60% indicating poor model performance
-                </InfoSection>
-              </Box>
-
-              {/* Practical Tips */}
-              <Box sx={{ mb: 2 }}>
-                <SubHeading component="h6">Practical Tips</SubHeading>
-                <Box sx={{ ml: 2 }}>
-                  {[
-                    "Look for balanced performance across all metrics, not just high accuracy",
-                    "Pay attention to Precision vs Recall trade-offs for your specific medical use case",
-                    "AUROC values above 0.8 generally indicate good discriminative ability",
-                    "F1-Score provides a good overall balance between Precision and Recall"
-                  ].map((tip, index) => (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
-                      • {tip}
-                    </Typography>
-                  ))}
-                </Box>
-              </Box>
-            </Box>
-          </FieldValue>
-        </FieldContainer>
-      </Box>
     </Box>
   );
 
