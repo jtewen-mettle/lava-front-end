@@ -86,7 +86,7 @@ const StyledTab = styled(Tab)(({ theme }) => ({
 // Model Card styled components - exact match
 const FieldContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
-  padding: '18px',
+  padding: '24px',
   borderRadius: '8px',
   border: '1px solid #e1e8ed',
   transition: 'all 0.3s ease',
@@ -105,19 +105,19 @@ const FieldContainer = styled('div')(({ theme }) => ({
 
 const FieldLabel = styled('span')(({ theme }) => ({
   fontWeight: 600,
-  color: '#2c3e50',
-  marginBottom: '8px',
+  color: '#275786',
+  marginBottom: '12px',
   display: 'block',
-  fontSize: '16px',
+  fontSize: '18px',
   fontFamily: 'Arial, sans-serif',
 }));
 
 const FieldValue = styled('div')(({ theme }) => ({
-  color: '#555',
+  color: '#333',
   fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
   fontWeight: 'normal',
-  lineHeight: 1.5,
+  lineHeight: 1.6,
   wordWrap: 'break-word',
   wordBreak: 'break-word',
   overflowWrap: 'break-word',
@@ -150,33 +150,33 @@ const SectionDivider = styled('div')(({ theme }) => ({
 const SubHeading = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 'bold',
-  color: '#275786',
+  color: '#333',
   fontFamily: 'Arial, sans-serif',
-  marginBottom: '8px',
-  marginTop: '8px',
+  marginBottom: '12px',
+  marginTop: '16px',
 }));
 
 const InfoSection = styled('div')(({ theme, bgColor }) => ({
   backgroundColor: bgColor || '#f8f9fa',
-  padding: '12px',
+  padding: '16px',
   borderRadius: '6px',
   border: `1px solid ${bgColor === '#fff3cd' ? '#ffc107' : bgColor === '#f8d7da' ? '#dc3545' : '#e1e8ed'}`,
-  marginBottom: '10px',
+  marginBottom: '16px',
   fontSize: '16px',
-  lineHeight: 1.5,
+  lineHeight: 1.6,
   fontFamily: 'Arial, sans-serif',
 }));
 
 const FormulaBox = styled('div')(({ theme }) => ({
   backgroundColor: '#e8f4f8',
-  padding: '10px',
+  padding: '16px',
   borderRadius: '6px',
   border: '1px solid #b3d9e8',
   fontFamily: 'monospace',
   fontSize: '16px',
   fontWeight: 'bold',
   color: '#275786',
-  marginBottom: '10px',
+  marginBottom: '16px',
   textAlign: 'center',
 }));
 
@@ -343,9 +343,9 @@ const GlossaryPage = () => {
           xs: '1fr',
           md: `repeat(${columns}, 1fr)`, 
         },
-        gap: 2,
+        gap: 3,
         width: '100%',
-        marginBottom: 2
+        marginBottom: 3
       }}
     >
       {items.map((metric, index) => (
@@ -354,76 +354,84 @@ const GlossaryPage = () => {
           <FieldValue>
             <Box>
               {/* Definition */}
-              <SubHeading component="h6">Definition:</SubHeading>
-              <Typography variant="body2" sx={{ fontSize: '16px', mb: 2, color: '#555', fontFamily: 'Arial, sans-serif' }}>
-                {metric.definition}
-              </Typography>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Definition:</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  {metric.definition}
+                </Typography>
+              </Box>
               
               {/* Formula */}
-              <SubHeading component="h6">Formula:</SubHeading>
-              <FormulaBox>
-                {metric.formula}
-              </FormulaBox>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Formula:</SubHeading>
+                <FormulaBox>
+                  {metric.formula}
+                </FormulaBox>
+              </Box>
               
               {/* Range */}
-              <SubHeading component="h6">Range:</SubHeading>
-              <InfoSection>
-                {metric.range}
-              </InfoSection>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Range:</SubHeading>
+                <InfoSection>
+                  {metric.range}
+                </InfoSection>
+              </Box>
               
               {/* Medical Context or Interpretation */}
               {metric.medicalContext && (
-                <>
+                <Box sx={{ mb: 2 }}>
                   <SubHeading component="h6">Medical Context:</SubHeading>
                   <InfoSection bgColor="#e8f4f8">
                     {metric.medicalContext}
                   </InfoSection>
-                </>
+                </Box>
               )}
               
               {metric.interpretation && (
-                <>
+                <Box sx={{ mb: 2 }}>
                   <SubHeading component="h6">Interpretation:</SubHeading>
                   <InfoSection bgColor="#e8f4f8">
                     {metric.interpretation}
                   </InfoSection>
-                </>
+                </Box>
               )}
               
               {/* Clinical Impact */}
               {metric.clinicalImpact && (
-                <>
+                <Box sx={{ mb: 2 }}>
                   <SubHeading component="h6">Clinical Impact:</SubHeading>
                   <InfoSection bgColor="#fff3cd">
                     {metric.clinicalImpact}
                   </InfoSection>
-                </>
+                </Box>
               )}
               
               {/* Tooltip */}
               {metric.tooltip && (
-                <>
+                <Box sx={{ mb: 2 }}>
                   <SubHeading component="h6">Key Insight:</SubHeading>
                   <InfoSection bgColor="#f8f9fa">
                     {metric.tooltip}
                   </InfoSection>
-                </>
+                </Box>
               )}
               
               {/* Performance Ranges */}
-              <SubHeading component="h6">Performance Ranges:</SubHeading>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Performance Ranges:</SubHeading>
               <PerformanceGrid>
                 {metric.performance.map((perf, idx) => (
                   <PerformanceItem key={idx} severity={perf.level}>
                     <PerformanceBadge severity={perf.level}>
                       {perf.range}
                     </PerformanceBadge>
-                    <Typography variant="caption" sx={{ fontSize: '14px', color: '#555', fontFamily: 'Arial, sans-serif' }}>
+                    <Typography variant="caption" sx={{ fontSize: '14px', color: '#333', fontFamily: 'Arial, sans-serif' }}>
                       {perf.desc}
                     </Typography>
                   </PerformanceItem>
                 ))}
               </PerformanceGrid>
+              </Box>
             </Box>
           </FieldValue>
         </FieldContainer>
@@ -440,9 +448,9 @@ const GlossaryPage = () => {
           xs: '1fr',
           md: `repeat(${columns}, 1fr)`, 
         },
-        gap: 2,
+        gap: 3,
         width: '100%',
-        marginBottom: 2
+        marginBottom: 3
       }}
     >
       {items.map((term, index) => (
@@ -467,19 +475,24 @@ const GlossaryPage = () => {
           <FieldValue>
             <Box>
               {/* Definition */}
-              <SubHeading component="h6">Definition:</SubHeading>
-              <Typography variant="body2" sx={{ fontSize: '16px', mb: 2, color: '#555', fontFamily: 'Arial, sans-serif' }}>
-                {term.definition}
-              </Typography>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Definition:</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  {term.definition}
+                </Typography>
+              </Box>
               
               {/* Medical Example */}
-              <SubHeading component="h6">Medical Example:</SubHeading>
-              <InfoSection bgColor="#e8f4f8">
-                {term.medicalExample}
-              </InfoSection>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Medical Example:</SubHeading>
+                <InfoSection bgColor="#e8f4f8">
+                  {term.medicalExample}
+                </InfoSection>
+              </Box>
               
               {/* Clinical Impact */}
-              <SubHeading component="h6">Clinical Impact:</SubHeading>
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Clinical Impact:</SubHeading>
               <InfoSection 
                 bgColor={
                   term.severity === 'poor' ? '#f8d7da' :
@@ -488,6 +501,7 @@ const GlossaryPage = () => {
               >
                 {term.clinicalImpact}
               </InfoSection>
+              </Box>
             </Box>
           </FieldValue>
         </FieldContainer>
@@ -497,508 +511,798 @@ const GlossaryPage = () => {
 
   const renderAccuracyMetrics = () => (
     <Box>
+      <Typography variant="h5" gutterBottom sx={{ 
+        fontWeight: 'bold', 
+        color: '#275786', 
+        mb: 3,
+        fontSize: '20px',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        Accuracy Metrics
+      </Typography>
+      
+      <Box sx={{ mb: 3 }}>
+        <FieldContainer sx={{ minHeight: 'auto' }}>
+          <FieldValue>
+            <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+              Core performance metrics for evaluating medical prediction models. Each metric provides different insights into how well the model performs in clinical scenarios.
+            </Typography>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
       <AccuracyMetricsGrid items={accuracyMetrics} columns={2} />
     </Box>
   );
 
   const renderPerformanceCharts = () => (
     <Box>
+      <Typography variant="h5" gutterBottom sx={{ 
+        fontWeight: 'bold', 
+        color: '#275786', 
+        mb: 3,
+        fontSize: '20px',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        Performance Metrics
+      </Typography>
+      
+      <Box sx={{ mb: 3 }}>
+        <FieldContainer sx={{ minHeight: 'auto' }}>
+          <FieldValue>
+            <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+              Interactive charts and explanations for understanding model performance visualizations including confusion matrix components, ROC curves, and calibration curves.
+            </Typography>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
       {/* Confusion Matrix Section */}
-      <Box mb={6}>
-        <Typography variant="h5" gutterBottom sx={{ 
-          fontWeight: 'bold', 
-          color: '#275786', 
-          mb: 2,
-          fontSize: '20px'
+      <Box sx={{ mb: 2 }}>
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
         }}>
-          Confusion Matrix Components
-        </Typography>
-        
-        <Box sx={{ mb: 3 }}>
-          <FieldContainer sx={{ minHeight: 'auto' }}>
-            <FieldValue>
-              <Typography variant="body2" sx={{ fontSize: '16px', color: '#555', fontFamily: 'Arial, sans-serif' }}>
-                The confusion matrix breaks down all model predictions into four categories. Understanding these helps evaluate how well the Lava ML models perform for CKD, cardiovascular, prostate cancer, and hospitalization risk predictions.
-              </Typography>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Confusion Matrix Components
+                </SubHeading>
+              </Box>
+              
+              {/* Overview Text */}
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  The confusion matrix breaks down all model predictions into four categories. Understanding these helps evaluate how well the Lava ML models perform for CKD, cardiovascular, prostate cancer, and hospitalization risk predictions.
+                </Typography>
+              </Box>
+              
+              {/* Four Confusion Matrix Term Cards */}
+              <ConfusionMatrixGrid items={confusionMatrixTerms} columns={2} />
+            </Box>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
+      {/* Accuracy over Time Section */}
+      <Box sx={{ mb: 2 }}>
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
+        }}>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Understanding Accuracy over Time Charts
+                </SubHeading>
+              </Box>
+              
+              {/* What is Accuracy over Time */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">What is an Accuracy over Time Chart?</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  An <strong>Accuracy over Time chart</strong> shows how your model's performance metrics change across different time periods. This helps identify if model performance is stable, improving, or degrading over time.
+                </Typography>
+                
+                <InfoSection bgColor="#fff3cd">
+                  <strong>Key insight:</strong> Models can become less accurate over time due to data drift, changing patient populations, or evolving medical practices. Regular monitoring is essential.
+                </InfoSection>
+              </Box>
+
+              {/* How to Read */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">How to Read the Time Chart</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  The chart typically displays:
+                </Typography>
+                <Box sx={{ ml: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>X-axis (Time Period):</strong> Dates, months, or prediction batches
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Y-axis (Performance Score):</strong> Accuracy, AUROC, or other metrics as percentages
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Trend Lines:</strong> Show whether performance is stable, declining, or improving
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Performance Patterns */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Common Performance Patterns</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Stable Performance: Flat line indicates consistent model reliability over time",
+                    "Gradual Decline: Downward trend suggests data drift or changing patient characteristics",
+                    "Sudden Drop: Sharp decline may indicate data quality issues or system changes",
+                    "Seasonal Patterns: Regular fluctuations may reflect cyclical health trends"
+                  ].map((pattern, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {pattern}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+
+              {/* Key Takeaways */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Key Takeaways</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Monitor trends, not just individual data points",
+                    "Investigate sudden performance drops immediately",
+                    "Expect some natural variation in performance metrics",
+                    "Use time charts to plan model retraining schedules"
+                  ].map((point, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {point}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
+      {/* Accuracy Metrics Chart Section */}
+      <Box sx={{ mb: 2 }}>
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
+        }}>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Understanding Accuracy Metrics Charts
+                </SubHeading>
+              </Box>
+              
+              {/* What is Accuracy Metrics Chart */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">What is an Accuracy Metrics Chart?</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  An <strong>Accuracy Metrics Chart</strong> provides a visual comparison of different performance metrics (Accuracy, Precision, Recall, F1-Score, AUROC) in a single view. This helps you quickly assess overall model performance.
+                </Typography>
+                
+                <InfoSection bgColor="#e8f4f8">
+                  <strong>Purpose:</strong> Shows how well-balanced your model is across different evaluation criteria, helping identify strengths and weaknesses.
+                </InfoSection>
+              </Box>
+
+              {/* Chart Types */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Common Chart Types</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  Accuracy metrics can be displayed as:
+                </Typography>
+                <Box sx={{ ml: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Bar Charts:</strong> Side-by-side comparison of different metrics
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Radar/Spider Charts:</strong> Multi-dimensional view showing metric balance
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Gauge Charts:</strong> Individual metrics displayed as performance dials
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* How to Interpret */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">How to Interpret the Charts</SubHeading>
+                <InfoSection bgColor="#d4edda">
+                  <strong>✅ Good Performance:</strong> All metrics above 70%, with balanced scores across Precision and Recall (no extreme differences >20%)
+                </InfoSection>
+                
+                <InfoSection bgColor="#f8d7da">
+                  <strong>⚠️ Concerning Patterns:</strong> One metric much lower than others, or overall scores below 60% indicating poor model performance
+                </InfoSection>
+              </Box>
+
+              {/* Practical Tips */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Practical Tips</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Look for balanced performance across all metrics, not just high accuracy",
+                    "Pay attention to Precision vs Recall trade-offs for your specific medical use case",
+                    "AUROC values above 0.8 generally indicate good discriminative ability",
+                    "F1-Score provides a good overall balance between Precision and Recall"
+                  ].map((tip, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {tip}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
+      {/* ROC Curve Section */}
+      <Box sx={{ mb: 2 }}>
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
+        }}>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Understanding Prediction Quality (ROC) Curves
+                </SubHeading>
+              </Box>
+              
+              {/* What is ROC Curve */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">What is a Prediction Quality (ROC) Curve?</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  A <strong>Prediction Quality Curve</strong> (ROC - Receiver Operating Characteristic) is a graph that shows how well a classification model performs.
+                </Typography>
+              </Box>
+
+              {/* How to Read */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">How to Read a Prediction Quality Curve</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  The prediction quality curve plots two important rates:
+                </Typography>
+                <Box sx={{ ml: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Y-axis (True Positive Rate):</strong> How good is the model at catching the "yes" cases? (Higher is better)
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>X-axis (False Positive Rate):</strong> How often does the model incorrectly say "yes"? (Lower is better)
+                  </Typography>
+                </Box>
+                
+                <InfoSection bgColor="#fff3cd">
+                  <strong>The ideal model</strong> would catch all the "yes" cases (high true positive rate) while rarely making false alarms (low false positive rate).
+                </InfoSection>
+              </Box>
+
+              {/* Comparing Different Model Performance */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Comparing Different Model Performance</SubHeading>
+                  <Box sx={{ 
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    flexWrap: 'wrap',
+                    gap: '20px',
+                    margin: '20px 0',
+                    paddingX: '40px'
+                  }}>
+                    {[
+                      { 
+                        title: "Excellent Model", 
+                        desc: "Curve hugs the top-left corner", 
+                        auc: "AUC ≈ 0.95-1.0", 
+                        color: "#28a745",
+                        curvePath: "M10 190 Q30 50 50 30 L190 30"
+                      },
+                      { 
+                        title: "Good Model", 
+                        desc: "Curves upward toward top-left", 
+                        auc: "AUC ≈ 0.7-0.9", 
+                        color: "#007bff",
+                        curvePath: "M10 190 Q60 100 190 30"
+                      },
+                      { 
+                        title: "Random Guessing", 
+                        desc: "Diagonal line", 
+                        auc: "AUC = 0.5", 
+                        color: "#ffc107",
+                        curvePath: "M10 190 L190 30"
+                      },
+                      { 
+                        title: "Poor Model", 
+                        desc: "Curves toward bottom-right", 
+                        auc: "AUC < 0.5", 
+                        color: "#dc3545",
+                        curvePath: "M10 190 Q140 160 190 130"
+                      }
+                    ].map((model, index) => (
+                      <Box key={index} sx={{ textAlign: 'center', width: '240px', position: 'relative', mx: 2 }}>
+                        <Typography variant="h6" sx={{ 
+                          fontWeight: 'bold', 
+                          color: model.color, 
+                          mb: 1,
+                          fontSize: '16px'
+                        }}>
+                          {model.title}
+                        </Typography>
+                        <Box sx={{ 
+                          width: '180px',
+                          height: '180px',
+                          border: '2px solid #333',
+                          position: 'relative',
+                          background: 'white',
+                          borderRadius: '5px',
+                          mb: 3,
+                          mx: 'auto'
+                        }}>
+                          <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
+                            <path 
+                              d={model.curvePath}
+                              stroke={model.color}
+                              strokeWidth="3"
+                              fill="none"
+                            />
+                          </svg>
+                          <Typography sx={{ 
+                            position: 'absolute',
+                            bottom: '-25px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            fontSize: '13px',
+                            color: '#666',
+                            textAlign: 'center',
+                            whiteSpace: 'nowrap'
+                          }}>
+                            False Positive Rate
+                          </Typography>
+                          <Typography sx={{ 
+                            position: 'absolute',
+                            left: '-70px',
+                            top: '50%',
+                            transform: 'translateY(-50%) rotate(-90deg)',
+                            transformOrigin: 'center',
+                            fontSize: '13px',
+                            color: '#666',
+                            whiteSpace: 'nowrap'
+                          }}>
+                            True Positive Rate
+                          </Typography>
+                        </Box>
+                        <Typography variant="body2" sx={{ 
+                          fontSize: '13px', 
+                          color: '#666',
+                          lineHeight: 1.2,
+                          mb: 0.5,
+                          mt: 0.5
+                        }}>
+                          {model.desc}
+                        </Typography>
+                        <Typography variant="body2" sx={{ 
+                          fontSize: '13px',
+                          color: model.color,
+                          fontWeight: 'bold'
+                        }}>
+                          {model.auc}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+
+              {/* Key Takeaways */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Key Takeaways</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Area Under Curve (AUC): Single number summarizing performance (0 to 1)",
+                    "Perfect model: AUC = 1.0 (curve goes to top-left corner)",
+                    "Useless model: AUC = 0.5 (diagonal line = random guessing)",
+                    "Good models: AUC > 0.7 (curve bends toward top-left)",
+                    "The closer to the top-left corner, the better the model"
+                  ].map((point, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {point}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+              </Box>
             </FieldValue>
           </FieldContainer>
-        </Box>
-        
-        <ConfusionMatrixGrid items={confusionMatrixTerms} columns={2} />
       </Box>
 
-      {/* ROC Curve Section - Consolidated Single Card */}
-      <Box mb={6}>
-        <Typography variant="h5" gutterBottom sx={{ 
-          fontWeight: 'bold', 
-          color: '#275786', 
-          mb: 3,
-          fontSize: '20px'
-        }}>
-          Understanding Prediction Quality (ROC) Curves
-        </Typography>
-        
-        <Card elevation={2} sx={{ 
-          background: 'white',
-          padding: '40px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-        }}>
-          <CardContent>
-            {/* What is ROC Curve */}
-            <Box sx={{ 
-              margin: '30px 0',
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2c5aa0'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 2, fontSize: '18px' }}>
-                What is a Prediction Quality (ROC) Curve?
-              </Typography>
-              <Typography variant="body1" sx={{ fontSize: '16px', lineHeight: 1.6, color: '#333' }}>
-                A <strong>Prediction Quality Curve</strong> (ROC - Receiver Operating Characteristic) is a graph that shows how well a classification model performs.
-              </Typography>
-            </Box>
-
-            {/* How to Read */}
-            <Box sx={{ 
-              margin: '30px 0',
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2c5aa0'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 2, fontSize: '18px' }}>
-                How to Read a Prediction Quality Curve
-              </Typography>
-              <Typography variant="body1" sx={{ fontSize: '16px', mb: 2, color: '#333' }}>
-                The prediction quality curve plots two important rates:
-              </Typography>
-              <Box sx={{ ml: 2 }}>
-                <Typography variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                  • <strong>Y-axis (True Positive Rate):</strong> How good is the model at catching the "yes" cases? (Higher is better)
-                </Typography>
-                <Typography variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                  • <strong>X-axis (False Positive Rate):</strong> How often does the model incorrectly say "yes"? (Lower is better)
-                </Typography>
-              </Box>
-              
-              <Box sx={{ 
-                background: '#fff3cd',
-                padding: '15px',
-                borderRadius: '5px',
-                borderLeft: '4px solid #ffc107',
-                margin: '15px 0'
-              }}>
-                <Typography variant="body1" sx={{ fontSize: '16px', color: '#333' }}>
-                  <strong>The ideal model</strong> would catch all the "yes" cases (high true positive rate) while rarely making false alarms (low false positive rate).
-                </Typography>
-              </Box>
-            </Box>
-
-            {/* Comparing Different Model Performance */}
-            <Box sx={{ 
-              margin: '30px 0',
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2c5aa0'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 3, fontSize: '18px' }}>
-                Comparing Different Model Performance
-              </Typography>
-              
-              <Box sx={{ 
-                display: 'flex',
-                justifyContent: 'space-around',
-                flexWrap: 'wrap',
-                gap: '20px',
-                margin: '20px 0'
-              }}>
-                {[
-                  { 
-                    title: "Excellent Model", 
-                    desc: "Curve hugs the top-left corner", 
-                    auc: "AUC ≈ 0.95-1.0", 
-                    color: "#28a745",
-                    curvePath: "M10 190 Q30 50 50 30 L190 30"
-                  },
-                  { 
-                    title: "Good Model", 
-                    desc: "Curves upward toward top-left", 
-                    auc: "AUC ≈ 0.7-0.9", 
-                    color: "#007bff",
-                    curvePath: "M10 190 Q60 100 190 30"
-                  },
-                  { 
-                    title: "Random Guessing", 
-                    desc: "Diagonal line", 
-                    auc: "AUC = 0.5", 
-                    color: "#ffc107",
-                    curvePath: "M10 190 L190 30"
-                  },
-                  { 
-                    title: "Poor Model", 
-                    desc: "Curves toward bottom-right", 
-                    auc: "AUC < 0.5", 
-                    color: "#dc3545",
-                    curvePath: "M10 190 Q140 160 190 130"
-                  }
-                ].map((model, index) => (
-                  <Box key={index} sx={{ textAlign: 'center', width: '200px' }}>
-                    <Typography variant="h6" sx={{ 
-                      fontWeight: 'bold', 
-                      color: model.color, 
-                      mb: 1,
-                      fontSize: '16px'
-                    }}>
-                      {model.title}
-                    </Typography>
-                    <Box sx={{ 
-                      width: '200px',
-                      height: '200px',
-                      border: '2px solid #333',
-                      position: 'relative',
-                      background: 'white',
-                      borderRadius: '5px',
-                      mb: 1
-                    }}>
-                      <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
-                        <path 
-                          d={model.curvePath}
-                          stroke={model.color}
-                          strokeWidth="3"
-                          fill="none"
-                        />
-                      </svg>
-                      <Typography sx={{ 
-                        position: 'absolute',
-                        bottom: '-20px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        fontSize: '12px',
-                        color: '#666'
-                      }}>
-                        False Positive Rate
-                      </Typography>
-                      <Typography sx={{ 
-                        position: 'absolute',
-                        left: '-60px',
-                        top: '50%',
-                        transform: 'translateY(-50%) rotate(-90deg)',
-                        transformOrigin: 'center',
-                        fontSize: '12px',
-                        color: '#666'
-                      }}>
-                        True Positive Rate
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" sx={{ 
-                      fontSize: '14px', 
-                      color: '#666',
-                      lineHeight: 1.3,
-                      mb: 1
-                    }}>
-                      {model.desc}
-                    </Typography>
-                    <Typography variant="body2" sx={{ 
-                      fontSize: '14px',
-                      color: model.color,
-                      fontWeight: 'bold'
-                    }}>
-                      {model.auc}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-
-            {/* Key Takeaways */}
-            <Box sx={{ 
-              background: '#e8f4f8',
-              padding: '20px',
-              borderRadius: '8px',
-              border: '1px solid #b3d9e8'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 2, fontSize: '18px' }}>
-                Key Takeaways
-              </Typography>
-              <Box sx={{ ml: 2 }}>
-                {[
-                  "Area Under Curve (AUC): Single number summarizing performance (0 to 1)",
-                  "Perfect model: AUC = 1.0 (curve goes to top-left corner)",
-                  "Useless model: AUC = 0.5 (diagonal line = random guessing)",
-                  "Good models: AUC > 0.7 (curve bends toward top-left)",
-                  "The closer to the top-left corner, the better the model"
-                ].map((point, index) => (
-                  <Typography key={index} variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                    • {point}
-                  </Typography>
-                ))}
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-
-      {/* Calibration Curve Section - Consolidated Single Card */}
+      {/* Calibration Curve Section */}
       <Box>
-        <Typography variant="h5" gutterBottom sx={{ 
-          fontWeight: 'bold', 
-          color: '#275786', 
-          mb: 3,
-          fontSize: '20px'
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
         }}>
-          Understanding Calibration Curves
-        </Typography>
-        
-        <Card elevation={2} sx={{ 
-          background: 'white',
-          padding: '40px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-        }}>
-          <CardContent>
-            <Typography variant="h6" sx={{ 
-              textAlign: 'center', 
-              color: '#666', 
-              fontStyle: 'italic',
-              mb: 3,
-              fontSize: '16px'
-            }}>
-              How Confident Should We Be in Our Model's Confidence?
-            </Typography>
-
-            {/* What is Calibration Curve */}
-            <Box sx={{ 
-              margin: '30px 0',
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2c5aa0'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 2, fontSize: '18px' }}>
-                What is a Calibration Curve?
-              </Typography>
-              <Typography variant="body1" sx={{ fontSize: '16px', lineHeight: 1.6, color: '#333', mb: 2 }}>
-                A <strong>calibration curve</strong> shows whether your model's confidence scores match reality. When a model says "I'm 80% confident a patient will develop a certain condition," a well-calibrated model should be right about 80% of the time.
-              </Typography>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Understanding Calibration Curves
+                </SubHeading>
+              </Box>
               
-              <Box sx={{ 
-                background: '#fff3cd',
-                padding: '15px',
-                borderRadius: '5px',
-                borderLeft: '4px solid #ffc107',
-                margin: '15px 0'
-              }}>
-                <Typography variant="body1" sx={{ fontSize: '16px', color: '#333' }}>
+              {/* What is Calibration Curve */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">What is a Calibration Curve?</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  A <strong>calibration curve</strong> shows whether your model's confidence scores match reality. When a model says "I'm 80% confident a patient will develop a certain condition," a well-calibrated model should be right about 80% of the time.
+                </Typography>
+                
+                <InfoSection bgColor="#fff3cd">
                   <strong>Key insight:</strong> A model can have high accuracy Prediction Quality (ROC) but poor calibration. Calibration tells you if you can trust the confidence scores, not just the final predictions.
-                </Typography>
-              </Box>
-            </Box>
-
-            {/* How to Read */}
-            <Box sx={{ 
-              margin: '30px 0',
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2c5aa0'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 2, fontSize: '18px' }}>
-                How to Read a Calibration Curve
-              </Typography>
-              <Typography variant="body1" sx={{ fontSize: '16px', mb: 2, color: '#333' }}>
-                The calibration curve plots:
-              </Typography>
-              <Box sx={{ ml: 2 }}>
-                <Typography variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                  • <strong>X-axis (Mean Predicted Probability):</strong> What the model says the probability is
-                </Typography>
-                <Typography variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                  • <strong>Y-axis (Fraction of Positives):</strong> What actually happens in reality
-                </Typography>
-                <Typography variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                  • <strong>Diagonal line:</strong> Perfect calibration (predictions match reality)
-                </Typography>
-              </Box>
-            </Box>
-
-            {/* Types of Calibration Performance */}
-            <Box sx={{ 
-              margin: '30px 0',
-              padding: '20px',
-              background: '#f8f9fa',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2c5aa0'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 3, fontSize: '18px' }}>
-                Types of Calibration Performance
-              </Typography>
-              
-              <Box sx={{ 
-                display: 'flex',
-                justifyContent: 'space-around',
-                flexWrap: 'wrap',
-                gap: '20px',
-                margin: '20px 0'
-              }}>
-                {[
-                  { 
-                    title: "Perfect Calibration", 
-                    desc: "Curve follows diagonal line\nPredictions = Reality", 
-                    color: "#28a745",
-                    diagonalPath: "M10 190 L190 10",
-                    curvePath: "M10 190 L190 10"
-                  },
-                  { 
-                    title: "Well-Calibrated", 
-                    desc: "Close to diagonal\nMinor deviations acceptable", 
-                    color: "#007bff",
-                    diagonalPath: "M10 190 L190 10",
-                    curvePath: "M10 190 Q50 150 100 100 Q150 50 190 10"
-                  },
-                  { 
-                    title: "Over-Confident", 
-                    desc: "Curve below diagonal\nSays 90%, reality is 60%", 
-                    color: "#dc3545",
-                    diagonalPath: "M10 190 L190 10",
-                    curvePath: "M10 190 Q100 140 190 60"
-                  },
-                  { 
-                    title: "Under-Confident", 
-                    desc: "Curve above diagonal\nSays 30%, reality is 70%", 
-                    color: "#ff8c00",
-                    diagonalPath: "M10 190 L190 10",
-                    curvePath: "M10 190 Q100 60 190 40"
-                  }
-                ].map((model, index) => (
-                  <Box key={index} sx={{ textAlign: 'center', width: '200px' }}>
-                    <Typography variant="h6" sx={{ 
-                      fontWeight: 'bold', 
-                      color: model.color, 
-                      mb: 1,
-                      fontSize: '16px'
-                    }}>
-                      {model.title}
-                    </Typography>
-                    <Box sx={{ 
-                      width: '200px',
-                      height: '200px',
-                      border: '2px solid #333',
-                      position: 'relative',
-                      background: 'white',
-                      borderRadius: '5px',
-                      mb: 1
-                    }}>
-                      <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
-                        <path 
-                          d={model.diagonalPath}
-                          stroke="#333"
-                          strokeWidth="1"
-                          strokeDasharray="5,5"
-                          fill="none"
-                        />
-                        <path 
-                          d={model.curvePath}
-                          stroke={model.color}
-                          strokeWidth="3"
-                          fill="none"
-                        />
-                      </svg>
-                      <Typography sx={{ 
-                        position: 'absolute',
-                        bottom: '-20px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        fontSize: '12px',
-                        color: '#666'
-                      }}>
-                        Predicted Probability
-                      </Typography>
-                      <Typography sx={{ 
-                        position: 'absolute',
-                        left: '-45px',
-                        top: '50%',
-                        transform: 'translateY(-50%) rotate(-90deg)',
-                        transformOrigin: 'center',
-                        fontSize: '12px',
-                        color: '#666'
-                      }}>
-                        Actual Rate
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" sx={{ 
-                      fontSize: '14px', 
-                      color: '#666',
-                      lineHeight: 1.3,
-                      whiteSpace: 'pre-line'
-                    }}>
-                      {model.desc}
-                    </Typography>
-                  </Box>
-                ))}
+                </InfoSection>
               </Box>
 
-              {/* Legend */}
-              <Box sx={{ 
-                display: 'flex',
-                justifyContent: 'space-around',
-                margin: '20px 0',
-                flexWrap: 'wrap'
-              }}>
-                {[
-                  { label: "Perfect Calibration", color: "#28a745" },
-                  { label: "Well-Calibrated", color: "#007bff" },
-                  { label: "Over-Confident", color: "#dc3545" },
-                  { label: "Under-Confident", color: "#ff8c00" }
-                ].map((item, index) => (
-                  <Box key={index} sx={{ 
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    margin: '5px'
-                  }}>
-                    <Box sx={{ 
-                      width: '20px',
-                      height: '3px',
-                      backgroundColor: item.color,
-                      borderRadius: '2px'
-                    }} />
-                    <Typography variant="body2" sx={{ fontSize: '14px' }}>
-                      {item.label}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-
-            {/* Key Takeaways */}
-            <Box sx={{ 
-              background: '#e8f4f8',
-              padding: '20px',
-              borderRadius: '8px',
-              border: '1px solid #b3d9e8'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', mb: 2, fontSize: '18px' }}>
-                Key Takeaways
-              </Typography>
-              <Box sx={{ ml: 2 }}>
-                {[
-                  "Perfect calibration: Curve follows the diagonal line exactly",
-                  "Over-confident: Curve below diagonal (model overestimates probabilities)",
-                  "Under-confident: Curve above diagonal (model underestimates probabilities)",
-                  "Calibration matters when you need to trust the probability scores, not just the final decision"
-                ].map((point, index) => (
-                  <Typography key={index} variant="body1" sx={{ fontSize: '16px', mb: 1, color: '#333' }}>
-                    • {point}
+              {/* How to Read */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">How to Read a Calibration Curve</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  The calibration curve plots:
+                </Typography>
+                <Box sx={{ ml: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>X-axis (Mean Predicted Probability):</strong> What the model says the probability is
                   </Typography>
-                ))}
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Y-axis (Fraction of Positives):</strong> What actually happens in reality
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Diagonal line:</strong> Perfect calibration (predictions match reality)
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Types of Calibration Performance */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Types of Calibration Performance</SubHeading>
+                  <Box sx={{ 
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    flexWrap: 'wrap',
+                    gap: '20px',
+                    margin: '20px 0',
+                    paddingX: '40px'
+                  }}>
+                    {[
+                      { 
+                        title: "Perfect Calibration", 
+                        desc: "Curve follows diagonal line\nPredictions = Reality", 
+                        color: "#28a745",
+                        diagonalPath: "M10 190 L190 10",
+                        curvePath: "M10 190 L190 10"
+                      },
+                      { 
+                        title: "Well-Calibrated", 
+                        desc: "Close to diagonal\nMinor deviations acceptable", 
+                        color: "#007bff",
+                        diagonalPath: "M10 190 L190 10",
+                        curvePath: "M10 190 Q50 150 100 100 Q150 50 190 10"
+                      },
+                      { 
+                        title: "Over-Confident", 
+                        desc: "Curve below diagonal\nSays 90%, reality is 60%", 
+                        color: "#dc3545",
+                        diagonalPath: "M10 190 L190 10",
+                        curvePath: "M10 190 Q100 140 190 60"
+                      },
+                      { 
+                        title: "Under-Confident", 
+                        desc: "Curve above diagonal\nSays 30%, reality is 70%", 
+                        color: "#ff8c00",
+                        diagonalPath: "M10 190 L190 10",
+                        curvePath: "M10 190 Q100 60 190 40"
+                      }
+                    ].map((model, index) => (
+                      <Box key={index} sx={{ textAlign: 'center', width: '240px', position: 'relative', mx: 2 }}>
+                        <Typography variant="h6" sx={{ 
+                          fontWeight: 'bold', 
+                          color: model.color, 
+                          mb: 1,
+                          fontSize: '16px'
+                        }}>
+                          {model.title}
+                        </Typography>
+                        <Box sx={{ 
+                          width: '180px',
+                          height: '180px',
+                          border: '2px solid #333',
+                          position: 'relative',
+                          background: 'white',
+                          borderRadius: '5px',
+                          mb: 3,
+                          mx: 'auto'
+                        }}>
+                          <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%' }}>
+                            <path 
+                              d={model.diagonalPath}
+                              stroke="#333"
+                              strokeWidth="1"
+                              strokeDasharray="5,5"
+                              fill="none"
+                            />
+                            <path 
+                              d={model.curvePath}
+                              stroke={model.color}
+                              strokeWidth="3"
+                              fill="none"
+                            />
+                          </svg>
+                          <Typography sx={{ 
+                            position: 'absolute',
+                            bottom: '-25px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            fontSize: '13px',
+                            color: '#666',
+                            textAlign: 'center',
+                            whiteSpace: 'nowrap'
+                          }}>
+                            Predicted Probability
+                          </Typography>
+                          <Typography sx={{ 
+                            position: 'absolute',
+                            left: '-50px',
+                            top: '50%',
+                            transform: 'translateY(-50%) rotate(-90deg)',
+                            transformOrigin: 'center',
+                            fontSize: '13px',
+                            color: '#666',
+                            whiteSpace: 'nowrap'
+                          }}>
+                            Actual Rate
+                          </Typography>
+                        </Box>
+                        <Typography variant="body2" sx={{ 
+                          fontSize: '13px', 
+                          color: '#666',
+                          lineHeight: 1.2,
+                          whiteSpace: 'pre-line',
+                          mt: 1,
+                          mb: 1
+                        }}>
+                          {model.desc}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+
+                  {/* Legend */}
+                  <Box sx={{ 
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    margin: '0 0 0 0',
+                    flexWrap: 'wrap'
+                  }}>
+                    {[
+                      { label: "Perfect Calibration", color: "#28a745" },
+                      { label: "Well-Calibrated", color: "#007bff" },
+                      { label: "Over-Confident", color: "#dc3545" },
+                      { label: "Under-Confident", color: "#ff8c00" }
+                    ].map((item, index) => (
+                      <Box key={index} sx={{ 
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        margin: '5px'
+                      }}>
+                        <Box sx={{ 
+                          width: '20px',
+                          height: '3px',
+                          backgroundColor: item.color,
+                          borderRadius: '2px'
+                        }} />
+                        <Typography variant="body2" sx={{ fontSize: '14px' }}>
+                          {item.label}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+
+              {/* Key Takeaways */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Key Takeaways</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Perfect calibration: Curve follows the diagonal line exactly",
+                    "Over-confident: Curve below diagonal (model overestimates probabilities)",
+                    "Under-confident: Curve above diagonal (model underestimates probabilities)",
+                    "Calibration matters when you need to trust the probability scores, not just the final decision"
+                  ].map((point, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {point}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+              </Box>
+            </FieldValue>
+          </FieldContainer>
+      </Box>
+
+      {/* Accuracy over Time Section */}
+      <Box sx={{ mb: 2 }}>
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
+        }}>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Understanding Accuracy over Time Charts
+                </SubHeading>
+              </Box>
+              
+              {/* What is Accuracy over Time */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">What is an Accuracy over Time Chart?</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  An <strong>Accuracy over Time chart</strong> shows how your model's performance metrics change across different time periods. This helps identify if model performance is stable, improving, or degrading over time.
+                </Typography>
+                
+                <InfoSection bgColor="#fff3cd">
+                  <strong>Key insight:</strong> Models can become less accurate over time due to data drift, changing patient populations, or evolving medical practices. Regular monitoring is essential.
+                </InfoSection>
+              </Box>
+
+              {/* How to Read */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">How to Read the Time Chart</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  The chart typically displays:
+                </Typography>
+                <Box sx={{ ml: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>X-axis (Time Period):</strong> Dates, months, or prediction batches
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Y-axis (Performance Score):</strong> Accuracy, AUROC, or other metrics as percentages
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Trend Lines:</strong> Show whether performance is stable, declining, or improving
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Performance Patterns */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Common Performance Patterns</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Stable Performance: Flat line indicates consistent model reliability over time",
+                    "Gradual Decline: Downward trend suggests data drift or changing patient characteristics",
+                    "Sudden Drop: Sharp decline may indicate data quality issues or system changes",
+                    "Seasonal Patterns: Regular fluctuations may reflect cyclical health trends"
+                  ].map((pattern, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {pattern}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+
+              {/* Key Takeaways */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Key Takeaways</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Monitor trends, not just individual data points",
+                    "Investigate sudden performance drops immediately",
+                    "Expect some natural variation in performance metrics",
+                    "Use time charts to plan model retraining schedules"
+                  ].map((point, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {point}
+                    </Typography>
+                  ))}
+                </Box>
               </Box>
             </Box>
-          </CardContent>
-        </Card>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
+      {/* Accuracy Metrics Chart Section */}
+      <Box>
+        <FieldContainer sx={{ 
+          minHeight: 'auto',
+          borderLeft: '4px solid #2c5aa0'
+        }}>
+          <FieldValue>
+            <Box>
+              {/* Main Heading */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h5" sx={{ fontSize: '20px', fontWeight: 'bold', color: '#275786', fontFamily: 'Arial, sans-serif' }}>
+                  Understanding Accuracy Metrics Charts
+                </SubHeading>
+              </Box>
+              
+              {/* What is Accuracy Metrics Chart */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">What is an Accuracy Metrics Chart?</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  An <strong>Accuracy Metrics Chart</strong> provides a visual comparison of different performance metrics (Accuracy, Precision, Recall, F1-Score, AUROC) in a single view. This helps you quickly assess overall model performance.
+                </Typography>
+                
+                <InfoSection bgColor="#e8f4f8">
+                  <strong>Purpose:</strong> Shows how well-balanced your model is across different evaluation criteria, helping identify strengths and weaknesses.
+                </InfoSection>
+              </Box>
+
+              {/* Chart Types */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Common Chart Types</SubHeading>
+                <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                  Accuracy metrics can be displayed as:
+                </Typography>
+                <Box sx={{ ml: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Bar Charts:</strong> Side-by-side comparison of different metrics
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Radar/Spider Charts:</strong> Multi-dimensional view showing metric balance
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    • <strong>Gauge Charts:</strong> Individual metrics displayed as performance dials
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* How to Interpret */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">How to Interpret the Charts</SubHeading>
+                <InfoSection bgColor="#d4edda">
+                  <strong>✅ Good Performance:</strong> All metrics above 70%, with balanced scores across Precision and Recall (no extreme differences >20%)
+                </InfoSection>
+                
+                <InfoSection bgColor="#f8d7da">
+                  <strong>⚠️ Concerning Patterns:</strong> One metric much lower than others, or overall scores below 60% indicating poor model performance
+                </InfoSection>
+              </Box>
+
+              {/* Practical Tips */}
+              <Box sx={{ mb: 2 }}>
+                <SubHeading component="h6">Practical Tips</SubHeading>
+                <Box sx={{ ml: 2 }}>
+                  {[
+                    "Look for balanced performance across all metrics, not just high accuracy",
+                    "Pay attention to Precision vs Recall trade-offs for your specific medical use case",
+                    "AUROC values above 0.8 generally indicate good discriminative ability",
+                    "F1-Score provides a good overall balance between Precision and Recall"
+                  ].map((tip, index) => (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '16px', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                      • {tip}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          </FieldValue>
+        </FieldContainer>
       </Box>
     </Box>
   );
@@ -1009,94 +1313,140 @@ const GlossaryPage = () => {
         fontWeight: 'bold', 
         color: '#275786', 
         mb: 3,
-        fontSize: '20px'
+        fontSize: '20px',
+        fontFamily: 'Arial, sans-serif'
       }}>
         Sub-Group Analysis
       </Typography>
       
-      <Alert severity="info" sx={{ mb: 4, fontSize: '16px' }}>
-        Sub-group analysis examines whether the model performs equally well across different demographic and clinical groups. This is crucial for ensuring fairness and identifying potential biases in medical AI systems.
-      </Alert>
-
-      {[
-        {
-          title: "Gender Analysis",
-          purpose: "Ensures model works equally well for male and female patients",
-          importance: "Many diseases present differently in men vs. women",
-          evaluation: "All performance metrics (Accuracy, Precision, Recall, F1, AUROC) calculated separately for each gender",
-          redFlags: "Significant performance differences between genders could indicate bias",
-          icon: <InfoIcon color="primary" />
-        },
-        {
-          title: "Race/Ethnicity Analysis",
-          purpose: "Ensures equitable performance across racial and ethnic groups",
-          importance: "Historical healthcare disparities make this analysis essential",
-          evaluation: "Typically includes White, Black/African American, Hispanic/Latino, Asian, Other",
-          redFlags: "Required for many healthcare AI deployments due to regulatory importance",
-          icon: <WarningIcon color="warning" />
-        },
-        {
-          title: "Age Groups",
-          purpose: "Ensures model works across different age ranges",
-          importance: "Disease presentation and risk factors change with age",
-          evaluation: "Often divided into pediatric, young adult, middle-aged, elderly categories",
-          redFlags: "Poor performance in specific age groups may indicate training data gaps",
-          icon: <CheckCircleIcon color="success" />
-        }
-      ].map((analysis, index) => (
-        <Card key={index} elevation={2} sx={{ mb: 3 }}>
-          <CardContent>
-            <Box display="flex" alignItems="center" gap={2} mb={2}>
-              {analysis.icon}
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', fontSize: '16px' }}>
-                {analysis.title}
-              </Typography>
-            </Box>
-            
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Typography variant="body2" paragraph sx={{ fontSize: '16px' }}>
-                  <strong>Purpose:</strong> {analysis.purpose}
-                </Typography>
-                <Typography variant="body2" paragraph sx={{ fontSize: '16px' }}>
-                  <strong>Why Important:</strong> {analysis.importance}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="body2" paragraph sx={{ fontSize: '16px' }}>
-                  <strong>Evaluation:</strong> {analysis.evaluation}
-                </Typography>
-                <Typography variant="body2" sx={{ 
-                  fontSize: '16px',
-                  backgroundColor: '#fff3cd',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ffc107'
-                }}>
-                  <strong>Key Consideration:</strong> {analysis.redFlags}
-                </Typography>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      ))}
-
-      <Card elevation={2} sx={{ backgroundColor: '#ffe6e6' }}>
-        <CardContent>
-          <Box display="flex" alignItems="center" gap={2} mb={2}>
-            <ErrorIcon color="error" />
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#d32f2f', fontSize: '16px' }}>
-              Addressing Demographic Bias
+      <Box sx={{ mb: 3 }}>
+        <FieldContainer sx={{ minHeight: 'auto' }}>
+          <FieldValue>
+            <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+              Shows performance comparison charts for Gender, Race, and Age groups using data from your current topic selection. Charts only appear when your dataset contains these demographic fields.
             </Typography>
-          </Box>
-          <Typography variant="body2" paragraph sx={{ fontSize: '16px' }}>
-            <strong>Symptoms:</strong> Significant performance differences across demographic groups
-          </Typography>
-          <Typography variant="body2" sx={{ fontSize: '16px' }}>
-            <strong>Solutions:</strong> Balanced training data, fairness constraints, post-processing adjustments, and continuous monitoring
-          </Typography>
-        </CardContent>
-      </Card>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
+
+      {/* Three Analysis Cards in Row */}
+      <Box sx={{ 
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          md: 'repeat(2, 1fr)', 
+        },
+        gap: 3,
+        width: '100%'
+      }}>
+        {[
+          {
+            title: "Gender Performance Analysis",
+            chartType: "Side-by-side bar chart comparing performance metrics (Accuracy, Sensitivity, PPV, F1-Score, AUROC) between Male and Female patients",
+            whatToLook: "Each metric shows two bars - one for Male and one for Female patients. Colors help distinguish the groups (purple-blue for Male, green for Female)",
+            technicalNote: "Uses CalculateSubgroupMetrics function to filter patient data by Gender field and calculate performance metrics separately for each group",
+            goodResult: "Similar bar heights between Male and Female for all metrics (differences <10%). Both groups have adequate sample sizes for reliable comparison",
+            badResult: "Consistently lower performance for one gender across multiple metrics. Very different bar heights indicate potential gender bias",
+// whyImportant: "Disease presentation varies by gender (e.g., cardiovascular symptoms). Algorithmic fairness requires equitable performance to avoid systematic healthcare disparities"
+          },
+          {
+            title: "Race/Ethnicity Performance Analysis",
+            chartType: "Multi-group bar chart showing performance metrics across available racial categories in the dataset (White, Black, Hispanic, Asian, Other)",
+            whatToLook: "Performance bars for each racial group with consistent color coding. Groups with insufficient data may show 'N/A' or be excluded",
+            technicalNote: "Uses CalculateSubgroupMetrics function to filter by Race field. Only groups with ≥2 patients are included in analysis to ensure reliable metrics",
+            goodResult: "All racial groups show similar performance levels. No single group has dramatically lower bars than others",
+            badResult: "One or more racial groups show consistently poor performance across metrics. Missing groups may indicate data collection issues",
+// whyImportant: "Historical healthcare disparities require AI systems to perform equitably. Regulatory compliance (FDA guidance) mandates bias assessment for medical AI"
+          },
+          {
+            title: "Age Group Performance Analysis",
+            chartType: "Bar chart displaying performance across age ranges: 0-10, 11-20, 21-30, 31-40, 41-50, 51-60, 61+ years",
+            whatToLook: "Performance metrics for each age bracket. Age groups with few patients may be excluded or combined",
+            technicalNote: "Uses CalculateSubgroupAgeMetrics function with predefined age bins. Deduplicates patients by taking latest prediction timestamp per Patient_ID",
+            goodResult: "Consistent performance across age groups relevant to the medical condition. Adult age groups typically show stable metrics",
+            badResult: "Dramatic performance drops in specific age ranges. Elderly or pediatric groups often show different patterns due to limited training data",
+// whyImportant: "Age affects disease pathophysiology and comorbidity patterns. Model must maintain clinical utility across the full patient age spectrum"
+          }
+        ].map((analysis, index) => (
+          <FieldContainer key={index} sx={{ 
+            minHeight: '450px',
+            borderLeft: '4px solid #2c5aa0',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <FieldValue sx={{ height: '100%' }}>
+              <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                {/* Title */}
+                <Box sx={{ mb: 2 }}>
+                  <SubHeading component="h6" sx={{ fontSize: '18px', fontWeight: 'bold', color: '#275786' }}>
+                    {analysis.title}
+                  </SubHeading>
+                </Box>
+                
+                {/* Chart Type */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    What you see:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    {analysis.chartType}
+                  </Typography>
+                </Box>
+                
+                {/* What to Look For */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    What to look for:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    {analysis.whatToLook}
+                  </Typography>
+                </Box>
+                
+                {/* Technical Note */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    Technical approach:
+                  </Typography>
+                  <InfoSection bgColor="#f0f8ff">
+                    {analysis.technicalNote}
+                  </InfoSection>
+                </Box>
+                
+                {/* Good Result */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    ✅ Good result:
+                  </Typography>
+                  <InfoSection bgColor="#d4edda">
+                    {analysis.goodResult}
+                  </InfoSection>
+                </Box>
+                
+                {/* Bad Result */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    ⚠️ Concerning result:
+                  </Typography>
+                  <InfoSection bgColor="#f8d7da">
+                    {analysis.badResult}
+                  </InfoSection>
+                </Box>
+                
+                {/* Why Important - Commented out for future consideration */}
+                {/* <Box sx={{ mt: 'auto' }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    Why it matters:
+                  </Typography>
+                  <InfoSection bgColor="#e8f4f8">
+                    {analysis.whyImportant}
+                  </InfoSection>
+                </Box> */}
+              </Box>
+            </FieldValue>
+          </FieldContainer>
+        ))}
+      </Box>
     </Box>
   );
 
@@ -1106,200 +1456,138 @@ const GlossaryPage = () => {
         fontWeight: 'bold', 
         color: '#275786', 
         mb: 3,
-        fontSize: '20px'
+        fontSize: '20px',
+        fontFamily: 'Arial, sans-serif'
       }}>
         Data Distribution Analysis
       </Typography>
       
-      <Alert severity="info" sx={{ mb: 4, fontSize: '16px' }}>
-        Examines the underlying data characteristics to understand model behavior and identify potential issues with data quality or representativeness.
-      </Alert>
+      <Box sx={{ mb: 3 }}>
+        <FieldContainer sx={{ minHeight: 'auto' }}>
+          <FieldValue>
+            <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+              Shows the demographic makeup of your current dataset. These charts help you understand the patient population your model was trained and tested on.
+            </Typography>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
 
-      {[
-        {
-          title: "Age Distribution Chart (Bar Chart)",
-          description: "A vertical bar chart displaying the number of patients in different age groups within your dataset",
-          ageGroups: ["0-10 years", "11-20 years", "21-30 years", "31-40 years", "41-50 years", "51-60 years", "60-80+ years"],
-          whyNeeded: [
-            "Shows if your dataset represents different age ranges adequately",
-            "Age affects disease risk and model performance differently",
-            "Helps identify if the model will work for all age groups you intend to serve"
-          ],
-          interpretation: {
-            good: "Balanced bars: Good representation across age groups",
-            warning: "Very tall single bar: Most patients concentrated in one age range (potential bias)",
-            poor: "Missing/very short bars: Underrepresented age groups may have poor model performance",
-            expected: "Some medical conditions naturally affect certain age groups more"
-          },
-          technical: {
-            type: "Vertical bar chart with blue color (#42a5f5)",
-            xAxis: "Age group categories",
-            yAxis: "Patient count",
-            calculation: "Age calculated from patient birthdate field"
-          }
+      {/* Three Chart Analysis Cards in Row */}
+      <Box sx={{ 
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          md: 'repeat(2, 1fr)', 
         },
-        {
-          title: "Gender Distribution Chart (Pie Chart)",
-          description: "A pie chart showing the proportional split of patients by gender in your dataset",
-          categories: ["Male", "Female", "Unknown/Other (if present in data)"],
-          whyNeeded: [
-            "Many diseases present differently between genders",
-            "Ensures model works equally well for both male and female patients",
-            "Required for bias detection and regulatory compliance"
-          ],
-          interpretation: {
-            good: "Roughly 50/50 split: Good gender balance for most conditions",
-            warning: "60/40 or 70/30 split: Moderate imbalance, may need attention",
-            poor: "80/20 or more extreme: Significant bias risk, model may not work well for underrepresented gender",
-            expected: "Some conditions naturally affect one gender more (e.g., prostate conditions)"
+        gap: 3,
+        width: '100%',
+        mb: 3
+      }}>
+        {[
+          {
+            title: "Age Distribution Chart",
+            chartType: "Bar chart displaying patient counts across age groups: 0-10, 11-20, 21-30, 31-40, 41-50, 51-60, 61+ years",
+            whatToLook: "Height of each bar shows number of patients in that age bracket. Hover over bars to see exact counts and percentages",
+            technicalNote: "Uses Chart.js Bar component with blue color (#42a5f5). Data comes from DistributionCharts component processing age fields from your dataset",
+            goodResult: "Reasonable distribution across age groups relevant to your medical topic. No single age group dominates >60% of patients",
+            badResult: "Extreme concentration in one age group or complete absence of certain age ranges. Very low counts (<10) in multiple groups"
           },
-          technical: {
-            type: "Pie/Doughnut chart",
-            colors: "Green (#66bb6a) and coral (#ef5350)",
-            display: "Shows both count and percentage for each segment",
-            source: "Gender field from patient demographics"
-          }
-        },
-        {
-          title: "Race/Ethnicity Distribution Chart (Bar Chart)",
-          description: "A horizontal or vertical bar chart displaying the number of patients across different racial and ethnic groups",
-          categories: ["White/Caucasian", "Black/African American", "Hispanic/Latino", "Asian/Pacific Islander", "Native American", "Other/Mixed/Unknown"],
-          whyNeeded: [
-            "Different racial groups can have different disease patterns and risk factors",
-            "Critical for ensuring equitable AI performance across all populations",
-            "Regulatory requirement for healthcare AI systems"
-          ],
-          interpretation: {
-            good: "Multiple groups represented: Better chance of equitable model performance",
-            warning: "One group >80%: High risk of bias against underrepresented groups",
-            poor: "Missing major groups: Model won't work for those populations",
-            expected: "High 'Unknown' category: Data collection quality issues"
+          {
+            title: "Gender Distribution Chart",
+            chartType: "Pie/Doughnut chart showing proportional split between Male and Female patients with counts and percentages",
+            whatToLook: "Pie slices representing gender distribution. Each slice shows both the count and percentage of patients",
+            technicalNote: "Uses DistributionPieChart component with green (#66bb6a) for female and coral (#ef5350) for male. Data extracted from Gender field in your dataset",
+            goodResult: "Reasonable gender balance for your medical condition (typically 30-70% range). Clear data quality with minimal missing values",
+            badResult: "Extreme gender imbalance (>85% one gender) unless medically expected. Large 'Unknown' category suggests data quality issues"
           },
-          technical: {
-            type: "Bar chart with purple color (#ab47bc)",
-            xAxis: "Racial/ethnic group names",
-            yAxis: "Patient count",
-            source: "Race field from patient demographics",
-            sorting: "Often sorted by frequency (highest to lowest count)"
+          {
+            title: "Race/Ethnicity Distribution Chart",
+            chartType: "Bar chart displaying patient counts across racial categories found in your dataset (White, Black, Hispanic, Asian, Other)",
+            whatToLook: "Bars showing number of patients in each racial group. Groups are typically sorted alphabetically with consistent light pink coloring",
+            technicalNote: "Uses Chart.js Bar component with light pink color (rgba(255, 182, 193, 0.95)). Data comes from Race field processing in DistributionCharts component",
+            goodResult: "Multiple racial groups present in your dataset. Distribution reflects the patient population you're studying",
+            badResult: "Only one racial group present or very uneven distribution. Missing racial data shows as gaps in representation"
           }
-        }
-      ].map((chart, index) => (
-        <Accordion key={index} expanded={expanded === `panel${index}`} onChange={handleAccordionChange(`panel${index}`)}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#275786', fontSize: '16px' }}>
-              {chart.title}
+        ].map((chart, index) => (
+          <FieldContainer key={index} sx={{ 
+            minHeight: '450px',
+            borderLeft: '4px solid #2c5aa0',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <FieldValue sx={{ height: '100%' }}>
+              <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                {/* Title */}
+                <Box sx={{ mb: 2 }}>
+                  <SubHeading component="h6" sx={{ fontSize: '18px', fontWeight: 'bold', color: '#275786' }}>
+                    {chart.title}
+                  </SubHeading>
+                </Box>
+                
+                {/* Chart Type */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    What you see:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    {chart.chartType}
+                  </Typography>
+                </Box>
+                
+                {/* What to Look For */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    What to look for:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+                    {chart.whatToLook}
+                  </Typography>
+                </Box>
+                
+                {/* Technical Note */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    Technical approach:
+                  </Typography>
+                  <InfoSection bgColor="#f0f8ff">
+                    {chart.technicalNote}
+                  </InfoSection>
+                </Box>
+                
+                {/* Good Result */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    ✅ Good result:
+                  </Typography>
+                  <InfoSection bgColor="#d4edda">
+                    {chart.goodResult}
+                  </InfoSection>
+                </Box>
+                
+                {/* Bad Result */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1, color: '#333', fontFamily: 'Arial, sans-serif' }}>
+                    ⚠️ Concerning result:
+                  </Typography>
+                  <InfoSection bgColor="#f8d7da">
+                    {chart.badResult}
+                  </InfoSection>
+                </Box>
+              </Box>
+            </FieldValue>
+          </FieldContainer>
+        ))}
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <FieldContainer sx={{ minHeight: 'auto' }}>
+          <FieldValue>
+            <Typography variant="body2" sx={{ fontSize: '16px', color: '#333', fontFamily: 'Arial, sans-serif', lineHeight: 1.6 }}>
+              <strong>Key Point:</strong> These charts show the actual demographic composition of your current topic's dataset. Use them to understand what patient groups your model has been trained on and where performance analysis may be limited by small sample sizes.
             </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant="body2" paragraph sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-              What it is:
-            </Typography>
-            <Typography variant="body2" paragraph sx={{ fontSize: '16px' }}>
-              {chart.description}
-            </Typography>
-
-            {chart.ageGroups && (
-              <>
-                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mt: 2 }}>
-                  Age Groups Used:
-                </Typography>
-                <List dense>
-                  {chart.ageGroups.map((group, idx) => (
-                    <ListItem key={idx}>
-                      <ListItemText primary={group} primaryComponents={{ style: { fontSize: '16px' } }} />
-                    </ListItem>
-                  ))}
-                </List>
-              </>
-            )}
-
-            {chart.categories && (
-              <>
-                <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mt: 2 }}>
-                  Categories shown:
-                </Typography>
-                <List dense>
-                  {chart.categories.map((category, idx) => (
-                    <ListItem key={idx}>
-                      <ListItemText primary={category} primaryComponents={{ style: { fontSize: '16px' } }} />
-                    </ListItem>
-                  ))}
-                </List>
-              </>
-            )}
-
-            <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mt: 2 }}>
-              Why we need it:
-            </Typography>
-            <List dense>
-              {chart.whyNeeded.map((reason, idx) => (
-                <ListItem key={idx}>
-                  <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
-                  <ListItemText primary={reason} primaryComponents={{ style: { fontSize: '16px' } }} />
-                </ListItem>
-              ))}
-            </List>
-
-            <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mt: 2 }}>
-              How to interpret:
-            </Typography>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#28a745' }}>
-                  <strong>✅ Good:</strong> {chart.interpretation.good}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#ffc107' }}>
-                  <strong>⚠️ Warning:</strong> {chart.interpretation.warning}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#dc3545' }}>
-                  <strong>❌ Poor:</strong> {chart.interpretation.poor}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body2" sx={{ fontSize: '16px', color: '#6c757d' }}>
-                  <strong>ℹ️ Expected:</strong> {chart.interpretation.expected}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            <Box sx={{ backgroundColor: '#f8f9fa', padding: 2, borderRadius: 1, mt: 2 }}>
-              <Typography variant="body2" sx={{ fontSize: '16px', fontWeight: 'bold', mb: 1 }}>
-                Technical details:
-              </Typography>
-              <Typography variant="body2" sx={{ fontSize: '16px' }}>
-                <strong>Chart type:</strong> {chart.technical.type}
-              </Typography>
-              <Typography variant="body2" sx={{ fontSize: '16px' }}>
-                <strong>X-axis:</strong> {chart.technical.xAxis}
-              </Typography>
-              <Typography variant="body2" sx={{ fontSize: '16px' }}>
-                <strong>Y-axis:</strong> {chart.technical.yAxis}
-              </Typography>
-              {chart.technical.colors && (
-                <Typography variant="body2" sx={{ fontSize: '16px' }}>
-                  <strong>Colors:</strong> {chart.technical.colors}
-                </Typography>
-              )}
-              <Typography variant="body2" sx={{ fontSize: '16px' }}>
-                <strong>Data source:</strong> {chart.technical.source}
-              </Typography>
-              {chart.technical.calculation && (
-                <Typography variant="body2" sx={{ fontSize: '16px' }}>
-                  <strong>Calculation:</strong> {chart.technical.calculation}
-                </Typography>
-              )}
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-
-      <Alert severity="success" sx={{ mt: 4, fontSize: '16px' }}>
-        <strong>Key Point:</strong> These three charts together show whether your dataset represents the patient population you want to serve. Imbalanced demographics often lead to biased AI models that work poorly for underrepresented groups.
-      </Alert>
+          </FieldValue>
+        </FieldContainer>
+      </Box>
     </Box>
   );
 
@@ -1318,7 +1606,7 @@ const GlossaryPage = () => {
         mb: 2,
         fontSize: '28px'
       }}>
-        Lava Medical ML Dashboard - Glossary
+        Lava Application Dashboard - Glossary
       </Typography>
       
       <Typography variant="body1" sx={{ 
