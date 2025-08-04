@@ -2,86 +2,11 @@ import React, { useState } from 'react';
 import { 
   Box, 
   Typography, 
-  Accordion, 
-  AccordionSummary, 
-  AccordionDetails,
-  Tabs,
-  Tab,
   Paper,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Alert
+  Divider
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import WarningIcon from '@mui/icons-material/Warning';
-import ErrorIcon from '@mui/icons-material/Error';
-import InfoIcon from '@mui/icons-material/Info';
 import { styled } from '@mui/material/styles';
 
-const StyledTabs = styled(Tabs)({
-  minHeight: 'auto',
-  width: '100%',
-  position: 'relative',
-  backgroundColor: 'transparent',
-  borderRadius: '12px 12px 0 0',
-  padding: '0',
-  margin: '0',
-  borderBottom: '2.5px solid #e5e7eb',
-  '& .MuiTabs-indicator': {
-    display: 'none',
-  },
-  '& .MuiTabs-flexContainer': {
-    gap: '10px',
-    position: 'relative',
-  },
-});
-
-const StyledTab = styled(Tab)(({ theme }) => ({
-  textTransform: 'None',
-  fontWeight: 600,
-  fontSize: '13px',
-  fontFamily: 'Arial, sans-serif',
-  borderRadius: '12px 12px 0 0',
-  minHeight: '36px',
-  padding: '8px 12px',
-  marginRight: 0,
-  cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  backgroundColor: '#e5e7eb',
-  color: '#6b7280',
-  border: 'none',
-  borderBottom: '2.5px solid transparent',
-  width: '160px',
-  minWidth: '160px',
-  maxWidth: '180px',
-  position: 'relative',
-  '&:hover': {
-    backgroundColor: '#d1d5db',
-    color: '#374151',
-    transform: 'scale(1.05)',
-    borderBottom: '2.5px solid #93c5fd',
-  },
-  '&.Mui-selected': {
-    backgroundColor: '#3b82f6',
-    color: '#ffffff',
-    borderBottom: '2.5px solid #1d4ed8',
-    transform: 'scale(1.02)',
-    '&:hover': {
-      backgroundColor: '#2563eb',
-      color: '#ffffff',
-      borderBottom: '2.5px solid #1d4ed8',
-      transform: 'scale(1.05)',
-    },
-  },
-}));
 
 // Model Card styled components - exact match
 const FieldContainer = styled('div')(({ theme }) => ({
@@ -124,28 +49,7 @@ const FieldValue = styled('div')(({ theme }) => ({
   whiteSpace: 'pre-line',
 }));
 
-const PerformanceChip = styled(Chip)(({ severity }) => ({
-  backgroundColor: 
-    severity === 'excellent' ? '#d4edda' :
-    severity === 'good' ? '#d1ecf1' :
-    severity === 'fair' ? '#fff3cd' :
-    severity === 'poor' ? '#f8d7da' : '#e9ecef',
-  color:
-    severity === 'excellent' ? '#155724' :
-    severity === 'good' ? '#0c5460' :
-    severity === 'fair' ? '#856404' :
-    severity === 'poor' ? '#721c24' : '#495057',
-  fontWeight: 'bold',
-  fontSize: '12px',
-  margin: '2px',
-}));
 
-const SectionDivider = styled('div')(({ theme }) => ({
-  height: '2px',
-  background: 'linear-gradient(90deg, #275786 0%, #1164ad 100%)',
-  margin: '12px 0',
-  borderRadius: '1px',
-}));
 
 const SubHeading = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
@@ -219,27 +123,13 @@ const PerformanceBadge = styled('span')(({ theme, severity }) => ({
   fontFamily: 'Arial, sans-serif',
 }));
 
-const ChartVisualization = styled(Box)(({ theme }) => ({
-  width: '100%',
-  height: '200px',
-  border: '2px solid #333',
-  borderRadius: '8px',
-  position: 'relative',
-  backgroundColor: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '16px',
-}));
 
 const GlossaryPage = ({ initialSection = null }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [expanded, setExpanded] = useState(false);
 
   // Handle section-specific navigation
   React.useEffect(() => {
     if (initialSection === 'scroll-to-top') {
-      // Context-aware navigation - stay on current tab but scroll to top
+      // Context-aware navigation - scroll to top
       setTimeout(() => {
         window.scrollTo({ 
           top: 0, 
@@ -247,42 +137,40 @@ const GlossaryPage = ({ initialSection = null }) => {
         });
       }, 100);
     } else if (initialSection) {
-      const sectionToTabMap = {
-        // Performance Metrics Tab (1)
-        'roc-curve': { tab: 1, elementId: 'roc-curve-section' },
-        'confusion-matrix': { tab: 1, elementId: 'confusion-matrix-section' },
-        'calibration-curve': { tab: 1, elementId: 'calibration-curve-section' },
-        'accuracy-over-time': { tab: 1, elementId: 'accuracy-over-time-section' },
-        'accuracy-metrics-chart': { tab: 1, elementId: 'accuracy-metrics-section' },
+      const sectionToElementMap = {
+        // Performance Metrics sections
+        'roc-curve': 'roc-curve-section',
+        'confusion-matrix': 'confusion-matrix-section',
+        'calibration-curve': 'calibration-curve-section',
+        'accuracy-over-time': 'accuracy-over-time-section',
+        'accuracy-metrics-chart': 'accuracy-metrics-section',
         
-        // Accuracy Metrics Tab (0) - Individual metrics
-        'precision': { tab: 0, elementId: 'accuracy-metrics-main' },
-        'recall': { tab: 0, elementId: 'accuracy-metrics-main' },
-        'sensitivity': { tab: 0, elementId: 'accuracy-metrics-main' },
-        'specificity': { tab: 0, elementId: 'accuracy-metrics-main' },
-        'f1-score': { tab: 0, elementId: 'accuracy-metrics-main' },
-        'overall-accuracy': { tab: 0, elementId: 'accuracy-metrics-main' },
+        // Accuracy Metrics sections
+        'precision': 'accuracy-metrics-main',
+        'recall': 'accuracy-metrics-main',
+        'sensitivity': 'accuracy-metrics-main',
+        'specificity': 'accuracy-metrics-main',
+        'f1-score': 'accuracy-metrics-main',
+        'overall-accuracy': 'accuracy-metrics-main',
         
-        // Subgroup Analysis Tab (2)
-        'subgroup-analysis': { tab: 2, elementId: 'subgroup-analysis-main' },
-        'gender-performance': { tab: 2, elementId: 'gender-performance-section' },
-        'race-performance': { tab: 2, elementId: 'race-performance-section' },
-        'age-group-performance': { tab: 2, elementId: 'age-group-section' },
+        // Subgroup Analysis sections
+        'subgroup-analysis': 'subgroup-analysis-main',
+        'gender-performance': 'gender-performance-section',
+        'race-performance': 'race-performance-section',
+        'age-group-performance': 'age-group-section',
         
-        // Data Distribution Tab (3)
-        'data-distribution': { tab: 3, elementId: 'data-distribution-main' },
-        'age-distribution': { tab: 3, elementId: 'age-distribution-section' },
-        'gender-distribution': { tab: 3, elementId: 'gender-distribution-section' },
-        'race-distribution': { tab: 3, elementId: 'race-distribution-section' }
+        // Data Distribution sections
+        'data-distribution': 'data-distribution-main',
+        'age-distribution': 'age-distribution-section',
+        'gender-distribution': 'gender-distribution-section',
+        'race-distribution': 'race-distribution-section'
       };
       
-      const sectionInfo = sectionToTabMap[initialSection];
-      if (sectionInfo) {
-        setActiveTab(sectionInfo.tab);
-        
-        // Scroll to element after tab change
+      const elementId = sectionToElementMap[initialSection];
+      if (elementId) {
+        // Scroll to element
         setTimeout(() => {
-          const element = document.getElementById(sectionInfo.elementId);
+          const element = document.getElementById(elementId);
           if (element) {
             element.scrollIntoView({ 
               behavior: 'smooth', 
@@ -290,11 +178,10 @@ const GlossaryPage = ({ initialSection = null }) => {
               inline: 'nearest'
             });
           }
-        }, 100); // Small delay to allow tab content to render
+        }, 100);
       }
     } else {
-      // Fresh navigation from other pages - go to default tab (0) and scroll to top
-      setActiveTab(0);
+      // Fresh navigation from other pages - scroll to top
       setTimeout(() => {
         window.scrollTo({ 
           top: 0, 
@@ -304,13 +191,7 @@ const GlossaryPage = ({ initialSection = null }) => {
     }
   }, [initialSection]);
 
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
 
-  const handleAccordionChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
 
   const accuracyMetrics = [
     {
@@ -1899,20 +1780,20 @@ const GlossaryPage = ({ initialSection = null }) => {
         Comprehensive guide to understanding medical machine learning metrics, visualizations, and concepts
       </Typography>
 
-      <Box display="flex" justifyContent="center" width="100%" mb={3}>
-        <StyledTabs value={activeTab} onChange={handleTabChange}>
-          <StyledTab label="Accuracy Metrics" />
-          <StyledTab label="Performance Metrics" />
-          <StyledTab label="Sub-Group Analysis" />
-          <StyledTab label="Data Distribution" />
-        </StyledTabs>
-      </Box>
-
-      <Paper elevation={1} sx={{ p: 3, borderRadius: '0 0 12px 12px' }}>
-        {activeTab === 0 && renderAccuracyMetrics()}
-        {activeTab === 1 && renderPerformanceCharts()}
-        {activeTab === 2 && renderSubgroupAnalysis()}
-        {activeTab === 3 && renderDataDistribution()}
+      <Paper elevation={1} sx={{ p: 3, borderRadius: '12px' }}>
+        {renderAccuracyMetrics()}
+        <Box sx={{ my: 4 }}>
+          <Divider />
+        </Box>
+        {renderPerformanceCharts()}
+        <Box sx={{ my: 4 }}>
+          <Divider />
+        </Box>
+        {renderSubgroupAnalysis()}
+        <Box sx={{ my: 4 }}>
+          <Divider />
+        </Box>
+        {renderDataDistribution()}
       </Paper>
     </Box>
   );
