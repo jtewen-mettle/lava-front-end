@@ -612,7 +612,7 @@ const ModelCardSection = ({ topic }) => {
         </style>
       </head>
       <body>
-        <h1 class="main-title">ONC HTI-1 Compliant Model Card</h1>
+        <h1 class="main-title">ASTP HTI-1 Compliant Model Card</h1>
         <p style="text-align: center; margin-bottom: 40px; font-size: 18px; color: #666;">
           ${data.interventionName || 'Healthcare AI Model'} - Complete Documentation
         </p>
@@ -1623,7 +1623,7 @@ const ModelCardSection = ({ topic }) => {
               textAlign: 'left',
               marginBottom: '4px'
             }}>
-              ONC HTI-1 Compliant Model Card
+            ASTP HTI-1 Compliant Model Card
             </Typography>
             <Typography sx={{ 
               fontFamily: 'Arial, sans-serif',

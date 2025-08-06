@@ -7,7 +7,7 @@ export const modelCardData = {
     fundingSource: "Oracle Corporation internal R&D funding in collaboration with American Heart Association Scientific Statements",
     valueOutput: "10-year atherosclerotic cardiovascular disease risk percentage (0-100%) with risk stratification categories (Low <5%, Borderline 5-7.4%, Intermediate 7.5-19.9%, High ≥20%)",
     outputType: "Prediction & Risk Classification",
-    complianceBadge: "✓ ONC HTI-1 Compliant | 21st Century Cures Act",
+    complianceBadge: "✓ ASTP HTI-1 Compliant | 21st Century Cures Act",
     
     // Purpose of Intervention
     intendedUse: "Primary prevention cardiovascular risk assessment to inform statin therapy decision-making and lifestyle modification counseling in adults without existing cardiovascular disease",
@@ -149,12 +149,12 @@ export const modelCardData = {
     algorithmType: "Cox Proportional Hazards Model with race/sex-specific coefficients (Pooled Cohort Equations)",
     integrationMethod: "FHIR R4 Clinical Decision Support Service, HL7 CDS Hooks v1.0, SMART on FHIR v1.0",
     responseTime: "Mean: 847ms, 95th percentile: 1.2s",
-    certificationDetails: "ONC Health IT Certification Program\nCriterion: 170.315(a)(9) Clinical Decision Support\nCertificate #: 15.07.07.3068.IC13.01.00.1.231204",
+    certificationDetails: "ASTP Health IT Certification Program\nCriterion: 170.315(a)(9) Clinical Decision Support\nCertificate #: 15.07.07.3068.IC13.01.00.1.231204",
     
     // Contact Information
     clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
     technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3068",
+    regulatoryAffairs: "regulatory@cerner.com\nASTP Certification ID: 3068",
     
     // Performance Metrics (from HTML Section 6)
     internalValidationMetrics: {
@@ -229,7 +229,7 @@ export const modelCardData = {
     fundingSource: "Oracle Corporation internal R&D funding in collaboration with National Kidney Foundation",
     valueOutput: "5-year chronic kidney disease progression risk percentage with stage classification (Stage 1-5)",
     outputType: "Prediction & Risk Classification",
-    complianceBadge: "✓ ONC HTI-1 Compliant | 21st Century Cures Act",
+    complianceBadge: "✓ ASTP HTI-1 Compliant | 21st Century Cures Act",
     
     // Purpose of Intervention
     intendedUse: "Early detection and monitoring of chronic kidney disease progression to inform treatment decisions and lifestyle modifications",
@@ -371,12 +371,12 @@ export const modelCardData = {
     algorithmType: "Random Forest Classification Model with ensemble methods and feature importance ranking",
     integrationMethod: "FHIR R4 Clinical Decision Support Service, HL7 CDS Hooks v1.0, SMART on FHIR v1.0",
     responseTime: "Mean: 623ms, 95th percentile: 0.9s",
-    certificationDetails: "ONC Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3069.IC13.01.00.1.231204",
+    certificationDetails: "ASTP Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3069.IC13.01.00.1.231204",
     
     // Contact Information
     clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
     technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3069",
+    regulatoryAffairs: "regulatory@cerner.com\nASTP Certification ID: 3069",
     
     // Footer Information
     lastUpdated: "July 30, 2025",
@@ -388,7 +388,7 @@ export const modelCardData = {
     developer: "Oracle Cerner Corporation",
     releaseDate: "January 20, 2024",
     intendedUse: "Clinical decision support for chronic kidney disease progression risk assessment",
-    certificationStatus: "ONC Certified Health IT Module (2025)",
+    certificationStatus: "ASTP Certified Health IT Module (2025)",
     modelType: "Random Forest Classification Model",
     outputProvided: "5-year CKD progression risk with stage classification",
     endUsers: "Licensed clinicians using certified EHRs in nephrology and primary care",
@@ -436,7 +436,7 @@ export const modelCardData = {
     fundingSource: "Oracle Corporation internal R&D funding in collaboration with American Urological Association",
     valueOutput: "10-year prostate cancer risk percentage with screening recommendations (Low <2%, Intermediate 2-10%, High >10%)",
     outputType: "Prediction & Risk Classification",
-    complianceBadge: "✓ ONC HTI-1 Compliant | 21st Century Cures Act",
+    complianceBadge: "✓ ASTP HTI-1 Compliant | 21st Century Cures Act",
     
     // Purpose of Intervention
     intendedUse: "Screening decision support and risk stratification for prostate cancer to inform shared decision-making",
@@ -578,12 +578,12 @@ export const modelCardData = {
     algorithmType: "Gradient Boosting Machine Learning Model with ensemble methods and PSA kinetics integration",
     integrationMethod: "FHIR R4 Clinical Decision Support Service, HL7 CDS Hooks v1.0, SMART on FHIR v1.0",
     responseTime: "Mean: 734ms, 95th percentile: 1.1s",
-    certificationDetails: "ONC Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3070.IC13.01.00.1.231204",
+    certificationDetails: "ASTP Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3070.IC13.01.00.1.231204",
     
     // Contact Information
     clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
     technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3070",
+    regulatoryAffairs: "regulatory@cerner.com\nASTP Certification ID: 3070",
     
     // Footer Information
     lastUpdated: "July 30, 2025",
@@ -595,7 +595,7 @@ export const modelCardData = {
     developer: "Oracle Cerner Corporation",
     releaseDate: "June 10, 2024",
     intendedUse: "Clinical decision support for prostate cancer screening risk stratification",
-    certificationStatus: "ONC Certified Health IT Module (2026)",
+    certificationStatus: "ASTP Certified Health IT Module (2026)",
     modelType: "Gradient Boosting Machine Learning Model",
     outputProvided: "10-year prostate cancer risk with screening recommendations",
     endUsers: "Licensed clinicians using certified EHRs in urology and primary care",
@@ -643,7 +643,7 @@ export const modelCardData = {
     fundingSource: "Oracle Corporation internal R&D funding in collaboration with CMS and Hospital Quality Alliance",
     valueOutput: "30-day hospital readmission risk percentage with intervention recommendations (Low <10%, Moderate 10-25%, High >25%)",
     outputType: "Prediction & Risk Classification",
-    complianceBadge: "✓ ONC HTI-1 Compliant | 21st Century Cures Act",
+    complianceBadge: "✓ ASTP HTI-1 Compliant | 21st Century Cures Act",
     
     // Purpose of Intervention
     intendedUse: "Post-discharge care planning and readmission prevention to improve patient outcomes and reduce healthcare costs",
@@ -785,12 +785,12 @@ export const modelCardData = {
     algorithmType: "Deep Learning Neural Network Model with attention mechanisms and social determinants integration",
     integrationMethod: "FHIR R4 Clinical Decision Support Service, HL7 CDS Hooks v1.0, SMART on FHIR v1.0",
     responseTime: "Mean: 892ms, 95th percentile: 1.4s",
-    certificationDetails: "ONC Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3071.IC13.01.00.1.231204",
+    certificationDetails: "ASTP Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3071.IC13.01.00.1.231204",
     
     // Contact Information
     clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
     technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3071",
+    regulatoryAffairs: "regulatory@cerner.com\nASTP Certification ID: 3071",
     
     // Footer Information
     lastUpdated: "July 30, 2025",
@@ -802,7 +802,7 @@ export const modelCardData = {
     developer: "Oracle Cerner Corporation",
     releaseDate: "April 8, 2024",
     intendedUse: "Clinical decision support for 30-day hospital readmission risk assessment",
-    certificationStatus: "ONC Certified Health IT Module (2025)",
+    certificationStatus: "ASTP Certified Health IT Module (2025)",
     modelType: "Deep Learning Neural Network Model",
     outputProvided: "30-day readmission risk percentage with intervention recommendations",
     endUsers: "Licensed clinicians using certified EHRs in hospital and ambulatory settings",

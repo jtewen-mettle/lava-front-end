@@ -43,7 +43,7 @@ const Header = ({ data, activeSection }) => {
           textAlign: 'left',
           marginBottom: '4px'
         }}>
-          ONC HTI-1 Compliant Model Card
+          ASTP HTI-1 Compliant Model Card
         </Typography>
         <Typography sx={{ 
           fontFamily: 'Arial, sans-serif',
