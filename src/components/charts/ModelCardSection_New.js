@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { modelCardData } from './ModelCard/data';
+import { modelCardData } from '../../data/modelCardData';
 
 // Import all modular components
-import SideNavigation from './ModelCard/SideNavigation';
-import ContentRenderer from './ModelCard/ContentRenderer';
-import Header from './ModelCard/Header';
-import BottomNavigation from './ModelCard/BottomNavigation';
-import ModelCardFooter from './ModelCard/ModelCardFooter';
-import { ContentArea } from './ModelCard/styles';
-import { navigationItems, getModelCardKey } from './ModelCard/utils/navigationUtils';
+import SideNavigation from './components/SideNavigation';
+import ContentRenderer from './components/ContentRenderer';
+import Header from './components/Header';
+import BottomNavigation from './components/BottomNavigation';
+import { ContentArea } from './styles/ModelCardStyles';
+import { navigationItems, getModelCardKey } from './utils/navigationUtils';
 
 const ModelCardSection = ({ topic }) => {
   // State management
@@ -76,9 +75,6 @@ const ModelCardSection = ({ topic }) => {
           onNavigation={handleNavigation}
           setExpandedSections={setExpandedSections}
         />
-
-        {/* Footer */}
-        <ModelCardFooter data={data} />
       </ContentArea>
     </Box>
   );

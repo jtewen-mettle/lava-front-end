@@ -78,6 +78,13 @@ export const modelCardData = {
       { variable: "Female", mesa: "52.8%", whi: "100%", regards: "55.1%" }
     ],
     
+    // External Validation Sample Sizes
+    externalValidationSampleSizes: {
+      mesa: "6,814",
+      whi: "8,090", 
+      regards: "16,025"
+    },
+    
     // Performance Metrics
     internalValidationMetrics: {
       aurocValidity: "0.76",
@@ -293,6 +300,13 @@ export const modelCardData = {
       { variable: "Female", mesa: "56.2%", whi: "100%", regards: "58.4%" }
     ],
     
+    // External Validation Sample Sizes
+    externalValidationSampleSizes: {
+      mesa: "5,243",
+      whi: "7,156", 
+      regards: "14,892"
+    },
+    
     // Performance Metrics
     internalValidationMetrics: {
       aurocValidity: "0.82",
@@ -360,9 +374,9 @@ export const modelCardData = {
     certificationDetails: "ONC Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3069.IC13.01.00.1.231204",
     
     // Contact Information
-    clinicalSupport: "clinical.ai@cerner.com\\n1-800-237-6371",
-    technicalSupport: "integration.support@cerner.com\\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\\nONC Certification ID: 3069",
+    clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
+    technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
+    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3069",
     
     // Footer Information
     lastUpdated: "July 30, 2025",
@@ -493,6 +507,13 @@ export const modelCardData = {
       { variable: "Age 55-70", mesa: "78.9%", whi: "71.2%", regards: "82.1%" }
     ],
     
+    // External Validation Sample Sizes
+    externalValidationSampleSizes: {
+      mesa: "4,127",
+      whi: "6,892", 
+      regards: "12,458"
+    },
+    
     // Performance Metrics
     internalValidationMetrics: {
       aurocValidity: "0.79",
@@ -560,9 +581,9 @@ export const modelCardData = {
     certificationDetails: "ONC Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3070.IC13.01.00.1.231204",
     
     // Contact Information
-    clinicalSupport: "clinical.ai@cerner.com\\n1-800-237-6371",
-    technicalSupport: "integration.support@cerner.com\\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\\nONC Certification ID: 3070",
+    clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
+    technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
+    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3070",
     
     // Footer Information
     lastUpdated: "July 30, 2025",
@@ -693,6 +714,13 @@ export const modelCardData = {
       { variable: "Female", mesa: "57.3%", whi: "100%", regards: "59.8%" }
     ],
     
+    // External Validation Sample Sizes
+    externalValidationSampleSizes: {
+      mesa: "8,964",
+      whi: "9,847", 
+      regards: "18,523"
+    },
+    
     // Performance Metrics
     internalValidationMetrics: {
       aurocValidity: "0.73",
@@ -760,9 +788,9 @@ export const modelCardData = {
     certificationDetails: "ONC Health IT Certification Program\\nCriterion: 170.315(a)(9) Clinical Decision Support\\nCertificate #: 15.07.07.3071.IC13.01.00.1.231204",
     
     // Contact Information
-    clinicalSupport: "clinical.ai@cerner.com\\n1-800-237-6371",
-    technicalSupport: "integration.support@cerner.com\\nDeveloper Portal: developer.cerner.com",
-    regulatoryAffairs: "regulatory@cerner.com\\nONC Certification ID: 3071",
+    clinicalSupport: "clinical.ai@cerner.com\n1-800-237-6371",
+    technicalSupport: "integration.support@cerner.com\nDeveloper Portal: developer.cerner.com",
+    regulatoryAffairs: "regulatory@cerner.com\nONC Certification ID: 3071",
     
     // Footer Information
     lastUpdated: "July 30, 2025",
