@@ -78,7 +78,7 @@ const ContentRenderer = ({
   if (!activeSection) {
     return (
       <Box sx={{ p: 4, textAlign: 'center' }}>
-        <Typography variant="h6" color="textSecondary">
+        <Typography variant="h6" color="textSecondary" sx={{ fontSize: '16px' }}>
           Select a section from the navigation to view its content
         </Typography>
       </Box>
@@ -263,7 +263,7 @@ const ContentRenderer = ({
             <SectionTitle>4. Development Details and Input Features</SectionTitle>
           </SectionHeader>
           <SectionContent>
-            <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Training Data Inclusion/Exclusion Criteria
             </Typography>
             <FieldGrid items={[
@@ -271,7 +271,7 @@ const ContentRenderer = ({
               { label: 'Exclusion Criteria', value: data.trainingExclusion }
             ]} columns={2} />
             
-            <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Fairness Development Process
             </Typography>
             <FieldGrid items={[
@@ -405,7 +405,7 @@ const ContentRenderer = ({
             <SectionTitle>6. Quantitative Performance Measures</SectionTitle>
           </SectionHeader>
           <SectionContent>
-            <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Internal Validation Metrics
             </Typography>
             <MetricGrid metrics={[
@@ -417,7 +417,7 @@ const ContentRenderer = ({
               { value: data.internalValidationMetrics?.ppv, label: 'PPV' }
             ]} />
             
-            <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               External Validation Metrics
             </Typography>
             <MetricGrid metrics={[
@@ -517,7 +517,7 @@ const ContentRenderer = ({
             <SectionTitle>7. Ongoing Maintenance & Monitoring</SectionTitle>
           </SectionHeader>
           <SectionContent>
-            <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Validity Monitoring
             </Typography>
             <FieldGrid items={[
@@ -534,7 +534,7 @@ const ContentRenderer = ({
               }
             ]} columns={1} />
             
-            <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Fairness Monitoring
             </Typography>
             <FieldGrid items={[
@@ -607,7 +607,7 @@ const ContentRenderer = ({
     default:
       return (
         <Box sx={{ p: 4, textAlign: 'center' }}>
-          <Typography variant="h6" color="textSecondary">
+          <Typography variant="h6" color="textSecondary" sx={{ fontSize: '16px' }}>
             Section content for "{activeSection}" is being implemented...
           </Typography>
         </Box>

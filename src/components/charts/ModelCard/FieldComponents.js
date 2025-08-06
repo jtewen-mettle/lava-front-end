@@ -102,7 +102,7 @@ export const DataTable = ({ headers, data }) => (
               key={index} 
               sx={{ 
                 fontWeight: 'bold', 
-                fontSize: '14px', 
+                fontSize: '16px', 
                 whiteSpace: 'pre-line',
                 textAlign: index === 0 ? 'left' : 'center',
                 padding: '12px'
@@ -173,7 +173,7 @@ export const CriticalBoxComponent = ({ title, items }) => (
 // Reference list component
 export const ReferenceList = ({ title, references }) => (
   <Box>
-    <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold' }}>
+    <Typography variant="h6" sx={{ mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
       {title}
     </Typography>
     {references?.map((reference, index) => (
@@ -197,7 +197,7 @@ export const EnhancedStatusBadge = ({ variant, children, description }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
     <StatusBadge variant={variant}>{children}</StatusBadge>
     {description && (
-      <Typography sx={{ mt: 1, fontSize: '14px', color: '#666' }}>
+      <Typography sx={{ mt: 1, fontSize: '16px', color: '#666' }}>
         {description}
       </Typography>
     )}

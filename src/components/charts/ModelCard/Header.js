@@ -34,10 +34,11 @@ const Header = ({ data, activeSection }) => {
       marginBottom: '24px'
     }}>
       <Box>
-        <Typography variant="h5" sx={{ 
+        <Typography variant="h5" sx={{
+          fontSize: '16px', 
           fontFamily: 'Arial, sans-serif',
           fontWeight: 'bold',
-          fontSize: '18px',
+          fontSize: '16px',
           color: '#000',
           textAlign: 'left',
           marginBottom: '4px'

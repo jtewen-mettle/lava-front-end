@@ -37,7 +37,7 @@ export const NavItem = styled(ListItemButton)(({ active }) => ({
     color: active ? 'white' : '#275786',
   },
   '& .MuiListItemText-primary': {
-    fontSize: '14px',
+    fontSize: '16px',
     fontWeight: active ? 600 : 500,
     color: active ? 'white' : '#333',
     fontFamily: 'Arial, sans-serif',
@@ -63,7 +63,7 @@ export const SubNavItem = styled(ListItemButton)(({ active }) => ({
     color: active ? 'white' : '#1164ad',
   },
   '& .MuiListItemText-primary': {
-    fontSize: '13px',
+    fontSize: '16px',
     fontWeight: active ? 600 : 400,
     color: active ? 'white' : '#666',
     fontFamily: 'Arial, sans-serif',
@@ -94,14 +94,14 @@ export const SectionHeader = styled(Box)(({ theme }) => ({
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({
   color: 'white',
-  fontSize: '18px',
+  fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
   fontWeight: 600,
   margin: 0,
 }));
 
 export const SectionContent = styled(Box)(({ theme }) => ({
-  padding: '30px',
+  padding: '30px 30px 0px 30px',
   backgroundColor: 'white',
   borderRadius: '0 0 8px 8px',
   border: '1px solid #e1e8ed',
@@ -154,7 +154,7 @@ export const StatusBadge = styled('span')(({ theme, variant }) => ({
   display: 'inline-block',
   padding: '6px 14px',
   borderRadius: '20px',
-  fontSize: '12px',
+  fontSize: '16px',
   fontWeight: 600,
   textTransform: 'uppercase',
   letterSpacing: '0.5px',
@@ -180,7 +180,7 @@ export const ComplianceBadge = styled('div')(({ theme }) => ({
   color: 'white',
   padding: '8px 20px',
   borderRadius: '25px',
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: 600,
   fontFamily: 'Arial, sans-serif',
 }));
@@ -197,7 +197,7 @@ export const MetricValue = styled('div')(({ theme }) => ({
 
 export const MetricLabel = styled('div')(({ theme }) => ({
   color: '#666',
-  fontSize: '12px',
+  fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
   fontWeight: 'normal',
   textTransform: 'uppercase',
@@ -259,7 +259,7 @@ export const FooterContainer = styled(Box)(({ theme }) => ({
   border: '1px solid #e1e8ed',
   borderRadius: '0 0 8px 8px',
   padding: '10px 15px',
-  marginTop: '40px',
+  marginTop: '5px',
   marginBottom: '40px',
 }));
 
@@ -299,7 +299,7 @@ export const FooterContactTitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const FooterContactInfo = styled(Typography)(({ theme }) => ({
-  fontSize: '14px',
+  fontSize: '16px',
   color: '#333',
   lineHeight: 1.5,
   fontFamily: 'Arial, sans-serif',
@@ -313,7 +313,7 @@ export const FooterDivider = styled(Box)(({ theme }) => ({
 }));
 
 export const FooterMetaInfo = styled(Typography)(({ theme }) => ({
-  fontSize: '14px',
+  fontSize: '16px',
   color: '#666',
   textAlign: 'center',
   lineHeight: 1.6,
@@ -352,7 +352,7 @@ export const FairnessSubsection = styled(Box)(({ theme }) => ({
 }));
 
 export const FairnessSubtitle = styled(Typography)(({ theme }) => ({
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: 'bold',
   color: '#333',
   marginBottom: '8px',
@@ -360,7 +360,7 @@ export const FairnessSubtitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const FairnessText = styled(Typography)(({ theme }) => ({
-  fontSize: '14px',
+  fontSize: '16px',
   color: '#555',
   lineHeight: 1.5,
   fontFamily: 'Arial, sans-serif',

@@ -1,12 +1,7 @@
 import React from 'react';
-import { Box, List, ListItemText } from '@mui/material';
-import { ChevronRight } from '@mui/icons-material';
-import {
-  SideNav,
-  NavItem,
-  SubNavItem,
-  ExpandedSubSection
-} from './styles';
+import { Box, List, Typography, Collapse } from '@mui/material';
+import { ExpandLess, ExpandMore, FiberManualRecord } from '@mui/icons-material';
+import { SideNav } from './styles';
 
 const SideNavigation = ({
   navigationItems,
@@ -16,69 +11,149 @@ const SideNavigation = ({
   onNavigation,
   onExpandClick
 }) => {
-  const handleTextClick = (sectionId, subSectionId = null, event) => {
-    event.stopPropagation();
-    onNavigation(sectionId, subSectionId);
+  const handleMainClick = (item) => {
+    // Always navigate to the main page first
+    onNavigation(item.id);
+    // Then expand if it has sub-items
+    if (item.subItems.length > 0) {
+      onExpandClick(item.id);
+    }
+  };
+
+  const handleSubClick = (mainId, subId) => {
+    onNavigation(mainId, subId);
   };
 
   return (
     <SideNav>
-      <List>
+      <List sx={{ padding: '8px' }}>
         {navigationItems.map((item) => (
-          <Box key={item.id}>
-            <NavItem
-              active={activeSection === item.id}
-              onClick={() => {
-                if (item.subItems.length === 0) {
-                  onNavigation(item.id);
-                } else {
-                  onExpandClick(item.id);
-                }
+          <Box key={item.id} sx={{ marginBottom: '2px' }}>
+            {/* Main Navigation Item */}
+            <Box
+              onClick={() => handleMainClick(item)}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                backgroundColor: activeSection === item.id ? '#275786' : 'transparent',
+                color: activeSection === item.id ? 'white' : '#333',
+                transition: 'all 0.2s ease-in-out',
+                border: '1px solid transparent',
+                '&:hover': {
+                  backgroundColor: activeSection === item.id ? '#275786' : '#f8f9fa',
+                  borderColor: activeSection === item.id ? '#275786' : '#e1e8ed',
+                  transform: 'translateX(2px)',
+                  '& .main-nav-text': {
+                    fontWeight: 600,
+                  }
+                },
               }}
             >
-              <Box 
-                onClick={(e) => handleTextClick(item.id, null, e)}
-                sx={{ 
-                  flex: 1,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  paddingRight: item.subItems.length > 0 ? '12px' : '0px'
+              <Typography
+                className="main-nav-text"
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: activeSection === item.id ? 600 : 500,
+                  fontFamily: 'Arial, sans-serif',
+                  lineHeight: 1.4,
+                  color: 'inherit',
+                  transition: 'font-weight 0.2s ease'
                 }}
               >
-                <ListItemText primary={item.label} />
-              </Box>
+                {item.label}
+              </Typography>
+              
               {item.subItems.length > 0 && (
                 <Box sx={{ 
                   display: 'flex', 
-                  alignItems: 'center', 
-                  paddingLeft: '12px',
-                  paddingRight: '8px',
-                  cursor: 'pointer'
+                  alignItems: 'center',
+                  marginLeft: '8px'
                 }}>
-                  <ChevronRight sx={{ 
-                    transform: expandedSections[item.id] ? 'rotate(90deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.3s ease',
-                    color: activeSection === item.id ? 'white' : '#666',
-                    fontSize: '20px'
-                  }} />
+                  {expandedSections[item.id] ? (
+                    <ExpandLess sx={{ 
+                      fontSize: '14px',
+                      color: 'inherit',
+                      transition: 'transform 0.2s ease'
+                    }} />
+                  ) : (
+                    <ExpandMore sx={{ 
+                      fontSize: '14px',
+                      color: 'inherit',
+                      transition: 'transform 0.2s ease'
+                    }} />
+                  )}
                 </Box>
               )}
-            </NavItem>
-            {item.subItems.length > 0 && expandedSections[item.id] && (
-              <ExpandedSubSection>
-                <List component="div" disablePadding>
-                  {item.subItems.map((subItem) => (
-                    <SubNavItem
+            </Box>
+
+            {/* Expandable Sub-items */}
+            {item.subItems.length > 0 && (
+              <Collapse 
+                in={expandedSections[item.id]} 
+                timeout={300}
+                unmountOnExit
+              >
+                <Box sx={{ 
+                  marginTop: '4px',
+                  marginLeft: '12px',
+                  borderLeft: '2px solid #e1e8ed',
+                  paddingLeft: '0px'
+                }}>
+                  {item.subItems.map((subItem, index) => (
+                    <Box
                       key={subItem.id}
-                      active={activeSubSection === subItem.id}
-                      onClick={() => onNavigation(item.id, subItem.id)}
+                      onClick={() => handleSubClick(item.id, subItem.id)}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '10px 16px',
+                        marginLeft: '8px',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        backgroundColor: activeSubSection === subItem.id ? '#1164ad' : 'transparent',
+                        color: activeSubSection === subItem.id ? 'white' : '#666',
+                        transition: 'all 0.2s ease-in-out',
+                        border: '1px solid transparent',
+                        position: 'relative',
+                        '&:hover': {
+                          backgroundColor: activeSubSection === subItem.id ? '#1164ad' : '#f0f7ff',
+                          borderColor: activeSubSection === subItem.id ? '#1164ad' : '#bbdefb',
+                          transform: 'translateX(4px)',
+                          color: activeSubSection === subItem.id ? 'white' : '#1164ad',
+                        },
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          left: '-10px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '8px',
+                          height: '1px',
+                          backgroundColor: activeSubSection === subItem.id ? '#1164ad' : '#e1e8ed',
+                          transition: 'background-color 0.2s ease'
+                        }
+                      }}
                     >
-                      <ListItemText primary={subItem.label} />
-                    </SubNavItem>
+                      
+                      <Typography
+                        sx={{
+                          fontSize: '14px',
+                          fontWeight: activeSubSection === subItem.id ? 600 : 400,
+                          fontFamily: 'Arial, sans-serif',
+                          lineHeight: 1.3,
+                          color: 'inherit',
+                        }}
+                      >
+                        {subItem.label}
+                      </Typography>
+                    </Box>
                   ))}
-                </List>
-              </ExpandedSubSection>
+                </Box>
+              </Collapse>
             )}
           </Box>
         ))}

@@ -32,83 +32,70 @@ const BottomNavigation = ({
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center',
-      paddingTop: '30px',
-      borderTop: '1px solid #e1e8ed',
-      marginBottom: '40px'
+      margin: '5px 0',
+      width: '100%'
     }}>
       <IconButton 
         onClick={() => handleNavigateToPage('previous')}
         disabled={!previousPage}
         sx={{
-          backgroundColor: '#f8f9fa',
-          border: '1px solid #e3f2fd',
-          borderRadius: '8px',
-          padding: '12px 20px',
-          maxWidth: '40%',
+          padding: '8px 12px 8px 0',
+          borderRadius: '4px',
+          justifyContent: 'flex-start',
+          alignSelf: 'flex-start',
           '&:hover': {
-            backgroundColor: '#e3f2fd',
-            border: '1px solid #bbdefb',
+            backgroundColor: 'rgba(39, 87, 134, 0.1)',
           },
           '&:disabled': {
-            backgroundColor: '#f5f5f5',
-            border: '1px solid #e0e0e0',
             color: '#bbb'
           }
         }}
       >
-        <ChevronRight sx={{ transform: 'rotate(180deg)', mr: 1, flexShrink: 0 }} />
+        <ChevronRight sx={{ 
+          transform: 'rotate(180deg)', 
+          mr: 1, 
+          flexShrink: 0,
+          color: !previousPage ? '#bbb' : '#275786'
+        }} />
         <Typography sx={{ 
-          fontSize: '14px', 
-          fontWeight: '500',
+          fontSize: '16px', 
+          fontWeight: 'bold',
           textAlign: 'left',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
+          color: !previousPage ? '#bbb' : '#275786'
         }}>
           {previousPage?.label || 'Previous'}
         </Typography>
       </IconButton>
 
-      <Typography sx={{ 
-        fontSize: '14px', 
-        color: '#666',
-        fontFamily: 'Arial, sans-serif',
-        textAlign: 'center'
-      }}>
-        Page {currentPageNumber} of {allPages.length}
-      </Typography>
-
       <IconButton 
         onClick={() => handleNavigateToPage('next')}
         disabled={!nextPage}
         sx={{
-          backgroundColor: '#f8f9fa',
-          border: '1px solid #e3f2fd',
-          borderRadius: '8px',
-          padding: '12px 20px',
-          maxWidth: '40%',
+          padding: '8px 0 8px 12px',
+          borderRadius: '4px',
+          justifyContent: 'flex-end',
+          alignSelf: 'flex-end',
           '&:hover': {
-            backgroundColor: '#e3f2fd',
-            border: '1px solid #bbdefb',
+            backgroundColor: 'rgba(39, 87, 134, 0.1)',
           },
           '&:disabled': {
-            backgroundColor: '#f5f5f5',
-            border: '1px solid #e0e0e0',
             color: '#bbb'
           }
         }}
       >
         <Typography sx={{ 
-          fontSize: '14px', 
-          fontWeight: '500',
+          fontSize: '16px', 
+          fontWeight: 'bold',
           textAlign: 'right',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
+          color: !nextPage ? '#bbb' : '#275786'
         }}>
           {nextPage?.label || 'Next'}
         </Typography>
-        <ChevronRight sx={{ ml: 1, flexShrink: 0 }} />
+        <ChevronRight sx={{ 
+          ml: 1, 
+          flexShrink: 0,
+          color: !nextPage ? '#bbb' : '#275786'
+        }} />
       </IconButton>
     </Box>
   );
