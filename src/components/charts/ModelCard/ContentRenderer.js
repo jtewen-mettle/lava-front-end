@@ -110,6 +110,7 @@ const ContentRenderer = ({
                 value: <StatusBadge variant="validated">{data.outputType}</StatusBadge> 
               }
             ]} columns={2} />
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
@@ -136,6 +137,7 @@ const ContentRenderer = ({
                 )
               }
             ]} columns={2} />
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
@@ -152,6 +154,7 @@ const ContentRenderer = ({
                 title="Tasks, Situations, or Populations to Avoid"
                 items={data.criticalAvoidances}
               />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -167,6 +170,7 @@ const ContentRenderer = ({
                 title="Known Risks, Inappropriate Settings & Limitations"
                 items={data.knownRisks}
               />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -201,15 +205,16 @@ const ContentRenderer = ({
                 { label: 'Inclusion Criteria', value: data.trainingInclusion },
                 { label: 'Exclusion Criteria', value: data.trainingExclusion }
               ]} columns={2} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
       }
       if (activeSubSection === 'data-elements') {
         const uscdiHeaders = ['Data Element', 'Used in Model', 'Description'];
-        const uscdiData = Object.entries(data.uscdiElements || {}).map(([key, element]) => ({
-          element: key.replace(/([A-Z])/g, ' $1').trim(),
-          used: <StatusBadge variant={element.used ? 'certified' : 'warning'}>{element.used ? 'Yes' : 'No'}</StatusBadge>,
+        const uscdiData = (data.uscdiElements || []).map(element => ({
+          element: element.element,
+          used: <StatusBadge variant={element.used ? 'certified' : 'warning'}>{element.usedText}</StatusBadge>,
           description: element.description
         }));
 
@@ -220,6 +225,7 @@ const ContentRenderer = ({
             </SectionHeader>
             <SectionContent>
               <DataTable headers={uscdiHeaders} data={uscdiData} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -296,24 +302,31 @@ const ContentRenderer = ({
                 { label: 'External Testing Party', value: data.externalTestingParty },
                 { label: 'External Validation Process', value: data.externalValidationProcess }
               ]} columns={2} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
       }
       if (activeSubSection === 'validation-demographics') {
         const sampleSizes = data.externalValidationSampleSizes || {};
+        const studies = data.externalValidationStudies || { studyNames: ['mesa', 'whi', 'regards'], studyLabels: ['MESA', 'WHI', 'REGARDS'] };
+        
         const validationHeaders = [
-          'Variable', 
-          `MESA\n(n=${sampleSizes.mesa || 'N/A'})`, 
-          `WHI\n(n=${sampleSizes.whi || 'N/A'})`, 
-          `REGARDS\n(n=${sampleSizes.regards || 'N/A'})`
+          'Variable',
+          ...studies.studyLabels.map((label, index) => {
+            const studyKey = studies.studyNames[index];
+            const sampleSize = sampleSizes[studyKey] || 'N/A';
+            return `${label}\n(n=${sampleSize})`;
+          })
         ];
-        const validationData = (data.externalValidationDemographics || []).map(item => ({
-          variable: item.variable,
-          mesa: item.mesa,
-          whi: item.whi,
-          regards: item.regards
-        }));
+        
+        const validationData = (data.externalValidationDemographics || []).map(item => {
+          const row = { variable: item.variable };
+          studies.studyNames.forEach(studyName => {
+            row[studyName] = item[studyName];
+          });
+          return row;
+        });
 
         return (
           <Box>
@@ -322,6 +335,7 @@ const ContentRenderer = ({
             </SectionHeader>
             <SectionContent>
               <DataTable headers={validationHeaders} data={validationData} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -358,6 +372,7 @@ const ContentRenderer = ({
                 { value: data.internalValidationMetrics?.specificity, label: 'SPECIFICITY' },
                 { value: data.internalValidationMetrics?.ppv, label: 'PPV' }
               ]} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -375,6 +390,7 @@ const ContentRenderer = ({
                 { value: data.externalValidationMetrics?.calibration, label: 'SOME OVERESTIMATION' },
                 { value: data.externalValidationMetrics?.publishedStudies, label: 'PUBLISHED STUDIES ON\nCLINICAL OUTCOMES' }
               ]} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -451,6 +467,7 @@ const ContentRenderer = ({
                   )
                 }
               ]} columns={1} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -477,6 +494,7 @@ const ContentRenderer = ({
                   )
                 }
               ]} columns={1} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -492,6 +510,7 @@ const ContentRenderer = ({
                 { label: 'Update Process', value: data.updateProcess },
                 { label: 'Performance Correction', value: data.performanceCorrection }
               ]} columns={1} />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -507,6 +526,7 @@ const ContentRenderer = ({
                 title="Current Status Updates" 
                 items={data.currentMonitoringStatus}
               />
+              <Box sx={{ mb: 3 }} />
             </SectionContent>
           </Box>
         );
@@ -583,6 +603,7 @@ const ContentRenderer = ({
                 items={data.supportingGuidelines}
               />
             </Box>
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
@@ -600,6 +621,7 @@ const ContentRenderer = ({
               { label: 'Response Time', value: data.responseTime },
               { label: 'Certification Details', value: data.certificationDetails }
             ]} columns={2} />
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
