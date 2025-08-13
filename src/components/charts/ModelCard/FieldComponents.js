@@ -91,60 +91,101 @@ export const MetricGrid = ({ metrics }) => (
   </Box>
 );
 
-// Data table component
-export const DataTable = ({ headers, data }) => (
-  <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e1e8ed' }}>
-    <Table>
-      <TableHead>
-        <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-          {headers.map((header, index) => (
-            <TableCell 
-              key={index} 
-              sx={{ 
-                fontWeight: 'bold', 
-                fontSize: '16px', 
-                whiteSpace: 'pre-line',
-                textAlign: index === 0 ? 'left' : 'center',
-                padding: '12px'
-              }}
-            >
-              {header}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data.map((row, index) => (
-          <TableRow 
-            key={index}
-            sx={{
-              backgroundColor: index % 2 === 0 ? 'transparent' : '#f8f9fa',
-              '&:hover': {
-                backgroundColor: '#e3f2fd',
-              }
-            }}
-          >
-            {Object.values(row).map((cell, cellIndex) => (
+// Helper function to categorize demographic variables
+const getDemographicCategory = (variable) => {
+  const variableStr = String(variable).toLowerCase();
+  if (variableStr.includes('race') || variableStr.includes('hispanic') || variableStr.includes('latino') || variableStr.includes('african') || variableStr.includes('white') || variableStr.includes('black')) {
+    return 'race';
+  }
+  if (variableStr.includes('sex') || variableStr.includes('female') || variableStr.includes('male')) {
+    return 'sex';
+  }
+  if (variableStr.includes('age')) {
+    return 'age';
+  }
+  return 'other';
+};
+
+// Enhanced data table component with visual category grouping
+export const DataTable = ({ headers, data }) => {
+  // Group data by demographic categories for visual separation
+  const getRowBackgroundColor = (index) => {
+    const baseColor = index % 2 === 0 ? 'transparent' : '#f8f9fa';
+    return baseColor;
+  };
+
+  const getCategoryBorderLeft = (variable) => {
+    const category = getDemographicCategory(variable);
+    switch (category) {
+      case 'race':
+        return '4px solid #e3f2fd'; // Light blue for race
+      case 'sex':
+        return '4px solid #f3e5f5'; // Light purple for sex
+      case 'age':
+        return '4px solid #e8f5e8'; // Light green for age
+      default:
+        return '4px solid transparent';
+    }
+  };
+
+  return (
+    <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e1e8ed' }}>
+      <Table>
+        <TableHead>
+          <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+            {headers.map((header, index) => (
               <TableCell 
-                key={cellIndex}
-                sx={{
-                  textAlign: cellIndex === 0 ? 'left' : 'center',
+                key={index} 
+                sx={{ 
+                  fontWeight: 'bold', 
+                  fontSize: '16px', 
+                  whiteSpace: 'pre-line',
+                  textAlign: index === 0 ? 'left' : 'center',
                   padding: '12px'
                 }}
               >
-                {cellIndex === 0 ? (
-                  <Box sx={{ fontWeight: '500' }}>{cell}</Box>
-                ) : (
-                  cell
-                )}
+                {header}
               </TableCell>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+        </TableHead>
+        <TableBody>
+          {data.map((row, index) => {
+            const firstCellValue = Object.values(row)[0];
+            return (
+              <TableRow 
+                key={index}
+                sx={{
+                  backgroundColor: getRowBackgroundColor(index),
+                  borderLeft: getCategoryBorderLeft(firstCellValue),
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                  }
+                }}
+              >
+                {Object.values(row).map((cell, cellIndex) => (
+                  <TableCell 
+                    key={cellIndex}
+                    sx={{
+                      textAlign: cellIndex === 0 ? 'left' : 'center',
+                      padding: '12px'
+                    }}
+                  >
+                    {cellIndex === 0 ? (
+                      <Box sx={{ fontWeight: '500' }}>{cell}</Box>
+                    ) : (
+                      cell
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 // Warning box component
 export const WarningBoxComponent = ({ title, items }) => (
