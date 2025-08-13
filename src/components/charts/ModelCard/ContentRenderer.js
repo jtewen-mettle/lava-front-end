@@ -10,6 +10,7 @@ import {
   FieldGrid,
   MetricGrid,
   DataTable,
+  PlainDataTable,
   WarningBoxComponent,
   CriticalBoxComponent,
   ReferenceList,
@@ -152,7 +153,7 @@ const ContentRenderer = ({
             <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               USCDI v4 Data Elements as Input Features
             </Typography>
-            <DataTable headers={uscdiHeaders} data={uscdiData} />
+            <PlainDataTable headers={uscdiHeaders} data={uscdiData} />
             
             <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Demographic Representativeness of Training Data

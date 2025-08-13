@@ -505,7 +505,16 @@ export const modelCardData = {
       { variable: "White Race", mesa: "68.4%", whi: "82.1%", regards: "74.2%" },
       { variable: "Black Race", mesa: "22.1%", whi: "8.3%", regards: "25.8%" },
       { variable: "Hispanic", mesa: "9.5%", whi: "4.2%", regards: "0.8%" },
-      { variable: "Age 55-70", mesa: "78.9%", whi: "71.2%", regards: "82.1%" }
+      { variable: "Asian", mesa: "0.8%", whi: "0.6%", regards: "0.8%" },
+      { variable: "Native American", mesa: "0.2%", whi: "0.2%", regards: "0.2%" },
+      { variable: "Other", mesa: "0.2%", whi: "0.2%", regards: "0.2%" },
+      { variable: "Not Hispanic/Latino", mesa: "9.2%", whi: "18.5%", regards: "9.2%" },
+      { variable: "Hispanic/Latino", mesa: "9.2%", whi: "18.5%", regards: "9.2%" },
+      { variable: "Age 29-44", mesa: "78.9%", whi: "71.2%", regards: "82.1%" },
+      { variable: "Age 61-70", mesa: "15.3%", whi: "16.8%", regards: "15.3%" },
+      { variable: "Male", mesa: "62.1%", whi: "58.7%", regards: "62.1%" },
+      { variable: "Female", mesa: "37.9%", whi: "41.3%", regards: "37.9%" },
+      { variable: "Age 45-60", mesa: "62.1%", whi: "58.7%", regards: "62.1%" }
     ],
     
     // External Validation Sample Sizes
