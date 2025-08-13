@@ -83,42 +83,23 @@ export const getModelCardKey = (topicName) => {
   return 'cardiovascular'; // default fallback
 };
 
-// Create flat page structure for navigation
+// Create flat page structure for navigation - only main sections
 export const createPageStructure = () => {
   const pages = [];
   navigationItems.forEach(section => {
-    if (section.subItems.length === 0) {
-      pages.push({
-        id: section.id,
-        label: section.label,
-        type: 'section'
-      });
-    } else {
-      // Add main section first
-      pages.push({
-        id: section.id,
-        label: section.label,
-        type: 'section'
-      });
-      // Add subsections
-      section.subItems.forEach(subItem => {
-        pages.push({
-          id: subItem.id,
-          parentId: section.id,
-          label: subItem.label,
-          type: 'subsection'
-        });
-      });
-    }
+    // Only add main sections, no subsections
+    pages.push({
+      id: section.id,
+      label: section.label,
+      type: 'section'
+    });
   });
   return pages;
 };
 
-// Navigation helper functions
+// Navigation helper functions - only work with main sections
 export const getCurrentPageIndex = (activeSection, activeSubSection, allPages) => {
-  if (activeSubSection) {
-    return allPages.findIndex(page => page.id === activeSubSection);
-  }
+  // Only use activeSection since we don't navigate to subsections anymore
   return allPages.findIndex(page => page.id === activeSection && page.type === 'section');
 };
 
@@ -146,26 +127,18 @@ export const navigateToPage = (direction, activeSection, activeSubSection, allPa
   if (direction === 'previous') {
     const prevPage = getPreviousPage(activeSection, activeSubSection, allPages);
     if (prevPage) {
-      if (prevPage.type === 'subsection') {
-        onNavigation(prevPage.parentId, prevPage.id);
-        setExpandedSections(prev => ({ ...prev, [prevPage.parentId]: true }));
-      } else {
-        onNavigation(prevPage.id, null);
-        const pageItem = navigationItems.find(item => item.id === prevPage.id);
-        setExpandedSections(prev => ({ ...prev, [prevPage.id]: pageItem?.subItems?.length > 0 }));
-      }
+      // Always navigate to main section only (no subsections)
+      onNavigation(prevPage.id, null);
+      const pageItem = navigationItems.find(item => item.id === prevPage.id);
+      setExpandedSections(prev => ({ ...prev, [prevPage.id]: pageItem?.subItems?.length > 0 }));
     }
   } else if (direction === 'next') {
     const nextPage = getNextPage(activeSection, activeSubSection, allPages);
     if (nextPage) {
-      if (nextPage.type === 'subsection') {
-        onNavigation(nextPage.parentId, nextPage.id);
-        setExpandedSections(prev => ({ ...prev, [nextPage.parentId]: true }));
-      } else {
-        onNavigation(nextPage.id, null);
-        const pageItem = navigationItems.find(item => item.id === nextPage.id);
-        setExpandedSections(prev => ({ ...prev, [nextPage.id]: pageItem?.subItems?.length > 0 }));
-      }
+      // Always navigate to main section only (no subsections)
+      onNavigation(nextPage.id, null);
+      const pageItem = navigationItems.find(item => item.id === nextPage.id);
+      setExpandedSections(prev => ({ ...prev, [nextPage.id]: pageItem?.subItems?.length > 0 }));
     }
   }
 };

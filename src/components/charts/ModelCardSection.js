@@ -29,7 +29,8 @@ const ModelCardSection = ({ topic }) => {
   // Navigation handlers
   const handleNavigation = (sectionId, subSectionId = null) => {
     setActiveSection(sectionId);
-    setActiveSubSection(subSectionId);
+    // Always set activeSubSection to null to show combined content
+    setActiveSubSection(null);
   };
 
   const handleExpandClick = (sectionId) => {

@@ -61,7 +61,8 @@ const BottomNavigation = ({
           fontSize: '16px', 
           fontWeight: 'bold',
           textAlign: 'left',
-          color: !previousPage ? '#bbb' : '#275786'
+          color: !previousPage ? '#bbb' : '#275786',
+          fontFamily: 'Arial, sans-serif'
         }}>
           {previousPage?.label || 'Previous'}
         </Typography>
@@ -87,7 +88,8 @@ const BottomNavigation = ({
           fontSize: '16px', 
           fontWeight: 'bold',
           textAlign: 'right',
-          color: !nextPage ? '#bbb' : '#275786'
+          color: !nextPage ? '#bbb' : '#275786',
+          fontFamily: 'Arial, sans-serif'
         }}>
           {nextPage?.label || 'Next'}
         </Typography>

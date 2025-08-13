@@ -12,16 +12,17 @@ const SideNavigation = ({
   onExpandClick
 }) => {
   const handleMainClick = (item) => {
-    // Always navigate to the main page first
+    // Always navigate to the main page only - no subsection navigation
     onNavigation(item.id);
-    // Then expand if it has sub-items
+    // Still expand for visual effect but don't navigate to subsections
     if (item.subItems.length > 0) {
       onExpandClick(item.id);
     }
   };
 
   const handleSubClick = (mainId, subId) => {
-    onNavigation(mainId, subId);
+    // Remove subsection navigation functionality - just navigate to main section
+    onNavigation(mainId);
   };
 
   return (
