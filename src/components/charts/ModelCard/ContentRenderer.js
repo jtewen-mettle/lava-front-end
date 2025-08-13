@@ -172,6 +172,7 @@ const ContentRenderer = ({
               { label: 'Fairness Approach', value: data.fairnessApproach },
               { label: 'Bias Management', value: data.biasManagement }
             ]} columns={1} />
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
@@ -218,6 +219,7 @@ const ContentRenderer = ({
               External Validation Demographics
             </Typography>
             <DataTable headers={validationHeaders} data={validationData} />
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
@@ -264,6 +266,7 @@ const ContentRenderer = ({
                 { label: 'Real World Impact', value: data.realWorldImpact }
               ]} columns={1} />
             </Box>
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
@@ -327,6 +330,7 @@ const ContentRenderer = ({
               title="Current Status Updates" 
               items={data.currentMonitoringStatus}
             />
+            <Box sx={{ mb: 3 }} />
           </SectionContent>
         </Box>
       );
