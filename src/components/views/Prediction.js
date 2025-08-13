@@ -24,6 +24,7 @@ import { calculateCalibrationData } from '../charts/CalibrationCurve';
 import SubgroupBarChart from '../charts/SubgroupBarChart';
 import MetricsSection from '../charts/MetricsSection';
 import DistributionCharts from '../charts/DistributionCharts';
+import CalibrationBySubgroup from '../charts/CalibrationBySubgroup';
 import InfoIcon from '@mui/icons-material/Info';
 import { ZoomIn, Download } from '@mui/icons-material';
 import HelpIcon from '../HelpIcon';
@@ -678,6 +679,35 @@ const Prediction = ({csvData,topic,score}) => {
                       </Box>
                       <div style={{ flex: 1, height: '320px' }}>
                         {ageMetrics && <AgeGroupLineChart data={ageMetrics} />}
+                      </div>
+                    </Paper>
+
+                    {/* Calibration by Subgroup Chart */}
+                    <Paper 
+                      elevation={2} 
+                      style={{ 
+                        padding: 16, 
+                        height: '400px', 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        border: '1px solid #e0e0e0'
+                      }}
+                      sx={{
+                        '&:hover': {
+                          elevation: 8,
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }
+                      }}
+                    >
+                      <div style={{ flex: 1, height: '350px' }}>
+                        <CalibrationBySubgroup
+                          genderMetrics={genderMetrics}
+                          raceMetrics={raceMetrics}
+                          title="Model Calibration by Demographics"
+                        />
                       </div>
                     </Paper>
                   </div>
