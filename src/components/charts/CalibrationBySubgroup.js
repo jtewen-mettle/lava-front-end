@@ -657,14 +657,14 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                     sx={{ cursor: 'help', marginBottom: 0.5 }}
                   >
                     <Typography variant="caption" sx={{ color: '#000', 
-                      fontSize: '10px', 
+                      fontSize: '12px', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
                     }}>
                       ECE
                     </Typography>
                     <Typography variant="body2" color="primary" sx={{ 
-                      fontSize: '12px', 
+                      fontSize: '14px', 
                       fontWeight: 'bold', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
@@ -698,14 +698,14 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                     sx={{ cursor: 'help', marginBottom: 0.5 }}
                   >
                     <Typography variant="caption" sx={{ color: '#000', 
-                      fontSize: '10px', 
+                      fontSize: '12px', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
                     }}>
                       Brier Score
                     </Typography>
                     <Typography variant="body2" color="primary" sx={{ 
-                      fontSize: '12px', 
+                      fontSize: '14px', 
                       fontWeight: 'bold', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
@@ -743,7 +743,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                     }}
                   >
                     <Typography variant="caption" sx={{ color: '#000', 
-                      fontSize: '10px', 
+                      fontSize: '12px', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
                     }}>
@@ -896,13 +896,13 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                         sx={{ cursor: 'help', marginBottom: 0.5 }}
                       >
                         <Typography variant="caption" sx={{ color: '#000', 
-                          fontSize: '12px', 
+                          fontSize: '14px', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
                           Expected Calibration Error
                         </Typography>
                         <Typography variant="body1" color="primary" sx={{ 
-                          fontSize: '16px', 
+                          fontSize: '18px', 
                           fontWeight: 'bold', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
@@ -935,13 +935,13 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                         sx={{ cursor: 'help', marginBottom: 0.5 }}
                       >
                         <Typography variant="caption" sx={{ color: '#000', 
-                          fontSize: '12px', 
+                          fontSize: '14px', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
                           Brier Score
                         </Typography>
                         <Typography variant="body1" color="primary" sx={{ 
-                          fontSize: '16px', 
+                          fontSize: '18px', 
                           fontWeight: 'bold', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
@@ -978,7 +978,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                         }}
                       >
                         <Typography variant="caption" sx={{ color: '#000', 
-                          fontSize: '12px', 
+                          fontSize: '14px', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
                           Calibration Quality
