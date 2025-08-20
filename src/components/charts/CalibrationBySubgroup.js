@@ -70,7 +70,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
         font-weight: bold;
         text-align: center;
         margin-bottom: 10px;
-        color: #333;
+        color: #000;
       `;
       titleElement.textContent = `${title} - ${selectedDemographic}`;
       chartContainer.appendChild(titleElement);
@@ -108,7 +108,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
         font-weight: bold;
         text-align: center;
         margin-bottom: 10px;
-        color: #333;
+        color: #000;
       `;
       metricsTitleElement.textContent = 'Calibration Metrics';
       metricsPanel.appendChild(metricsTitleElement);
@@ -169,7 +169,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             margin-top: 6px;
           `;
           qualityElement.innerHTML = `
-            <div style="font-size: 10px; color: #666;">Quality</div>
+            <div style="font-size: 10px; color: #000;">Quality</div>
             <div style="font-size: 13px; font-weight: bold; color: ${metrics.assessment.color};">
               ${metrics.assessment.level}
             </div>
@@ -420,7 +420,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             weight: 'bold',
             family: 'Arial, sans-serif'
           },
-          color: '#333',
+          color: '#000',
           usePointStyle: true,
           padding: 8,
           generateLabels: function(chart) {
@@ -490,7 +490,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         ticks: {
           stepSize: 0.2,
@@ -499,7 +499,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         min: 0,
         max: 1
@@ -514,7 +514,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         ticks: {
           stepSize: 0.2,
@@ -523,7 +523,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         min: 0,
         max: 1
@@ -608,7 +608,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
             <Line ref={chartRef} data={chartData} options={options} />
           ) : (
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-              <Typography variant="body2" color="textSecondary" sx={{ 
+              <Typography variant="body2" sx={{ color: '#000', 
                 fontSize: '14px', 
                 fontFamily: 'Arial, sans-serif',
                 textAlign: 'center'
@@ -656,7 +656,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                     justifyContent="center"
                     sx={{ cursor: 'help', marginBottom: 0.5 }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ 
+                    <Typography variant="caption" sx={{ color: '#000', 
                       fontSize: '10px', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
@@ -697,7 +697,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                     justifyContent="center"
                     sx={{ cursor: 'help', marginBottom: 0.5 }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ 
+                    <Typography variant="caption" sx={{ color: '#000', 
                       fontSize: '10px', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
@@ -742,7 +742,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                       border: `1px solid ${metrics.assessment.color}`
                     }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ 
+                    <Typography variant="caption" sx={{ color: '#000', 
                       fontSize: '10px', 
                       fontFamily: 'Arial, sans-serif',
                       lineHeight: 1 
@@ -895,7 +895,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                         justifyContent="center"
                         sx={{ cursor: 'help', marginBottom: 0.5 }}
                       >
-                        <Typography variant="caption" color="textSecondary" sx={{ 
+                        <Typography variant="caption" sx={{ color: '#000', 
                           fontSize: '12px', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
@@ -934,7 +934,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                         justifyContent="center"
                         sx={{ cursor: 'help', marginBottom: 0.5 }}
                       >
-                        <Typography variant="caption" color="textSecondary" sx={{ 
+                        <Typography variant="caption" sx={{ color: '#000', 
                           fontSize: '12px', 
                           fontFamily: 'Arial, sans-serif'
                         }}>
@@ -977,7 +977,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
                           border: `2px solid ${metrics.assessment.color}`
                         }}
                       >
-                        <Typography variant="caption" color="textSecondary" sx={{ 
+                        <Typography variant="caption" sx={{ color: '#000', 
                           fontSize: '12px', 
                           fontFamily: 'Arial, sans-serif'
                         }}>

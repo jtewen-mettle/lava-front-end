@@ -143,7 +143,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             weight: 'bold',
             family: 'Arial, sans-serif'
           },
-          color: '#333',
+          color: '#000',
           usePointStyle: true,
           padding: 20,
           generateLabels: function(chart) {
@@ -207,7 +207,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         ticks: {
           stepSize: 0.1,
@@ -216,7 +216,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         min: 0,
         max: 1
@@ -231,7 +231,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         ticks: {
           stepSize: 0.1,
@@ -240,7 +240,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
             weight: 'bold', 
             family: 'Arial, sans-serif' 
           },
-          color: '#333'
+          color: '#000'
         },
         min: 0,
         max: 1
@@ -391,7 +391,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Expected Calibration Error
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -423,7 +423,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Brier Score
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -455,7 +455,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Mean Calibration Error
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -487,7 +487,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Reliability
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -519,7 +519,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Resolution
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -555,7 +555,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
               </Typography>
               <Typography 
                 variant="body2" 
-                style={{ color: '#666', fontSize: '0.85rem' }}
+                style={{ color: '#000', fontSize: '0.85rem' }}
               >
                 {calibrationAssessment.message}
               </Typography>
@@ -631,7 +631,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                         weight: 'bold',
                         family: 'Arial, sans-serif'
                       },
-                      color: '#333',
+                      color: '#000',
                       usePointStyle: true,
                       padding: 20,
                       generateLabels: function(chart) {
@@ -709,7 +709,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                     justifyContent="center"
                     sx={{ cursor: 'help' }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                       Expected Calibration Error
                     </Typography>
                     <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -741,7 +741,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                     justifyContent="center"
                     sx={{ cursor: 'help' }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                       Brier Score
                     </Typography>
                     <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -773,7 +773,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                     justifyContent="center"
                     sx={{ cursor: 'help' }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                       Mean Calibration Error
                     </Typography>
                     <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -805,7 +805,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                     justifyContent="center"
                     sx={{ cursor: 'help' }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                       Reliability
                     </Typography>
                     <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -837,7 +837,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                     justifyContent="center"
                     sx={{ cursor: 'help' }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                       Resolution
                     </Typography>
                     <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -873,7 +873,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                   </Typography>
                   <Typography 
                     variant="body2" 
-                    style={{ color: '#666', fontSize: '0.85rem' }}
+                    style={{ color: '#000', fontSize: '0.85rem' }}
                   >
                     {calibrationAssessment.message}
                   </Typography>

@@ -110,10 +110,10 @@ const Lava = () => {
           >
             {/* Responsive text for Lava application title */}
             <Box component="span" sx={{ display: { xs: 'none', sm: 'none', md: 'inline' } }}>
-              Local AI Evaluator (LAVA)
+              LAVA (Local AI Evaluator)
             </Box>
             <Box component="span" sx={{ display: { xs: 'none', sm: 'inline', md: 'none' } }}>
-              Local AI Evaluator (LAVA)
+              LAVA (Local AI Evaluator)
             </Box>
             <Box component="span" sx={{ display: { xs: 'inline', sm: 'none', md: 'none' } }}>
               LAVA
