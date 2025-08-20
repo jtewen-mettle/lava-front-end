@@ -5,7 +5,7 @@ import { Box, Typography, ListItemButton } from '@mui/material';
 export const SideNav = styled(Box)(({ theme }) => ({
   width: '280px',
   backgroundColor: 'white',
-  color: '#333',
+  color: '#000',
   padding: '10px 0',
   height: 'fit-content',
   position: 'sticky',
@@ -24,7 +24,7 @@ export const NavItem = styled(ListItemButton)(({ active }) => ({
   padding: '12px 16px',
   backgroundColor: active ? '#275786' : 'transparent',
   margin: '2px 0',
-  color: active ? 'white' : '#333',
+  color: active ? 'white' : '#000',
   borderRadius: active ? '6px' : 'none',
   marginLeft: active ? '8px' : '0px',
   marginRight: active ? '8px' : '0px',
@@ -39,7 +39,7 @@ export const NavItem = styled(ListItemButton)(({ active }) => ({
   '& .MuiListItemText-primary': {
     fontSize: '16px',
     fontWeight: active ? 600 : 500,
-    color: active ? 'white' : '#333',
+    color: active ? 'white' : '#000',
     fontFamily: 'Arial, sans-serif',
     transition: 'font-weight 0.2s ease',
   },
@@ -53,7 +53,7 @@ export const SubNavItem = styled(ListItemButton)(({ active }) => ({
   padding: '8px 16px 8px 32px',
   backgroundColor: active ? '#1164ad' : 'transparent',
   margin: '0px',
-  color: active ? 'white' : '#666',
+  color: active ? 'white' : '#000',
   borderRadius: '0px',
   borderLeft: 'none',
   borderBottom: '1px solid #f0f0f0',
@@ -65,7 +65,7 @@ export const SubNavItem = styled(ListItemButton)(({ active }) => ({
   '& .MuiListItemText-primary': {
     fontSize: '16px',
     fontWeight: active ? 600 : 400,
-    color: active ? 'white' : '#666',
+    color: active ? 'white' : '#000',
     fontFamily: 'Arial, sans-serif',
     transition: 'font-weight 0.2s ease',
   },
@@ -130,7 +130,7 @@ export const FieldContainer = styled('div')(({ theme }) => ({
 
 export const FieldLabel = styled('span')(({ theme }) => ({
   fontWeight: 600,
-  color: '#2c3e50',
+  color: '#000',
   marginBottom: '8px',
   display: 'block',
   fontSize: '16px',
@@ -138,7 +138,7 @@ export const FieldLabel = styled('span')(({ theme }) => ({
 }));
 
 export const FieldValue = styled('div')(({ theme }) => ({
-  color: '#555',
+  color: '#000',
   fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
   fontWeight: 'normal',
@@ -196,7 +196,7 @@ export const MetricValue = styled('div')(({ theme }) => ({
 }));
 
 export const MetricLabel = styled('div')(({ theme }) => ({
-  color: '#666',
+  color: '#000',
   fontSize: '16px',
   fontFamily: 'Arial, sans-serif',
   fontWeight: 'normal',
@@ -293,14 +293,14 @@ export const FooterContactSection = styled(Box)(({ theme }) => ({
 export const FooterContactTitle = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 'bold',
-  color: '#666',
+  color: '#000',
   marginBottom: '12px',
   fontFamily: 'Arial, sans-serif',
 }));
 
 export const FooterContactInfo = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
-  color: '#333',
+  color: '#000',
   lineHeight: 1.5,
   fontFamily: 'Arial, sans-serif',
   whiteSpace: 'pre-line',
@@ -314,7 +314,7 @@ export const FooterDivider = styled(Box)(({ theme }) => ({
 
 export const FooterMetaInfo = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
-  color: '#666',
+  color: '#000',
   textAlign: 'center',
   lineHeight: 1.6,
   fontFamily: 'Arial, sans-serif',
@@ -354,14 +354,14 @@ export const FairnessSubsection = styled(Box)(({ theme }) => ({
 export const FairnessSubtitle = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 'bold',
-  color: '#333',
+  color: '#000',
   marginBottom: '8px',
   fontFamily: 'Arial, sans-serif',
 }));
 
 export const FairnessText = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
-  color: '#555',
+  color: '#000',
   lineHeight: 1.5,
   fontFamily: 'Arial, sans-serif',
 }));

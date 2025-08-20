@@ -407,7 +407,7 @@ export const downloadCurrentSection = (activeSection, data) => {
         body {
           font-family: 'Roboto', Arial, sans-serif;
           margin: 40px;
-          color: #333;
+          color: #000;
           line-height: 1.6;
           background-color: #ffffff;
         }
@@ -425,7 +425,7 @@ export const downloadCurrentSection = (activeSection, data) => {
           font-weight: 500;
         }
         h4 {
-          color: #666;
+          color: #000;
           margin-top: 20px;
           font-size: 18px;
           font-weight: 500;
@@ -523,21 +523,21 @@ export const downloadCurrentSection = (activeSection, data) => {
         <div style="display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap;">
           <div style="text-align: center; flex: 1; min-width: 200px; margin-bottom: 15px;">
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Clinical Support</div>
-            <div style="font-size: 12px; color: #666;">
+            <div style="font-size: 12px; color: #000;">
               clinical.ai@cerner.com<br>
               1-800-237-6371
             </div>
           </div>
           <div style="text-align: center; flex: 1; min-width: 200px; margin-bottom: 15px;">
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Technical Support</div>
-            <div style="font-size: 12px; color: #666;">
+            <div style="font-size: 12px; color: #000;">
               integration.support@cerner.com<br>
               Developer Portal: developer.cerner.com
             </div>
           </div>
           <div style="text-align: center; flex: 1; min-width: 200px; margin-bottom: 15px;">
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Regulatory Affairs</div>
-            <div style="font-size: 12px; color: #666;">
+            <div style="font-size: 12px; color: #000;">
               regulatory@cerner.com<br>
               ASTP Certification ID: 3068
             </div>
@@ -545,7 +545,7 @@ export const downloadCurrentSection = (activeSection, data) => {
         </div>
         
         <!-- Document Information -->
-        <div style="text-align: center; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #666; line-height: 1.6;">
+        <div style="text-align: center; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #000; line-height: 1.6;">
           <div style="margin-bottom: 10px;">
             <strong>Last Updated:</strong> July 30, 2025 | 
             <strong>Model Card Version:</strong> 2.1.3 | 
@@ -608,7 +608,7 @@ export const downloadFullCard = (data, navigationItems) => {
         body {
           font-family: 'Roboto', Arial, sans-serif;
           margin: 40px;
-          color: #333;
+          color: #000;
           line-height: 1.6;
           background-color: #ffffff;
         }
@@ -636,7 +636,7 @@ export const downloadFullCard = (data, navigationItems) => {
           font-weight: 500;
         }
         h4 {
-          color: #666;
+          color: #000;
           margin-top: 20px;
           font-size: 18px;
           font-weight: 500;
@@ -728,7 +728,7 @@ export const downloadFullCard = (data, navigationItems) => {
     </head>
     <body>
       <h1>ASTP HTI-1 Compliant Model Card</h1>
-      <p style="text-align: center; margin-bottom: 40px; font-size: 18px; color: #666;">
+      <p style="text-align: center; margin-bottom: 40px; font-size: 18px; color: #000;">
         ${data.interventionName || 'Healthcare AI Model'} - Complete Documentation
       </p>
       ${allSections}
@@ -742,21 +742,21 @@ export const downloadFullCard = (data, navigationItems) => {
         <div style="display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap;">
           <div style="text-align: center; flex: 1; min-width: 200px; margin-bottom: 15px;">
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Clinical Support</div>
-            <div style="font-size: 12px; color: #666;">
+            <div style="font-size: 12px; color: #000;">
               clinical.ai@cerner.com<br>
               1-800-237-6371
             </div>
           </div>
           <div style="text-align: center; flex: 1; min-width: 200px; margin-bottom: 15px;">
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Technical Support</div>
-            <div style="font-size: 12px; color: #666;">
+            <div style="font-size: 12px; color: #000;">
               integration.support@cerner.com<br>
               Developer Portal: developer.cerner.com
             </div>
           </div>
           <div style="text-align: center; flex: 1; min-width: 200px; margin-bottom: 15px;">
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Regulatory Affairs</div>
-            <div style="font-size: 12px; color: #666;">
+            <div style="font-size: 12px; color: #000;">
               regulatory@cerner.com<br>
               ASTP Certification ID: 3068
             </div>
@@ -764,7 +764,7 @@ export const downloadFullCard = (data, navigationItems) => {
         </div>
         
         <!-- Document Information -->
-        <div style="text-align: center; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #666; line-height: 1.6;">
+        <div style="text-align: center; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #000; line-height: 1.6;">
           <div style="margin-bottom: 10px;">
             <strong>Last Updated:</strong> July 30, 2025 | 
             <strong>Model Card Version:</strong> 2.1.3 | 

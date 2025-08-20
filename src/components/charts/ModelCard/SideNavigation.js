@@ -41,7 +41,7 @@ const SideNavigation = ({
                 borderRadius: '8px',
                 cursor: 'pointer',
                 backgroundColor: activeSection === item.id ? '#275786' : 'transparent',
-                color: activeSection === item.id ? 'white' : '#333',
+                color: activeSection === item.id ? 'white' : '#000',
                 transition: 'all 0.2s ease-in-out',
                 border: '1px solid transparent',
                 '&:hover': {
@@ -116,7 +116,7 @@ const SideNavigation = ({
                         borderRadius: '6px',
                         cursor: 'pointer',
                         backgroundColor: activeSubSection === subItem.id ? '#1164ad' : 'transparent',
-                        color: activeSubSection === subItem.id ? 'white' : '#666',
+                        color: activeSubSection === subItem.id ? 'white' : '#000',
                         transition: 'all 0.2s ease-in-out',
                         border: '1px solid transparent',
                         position: 'relative',

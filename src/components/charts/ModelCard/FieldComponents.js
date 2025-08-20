@@ -385,7 +385,7 @@ export const EnhancedStatusBadge = ({ variant, children, description }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
     <StatusBadge variant={variant}>{children}</StatusBadge>
     {description && (
-      <Typography sx={{ mt: 1, fontSize: '16px', color: '#666' }}>
+      <Typography sx={{ mt: 1, fontSize: '16px', color: '#000' }}>
         {description}
       </Typography>
     )}

@@ -48,7 +48,7 @@ const Header = ({ data, activeSection }) => {
         <Typography sx={{ 
           fontFamily: 'Arial, sans-serif',
           fontSize: '16px',
-          color: '#666',
+          color: '#000',
           textAlign: 'left'
         }}>
           Predictive Decision Support Intervention - {data.interventionName?.split(' ')[1] || 'Risk Assessment'}
