@@ -584,7 +584,7 @@ const CalibrationBySubgroup = ({ genderMetrics, raceMetrics, title = "Model Cali
 
       {/* Dropdown Selector */}
       <FormControl sx={{ marginBottom: 2, width: "80%" }}>
-        <InputLabel sx={{ fontFamily: 'Arial, sans-serif', fontSize: '14px' }}>Demographics</InputLabel>
+        <InputLabel sx={{ fontFamily: 'Arial, sans-serif', fontSize: '14px', fontWeight: 'bold', color: '#000' }}>Demographics</InputLabel>
         <Select
           value={selectedDemographic}
           label="Demographics"

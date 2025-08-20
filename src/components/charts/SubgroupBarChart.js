@@ -230,7 +230,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title, allSubgroupsData, s
       
       {title && selectedValue !== undefined && onValueChange && options && (
         <FormControl sx={{ marginBottom: 2, width:"80%" }}>
-          <InputLabel>{selectedFeature}</InputLabel>
+          <InputLabel sx={{ fontWeight: 'bold', color: '#000' }}>{selectedFeature}</InputLabel>
           <Select
             value={selectedValue}
             label={selectedFeature}
@@ -503,7 +503,7 @@ const SubgroupBarChart = ({ rawData, selectedFeature, title, allSubgroupsData, s
         <DialogContent sx={{ overflow: 'hidden' }}>
           <Box sx={{ mb: 2, p: 1 }}>
             <FormControl size="small" sx={{ minWidth: 200 }}>
-              <InputLabel>{selectedFeature}</InputLabel>
+              <InputLabel sx={{ fontWeight: 'bold', color: '#000' }}>{selectedFeature}</InputLabel>
               <Select
                 value={enlargedViewFilter}
                 label={selectedFeature}

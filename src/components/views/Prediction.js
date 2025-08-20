@@ -49,6 +49,16 @@ const StyledTabs = styled(Tabs)({
     gap: '10px',
     position: 'relative',
   },
+  '& .MuiTabs-scroller': {
+    overflowX: 'auto !important',
+    scrollbarWidth: 'none',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+  },
+  '& .MuiTabs-scrollButtons': {
+    display: 'none !important',
+  },
 });
 
 const StyledTab = styled(Tab)(({ theme }) => ({
@@ -524,7 +534,12 @@ const Prediction = ({csvData,topic,score}) => {
             </Box>
             <Box mt={4} width="100%">
               <Box display="flex" justifyContent="left">
-                <StyledTabs value={tab} onChange={handleTabChange}>
+                <StyledTabs 
+                  value={tab} 
+                  onChange={handleTabChange}
+                  variant="scrollable"
+                  scrollButtons={false}
+                >
                   <StyledTab label="Performance Metrics" />
                   <StyledTab label="Sub-Group Analysis" />
                   <StyledTab label="Data Distribution" />

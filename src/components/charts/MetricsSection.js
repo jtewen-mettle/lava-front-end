@@ -535,7 +535,7 @@ const MetricsSection = ({ topic, metricsData, accuracyChart, barChartData, rocCh
                         </Box>
                     </Box>
                     <FormControl sx={{ marginBottom: 2, width:"80%" }}>
-                        <InputLabel id="prediction-label">Provider defined threshold</InputLabel>
+                        <InputLabel id="prediction-label" sx={{ fontWeight: 'bold', color: '#000' }}>Provider defined threshold</InputLabel>
                         <Select
                         labelId="prediction-label"
                         value={predictionValue}
