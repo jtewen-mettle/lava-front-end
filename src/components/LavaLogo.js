@@ -18,7 +18,7 @@ const LavaLogo = () => {
         LAVA
       </Box>
       <Typography variant="h5" mt={2} fontWeight="bold" textAlign="center">
-        Local AI Evaluator (LAVA)
+        Local AI Evaluator
       </Typography>
       <Typography variant="body2" color="textSecondary" textAlign="center">
         Securely evaluate your clinical decision support systems

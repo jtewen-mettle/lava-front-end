@@ -567,7 +567,7 @@ const Prediction = ({csvData,topic,score}) => {
                     >
                       <div style={{ flex: 1, height: '350px' }}>
                         <SubgroupBarChart
-                          title="Gender-wise Visualization"
+                          title="Metrics by Gender"
                           rawData={filteredGenderData}
                           selectedFeature="Gender"
                           allSubgroupsData={genderMetrics}
@@ -600,7 +600,7 @@ const Prediction = ({csvData,topic,score}) => {
                     >
                       <div style={{ flex: 1, height: '350px' }}>
                         <SubgroupBarChart
-                          title="Race-wise Precision"
+                          title="Precision by Race"
                           rawData={filteredRaceData}
                           selectedFeature="Race"
                           allSubgroupsData={raceMetrics}
