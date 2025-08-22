@@ -1,13 +1,13 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../core/context';
 
 const HelpIcon = ({ tooltip = "Learn more in the Glossary", size = "small", section = null }) => {
-  const { navigateToGlossary } = useAppContext();
+  const { navigateToGlossaryHome } = useAppContext();
 
   const handleHelpClick = () => {
-    navigateToGlossary(section);
+    navigateToGlossaryHome();
   };
 
   return (

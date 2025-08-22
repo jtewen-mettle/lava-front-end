@@ -10,11 +10,11 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../core/context';
 
 const MetricsGrid = ({ metrics }) => {
   const colors = ['#f9f9f9', '#f0f4f8'];
-  const { navigateToGlossary } = useAppContext();
+  const { navigateToGlossaryHome } = useAppContext();
 
   return (
     <div style={{ 
@@ -96,7 +96,7 @@ const MetricsGrid = ({ metrics }) => {
                       'F1 Score': 'f1-score'
                     };
                     const section = metricSectionMap[metric.label] || 'precision';
-                    navigateToGlossary(section);
+                    navigateToGlossaryHome();
                   }}
                 >
                   <InfoIcon fontSize="small" color="primary" />
