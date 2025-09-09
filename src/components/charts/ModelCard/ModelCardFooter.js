@@ -35,7 +35,7 @@ const ModelCardFooter = ({ data }) => {
       
       {/* Meta Information */}
       <FooterMetaInfo>
-        <strong>Last Updated:</strong> {data.lastUpdated} | <strong>Model Card Version:</strong> {data.modelCardVersion} | <strong>{data.complianceBadge || 'ASTP HTI-1 Compliant'}</strong>
+        <strong>Last Updated:</strong> {data.lastUpdated} | <strong>Model Card Version:</strong> {data.modelCardVersion}
         <br />
         <strong>Document Classification:</strong> {data.documentClassification}
       </FooterMetaInfo>

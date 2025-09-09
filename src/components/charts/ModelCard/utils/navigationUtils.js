@@ -25,7 +25,7 @@ export const navigationItems = [
     label: '4. Development Details and Input Features',
     subItems: [
       { id: 'training-data', label: 'Training Data Inclusion/Exclusion Criteria' },
-      { id: 'data-elements', label: 'USCDI v4 Data Elements as Input Features' },
+      { id: 'data-elements', label: 'Data Elements as Input Features' },
       { id: 'demographic-representativeness', label: 'Demographic Representativeness of Training Data' }
     ]
   },

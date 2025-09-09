@@ -31,7 +31,7 @@ const Header = ({ data, activeSection }) => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: '24px'
+      marginBottom: '8px'
     }}>
       <Box>
         <Typography variant="h5" sx={{
@@ -43,21 +43,13 @@ const Header = ({ data, activeSection }) => {
           textAlign: 'left',
           marginBottom: '4px'
         }}>
-          ASTP HTI-1 Compliant Model Card
-        </Typography>
-        <Typography sx={{ 
-          fontFamily: 'Arial, sans-serif',
-          fontSize: '16px',
-          color: '#000',
-          textAlign: 'left'
-        }}>
-          Predictive Decision Support Intervention - {data.interventionName?.split(' ')[1] || 'Risk Assessment'}
+         Model Card for {data.modelName}
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <ComplianceBadge>
+        {/* <ComplianceBadge>
           {data.complianceBadge}
-        </ComplianceBadge>
+        </ComplianceBadge> */}
         <Tooltip title="Download Options" arrow>
           <IconButton 
             size="small" 

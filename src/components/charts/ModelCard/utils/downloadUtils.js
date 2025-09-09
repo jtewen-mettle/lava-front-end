@@ -91,8 +91,8 @@ const getComprehensiveDataContent = (sectionId, data) => {
           </div>
           
           <div class="subsection">
-            <h4>4.2 USCDI v4 Data Elements as Input Features</h4>
-            ${data.uscdiElements ? `
+            <h4>4.2 Data Elements as Input Features</h4>
+            ${data.deifElements ? `
               <table class="data-table">
                 <thead>
                   <tr>
@@ -102,7 +102,7 @@ const getComprehensiveDataContent = (sectionId, data) => {
                   </tr>
                 </thead>
                 <tbody>
-                  ${Object.entries(data.uscdiElements).map(([elementName, elementData]) => `
+                  ${Object.entries(data.deifElements).map(([elementName, elementData]) => `
                     <tr>
                       <td><strong>${elementName.charAt(0).toUpperCase() + elementName.slice(1).replace(/([A-Z])/g, ' $1')}</strong></td>
                       <td>${elementData.used ? 'Yes' : 'No'}</td>
@@ -516,7 +516,7 @@ export const downloadCurrentSection = (activeSection, data) => {
       
       <div class="footer" style="margin-top: 60px; padding-top: 20px; border-top: 2px solid #275786; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
         <div style="font-size: 16px; font-weight: bold; color: #275786; margin-bottom: 20px; text-align: center;">
-          ASTP HTI-1 Compliant Model Card - ${sectionTitle}
+          Model Card - ${sectionTitle}
         </div>
         
         <!-- Contact Information Section -->
@@ -539,7 +539,7 @@ export const downloadCurrentSection = (activeSection, data) => {
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Regulatory Affairs</div>
             <div style="font-size: 12px; color: #000;">
               regulatory@cerner.com<br>
-              ASTP Certification ID: 3068
+              Certification ID: 3068
             </div>
           </div>
         </div>
@@ -549,7 +549,7 @@ export const downloadCurrentSection = (activeSection, data) => {
           <div style="margin-bottom: 10px;">
             <strong>Last Updated:</strong> July 30, 2025 | 
             <strong>Model Card Version:</strong> 2.1.3 | 
-            <strong>ASTP HTI-1 Compliant</strong>
+            <strong>Compliant</strong>
           </div>
           <div style="margin-bottom: 10px;">
             <strong>Document Classification:</strong> For Healthcare Professional Use Only | HIPAA Compliant | 21st Century Cures Act Compliant
@@ -557,7 +557,7 @@ export const downloadCurrentSection = (activeSection, data) => {
           <div>
             Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}<br>
             Model: ${data.interventionName || 'Healthcare AI Model'}<br>
-            This document contains comprehensive model information as required by ASTP HTI-1 regulations.
+            This document contains comprehensive model information as required by regulations.
           </div>
         </div>
       </div>
@@ -727,7 +727,7 @@ export const downloadFullCard = (data, navigationItems) => {
       </style>
     </head>
     <body>
-      <h1>ASTP HTI-1 Compliant Model Card</h1>
+      <h1>Model Card</h1>
       <p style="text-align: center; margin-bottom: 40px; font-size: 18px; color: #000;">
         ${data.interventionName || 'Healthcare AI Model'} - Complete Documentation
       </p>
@@ -735,7 +735,7 @@ export const downloadFullCard = (data, navigationItems) => {
       
       <div class="footer" style="margin-top: 60px; padding-top: 20px; border-top: 2px solid #275786; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
         <div style="font-size: 16px; font-weight: bold; color: #275786; margin-bottom: 20px; text-align: center;">
-          ASTP HTI-1 Compliant Model Card - Complete Documentation
+          Model Card - Complete Documentation
         </div>
         
         <!-- Contact Information Section -->
@@ -758,7 +758,7 @@ export const downloadFullCard = (data, navigationItems) => {
             <div style="font-weight: bold; color: #275786; margin-bottom: 8px;">Regulatory Affairs</div>
             <div style="font-size: 12px; color: #000;">
               regulatory@cerner.com<br>
-              ASTP Certification ID: 3068
+              Certification ID: 3068
             </div>
           </div>
         </div>
@@ -768,7 +768,7 @@ export const downloadFullCard = (data, navigationItems) => {
           <div style="margin-bottom: 10px;">
             <strong>Last Updated:</strong> July 30, 2025 | 
             <strong>Model Card Version:</strong> 2.1.3 | 
-            <strong>ASTP HTI-1 Compliant</strong>
+            <strong>Compliant</strong>
           </div>
           <div style="margin-bottom: 10px;">
             <strong>Document Classification:</strong> For Healthcare Professional Use Only | HIPAA Compliant | 21st Century Cures Act Compliant
@@ -776,7 +776,7 @@ export const downloadFullCard = (data, navigationItems) => {
           <div>
             Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}<br>
             Model: ${data.interventionName || 'Healthcare AI Model'}<br>
-            This document contains comprehensive model information as required by ASTP HTI-1 regulations.
+            This document contains comprehensive model information as required by regulations.
           </div>
         </div>
       </div>

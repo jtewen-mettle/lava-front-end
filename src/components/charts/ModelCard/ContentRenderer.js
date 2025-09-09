@@ -114,8 +114,8 @@ const ContentRenderer = ({
 
     case 'development-details':
       // Always show combined content - no more subsection pages
-      const uscdiHeaders = ['Data Element', 'Used in Model', 'Description'];
-      const uscdiData = (data.uscdiElements || []).map(element => ({
+      const deifHeaders = ['Data Element', 'Used in Model', 'Description'];
+      const deifData = (data.deifElements || []).map(element => ({
         element: element.element,
         used: <StatusBadge variant={element.used ? 'certified' : 'warning'}>{element.usedText}</StatusBadge>,
         description: element.description
@@ -151,9 +151,9 @@ const ContentRenderer = ({
             ]} columns={2} />
             
             <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
-              USCDI v4 Data Elements as Input Features
+              Data Elements as Input Features
             </Typography>
-            <PlainDataTable headers={uscdiHeaders} data={uscdiData} />
+            <PlainDataTable headers={deifHeaders} data={deifData} />
             
             <Typography variant="h6" sx={{ mt: 4, mb: 2, color: '#275786', fontWeight: 'bold', fontSize: '16px' }}>
               Demographic Representativeness of Training Data
