@@ -379,7 +379,6 @@ const ContentRenderer = ({
               { label: 'Algorithm Type', value: data.algorithmType },
               { label: 'Integration Method', value: data.integrationMethod },
               { label: 'Response Time', value: data.responseTime },
-              { label: 'Certification Details', value: data.certificationDetails }
             ]} columns={2} />
             <Box sx={{ mb: 3 }} />
           </SectionContent>
