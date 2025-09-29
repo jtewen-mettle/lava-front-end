@@ -3,37 +3,45 @@ import { Box, Typography, MenuItem, FormControl, Select, Button } from '@mui/mat
 import LavaLogo from './LavaLogo';
 
 const SelectionPage = ({ onSubmit }) => {
-  const [vendor, setVendor] = useState('');
+  const [diseaseCategory, setDiseaseCategory] = useState('');
   const [topic, setTopic] = useState('');
 
-  const handleVendorChange = (e) => {
-    const selectedVendor = e.target.value;
-    setVendor(selectedVendor);
-    setTopic(''); // Reset topic when vendor changes
+  const handleDiseaseCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setDiseaseCategory(selectedCategory);
+    setTopic(''); // Reset topic when category changes
   };
 
   const handleSubmit = () => {
-    if (vendor && topic) {
-      onSubmit({ vendor, topic });
+    if (diseaseCategory && topic) {
+      onSubmit({ diseaseCategory, topic });
     }
   };
 
-  // Define available topics based on vendor
-  const getTopicsForVendor = () => {
-    if (vendor === 'Vendor1') {
+  // Define available DSI tools based on disease category
+  const getToolsForDiseaseCategory = () => {
+    if (diseaseCategory === 'Heart & Cardiovascular') {
       return [
-        { value: 'CardioVascularPrediction', label: 'Cardiovascular Predictor Evaluation' },
+        { value: 'CardioVascularPrediction', label: 'Cerner ASCVD Risk Calculator' },
+        { value: 'HeartFailurePrediction', label: 'Vendor Heart Failure Predictor' },
       ];
-    } else if (vendor === 'Vendor2') {
+    } else if (diseaseCategory === 'Kidney & Renal') {
       return [
-        { value: 'CKD', label: 'Chronic Kidney Disease Estimator' },
-        { value: 'ProstateCancerPrediction', label: 'Prostate Cancer Predictor Evaluation' },
+        { value: 'CKD', label: 'Cerner CKD Risk Assessment' },
+      ];
+    } else if (diseaseCategory === 'Cancer') {
+      return [
+        { value: 'ProstateCancerPrediction', label: 'Vendor Prostate Cancer Predictor' },
+      ];
+    } else if (diseaseCategory === 'General Risk Assessment') {
+      return [
+        { value: 'HospitalizationRisk', label: 'Vendor Hospitalization Risk Predictor' },
       ];
     }
     return [];
   };
 
-  const availableTopics = getTopicsForVendor();
+  const availableTopics = getToolsForDiseaseCategory();
 
   return (
     <Box 
@@ -65,21 +73,21 @@ const SelectionPage = ({ onSubmit }) => {
         }}
       >
         <FormControl fullWidth sx={{ mb: 3 }}>
-          <Typography 
-            variant="h6" 
-            gutterBottom 
-            sx={{ 
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
               fontFamily: 'Arial, sans-serif',
               fontWeight: 'bold',
               color: '#275786',
               marginBottom: '12px'
             }}
           >
-            Pick a DSI Application
+            Select Disease Category
           </Typography>
-          <Select 
-            value={vendor} 
-            onChange={handleVendorChange} 
+          <Select
+            value={diseaseCategory}
+            onChange={handleDiseaseCategoryChange} 
             displayEmpty
             sx={{
               borderRadius: '8px',
@@ -96,24 +104,26 @@ const SelectionPage = ({ onSubmit }) => {
               }
             }}
           >
-            <MenuItem value="">Select a vendor</MenuItem>
-            <MenuItem value="Vendor1">Cerner</MenuItem>
-            <MenuItem value="Vendor2">DSI Vendor2</MenuItem>
+            <MenuItem value="">Select a disease category</MenuItem>
+            <MenuItem value="Heart & Cardiovascular">Heart & Cardiovascular</MenuItem>
+            <MenuItem value="Kidney & Renal">Kidney & Renal</MenuItem>
+            <MenuItem value="Cancer">Cancer</MenuItem>
+            <MenuItem value="General Risk Assessment">General Risk Assessment</MenuItem>
           </Select>
         </FormControl>
 
-        <FormControl fullWidth disabled={!vendor} sx={{ mb: 3 }}>
-          <Typography 
-            variant="h6" 
-            gutterBottom 
-            sx={{ 
+        <FormControl fullWidth disabled={!diseaseCategory} sx={{ mb: 3 }}>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
               fontFamily: 'Arial, sans-serif',
               fontWeight: 'bold',
-              color: vendor ? '#275786' : '#999',
+              color: diseaseCategory ? '#275786' : '#999',
               marginBottom: '12px'
             }}
           >
-            Pick a Topic
+            Select DSI Tool
           </Typography>
           <Select 
             value={topic} 
@@ -121,20 +131,20 @@ const SelectionPage = ({ onSubmit }) => {
             displayEmpty
             sx={{
               borderRadius: '8px',
-              backgroundColor: vendor ? '#fff' : '#f5f5f5',
-              boxShadow: vendor ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
+              backgroundColor: diseaseCategory ? '#fff' : '#f5f5f5',
+              boxShadow: diseaseCategory ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#e0e0e0',
               },
               '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: vendor ? '#275786' : '#e0e0e0',
+                borderColor: diseaseCategory ? '#275786' : '#e0e0e0',
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#275786',
               }
             }}
           >
-            <MenuItem value="">Select a topic</MenuItem>
+            <MenuItem value="">Select a DSI tool</MenuItem>
             {availableTopics.map((t) => (
               <MenuItem key={t.value} value={t.value}>{t.label}</MenuItem>
             ))}
@@ -145,7 +155,7 @@ const SelectionPage = ({ onSubmit }) => {
           <Button 
             variant="contained" 
             onClick={handleSubmit} 
-            disabled={!vendor || !topic}
+            disabled={!diseaseCategory || !topic}
             sx={{
               backgroundColor: '#275786',
               padding: '12px 32px',

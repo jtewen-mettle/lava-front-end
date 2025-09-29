@@ -9,6 +9,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as sk from 'scikitjs';
 import { useAppContext } from '../context/AppContext';
 import ProstateCancerPrediction from './topics/ProstateCancerPrediciton';
+import HeartFailurePrediction from './topics/HeartFailurePrediction';
 
 const Lava = () => {
   //const [selection, setSelection] = useState(null);
@@ -40,6 +41,8 @@ const Lava = () => {
         return <ProstateCancerPrediction />;
       case 'HospitalizationRisk':
         return <HospitalizationRiskPrediction />;
+      case 'HeartFailurePrediction':
+        return <HeartFailurePrediction />;
       default:
         return <div>Coming Soon...</div>;
     }
