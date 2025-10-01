@@ -26,14 +26,15 @@ const SelectionForm = ({ onSubmit }) => {
   const activeDiseaseCategories = getActiveDiseaseCategories();
 
   return (
-    <Box 
-      p={4} 
-      display="flex" 
-      flexDirection="column" 
-      alignItems="center" 
+    <Box
+      p={4}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
       gap={4}
       sx={{
-        minHeight: '60vh',
+        minHeight: '80vh',
+        justifyContent: 'center',
         backgroundColor: 'transparent',
         mx: 'auto',
         maxWidth: '1400px',
