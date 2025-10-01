@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, MenuItem, FormControl, Select, Button } from '@mui/material';
 import LavaLogo from './LavaLogo';
+import { getEnabledToolsForCategory, getActiveDiseaseCategories } from '../config/toolsConfig';
 
 const SelectionPage = ({ onSubmit }) => {
   const [diseaseCategory, setDiseaseCategory] = useState('');
@@ -18,30 +19,11 @@ const SelectionPage = ({ onSubmit }) => {
     }
   };
 
-  // Define available DSI tools based on disease category
-  const getToolsForDiseaseCategory = () => {
-    if (diseaseCategory === 'Heart & Cardiovascular') {
-      return [
-        { value: 'CardioVascularPrediction', label: 'Cerner ASCVD Risk Calculator' },
-        { value: 'HeartFailurePrediction', label: 'Vendor Heart Failure Predictor' },
-      ];
-    } else if (diseaseCategory === 'Kidney & Renal') {
-      return [
-        { value: 'CKD', label: 'Cerner CKD Risk Assessment' },
-      ];
-    } else if (diseaseCategory === 'Cancer') {
-      return [
-        { value: 'ProstateCancerPrediction', label: 'Vendor Prostate Cancer Predictor' },
-      ];
-    } else if (diseaseCategory === 'General Risk Assessment') {
-      return [
-        { value: 'HospitalizationRisk', label: 'Vendor Hospitalization Risk Predictor' },
-      ];
-    }
-    return [];
-  };
+  // Get enabled DSI tools for the selected disease category from config
+  const availableTopics = diseaseCategory ? getEnabledToolsForCategory(diseaseCategory) : [];
 
-  const availableTopics = getToolsForDiseaseCategory();
+  // Get only disease categories that have enabled tools
+  const activeDiseaseCategories = getActiveDiseaseCategories();
 
   return (
     <Box 
@@ -105,10 +87,11 @@ const SelectionPage = ({ onSubmit }) => {
             }}
           >
             <MenuItem value="">Select a disease category</MenuItem>
-            <MenuItem value="Heart & Cardiovascular">Heart & Cardiovascular</MenuItem>
-            <MenuItem value="Kidney & Renal">Kidney & Renal</MenuItem>
-            <MenuItem value="Cancer">Cancer</MenuItem>
-            <MenuItem value="General Risk Assessment">General Risk Assessment</MenuItem>
+            {activeDiseaseCategories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
