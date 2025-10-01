@@ -37,7 +37,7 @@ export const useNavigation = () => {
       if (topic) {
         items.push({
           label: topic.name,
-          path: `/model-analysis/${selection.vendor}/${selection.topic}`,
+          path: `/model-analysis/${selection.diseaseCategory}/${selection.topic}`,
           data: selection
         });
       }
@@ -52,8 +52,8 @@ export const useNavigation = () => {
     navigateToDashboard();
   }, [navigateToDashboard, setSelection]);
 
-  const navigateToTopic = useCallback((vendor, topic) => {
-    setSelection({ vendor, topic });
+  const navigateToTopic = useCallback((diseaseCategory, topic) => {
+    setSelection({ diseaseCategory, topic });
     navigateToModelAnalysis();
   }, [navigateToModelAnalysis, setSelection]);
 
@@ -117,7 +117,7 @@ export const useNavigation = () => {
     }
 
     if (selection) {
-      path += `/${selection.vendor}/${selection.topic}`;
+      path += `/${selection.diseaseCategory}/${selection.topic}`;
     }
 
     return path;

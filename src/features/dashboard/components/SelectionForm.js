@@ -1,40 +1,29 @@
 import React, { useState } from 'react';
 import { Box, Typography, MenuItem, FormControl, Select, Button } from '@mui/material';
 import { Logo } from '../../../shared/ui';
-import { VENDORS, TOPICS } from '../../../core/constants';
+import { getEnabledToolsForCategory, getActiveDiseaseCategories } from '../../../config/toolsConfig';
 
 const SelectionForm = ({ onSubmit }) => {
-  const [vendor, setVendor] = useState('');
+  const [diseaseCategory, setDiseaseCategory] = useState('');
   const [topic, setTopic] = useState('');
 
-  const handleVendorChange = (e) => {
-    const selectedVendor = e.target.value;
-    setVendor(selectedVendor);
-    setTopic(''); // Reset topic when vendor changes
+  const handleDiseaseCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setDiseaseCategory(selectedCategory);
+    setTopic(''); // Reset topic when category changes
   };
 
   const handleSubmit = () => {
-    if (vendor && topic) {
-      onSubmit({ vendor, topic });
+    if (diseaseCategory && topic) {
+      onSubmit({ diseaseCategory, topic });
     }
   };
 
-  // Define available topics based on vendor
-  const getTopicsForVendor = () => {
-    if (vendor === 'Vendor1') {
-      return [
-        { value: 'CardioVascularPrediction', label: 'Cardiovascular Predictor Evaluation' },
-      ];
-    } else if (vendor === 'Vendor2') {
-      return [
-        { value: 'CKD', label: 'Chronic Kidney Disease Estimator' },
-        { value: 'ProstateCancerPrediction', label: 'Prostate Cancer Predictor Evaluation' },
-      ];
-    }
-    return [];
-  };
+  // Get enabled DSI tools for the selected disease category from config
+  const availableTopics = diseaseCategory ? getEnabledToolsForCategory(diseaseCategory) : [];
 
-  const availableTopics = getTopicsForVendor();
+  // Get only disease categories that have enabled tools
+  const activeDiseaseCategories = getActiveDiseaseCategories();
 
   return (
     <Box 
@@ -89,21 +78,21 @@ const SelectionForm = ({ onSubmit }) => {
         }}
       >
         <FormControl fullWidth sx={{ mb: 3 }}>
-          <Typography 
-            variant="h6" 
-            gutterBottom 
-            sx={{ 
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
               fontFamily: 'Arial, sans-serif',
               fontWeight: 'bold',
               color: '#275786',
               marginBottom: '12px'
             }}
           >
-            Pick a DSI Application
+            Pick a Disease Category
           </Typography>
-          <Select 
-            value={vendor} 
-            onChange={handleVendorChange} 
+          <Select
+            value={diseaseCategory}
+            onChange={handleDiseaseCategoryChange}
             displayEmpty
             sx={{
               borderRadius: '8px',
@@ -120,38 +109,39 @@ const SelectionForm = ({ onSubmit }) => {
               }
             }}
           >
-            <MenuItem value="">Select a vendor</MenuItem>
-            <MenuItem value="Vendor1">Cerner</MenuItem>
-            <MenuItem value="Vendor2">DSI Vendor2</MenuItem>
+            <MenuItem value="">Select a disease category</MenuItem>
+            {activeDiseaseCategories.map((category) => (
+              <MenuItem key={category} value={category}>{category}</MenuItem>
+            ))}
           </Select>
         </FormControl>
 
-        <FormControl fullWidth disabled={!vendor} sx={{ mb: 3 }}>
-          <Typography 
-            variant="h6" 
-            gutterBottom 
-            sx={{ 
+        <FormControl fullWidth disabled={!diseaseCategory} sx={{ mb: 3 }}>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
               fontFamily: 'Arial, sans-serif',
               fontWeight: 'bold',
-              color: vendor ? '#275786' : '#999',
+              color: diseaseCategory ? '#275786' : '#999',
               marginBottom: '12px'
             }}
           >
             Pick a Topic
           </Typography>
-          <Select 
-            value={topic} 
-            onChange={(e) => setTopic(e.target.value)} 
+          <Select
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
             displayEmpty
             sx={{
               borderRadius: '8px',
-              backgroundColor: vendor ? '#fff' : '#f5f5f5',
-              boxShadow: vendor ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
+              backgroundColor: diseaseCategory ? '#fff' : '#f5f5f5',
+              boxShadow: diseaseCategory ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#e0e0e0',
               },
               '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: vendor ? '#275786' : '#e0e0e0',
+                borderColor: diseaseCategory ? '#275786' : '#e0e0e0',
               },
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#275786',
@@ -166,10 +156,10 @@ const SelectionForm = ({ onSubmit }) => {
         </FormControl>
 
         <Box display="flex" justifyContent="center" mt={4}>
-          <Button 
-            variant="contained" 
-            onClick={handleSubmit} 
-            disabled={!vendor || !topic}
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            disabled={!diseaseCategory || !topic}
             sx={{
               backgroundColor: '#275786',
               padding: '12px 32px',
