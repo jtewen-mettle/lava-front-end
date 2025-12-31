@@ -1,66 +1,167 @@
 import React, { useState } from 'react';
 import { Box, Typography, MenuItem, FormControl, Select, Button } from '@mui/material';
 import LavaLogo from './LavaLogo';
+import { getEnabledToolsForCategory, getActiveDiseaseCategories } from '../config/toolsConfig';
 
 const SelectionPage = ({ onSubmit }) => {
-  const [vendor, setVendor] = useState('');
+  const [diseaseCategory, setDiseaseCategory] = useState('');
   const [topic, setTopic] = useState('');
 
-  const handleVendorChange = (e) => {
-    const selectedVendor = e.target.value;
-    setVendor(selectedVendor);
-    setTopic(''); // Reset topic when vendor changes
+  const handleDiseaseCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setDiseaseCategory(selectedCategory);
+    setTopic(''); // Reset topic when category changes
   };
 
   const handleSubmit = () => {
-    if (vendor && topic) {
-      onSubmit({ vendor, topic });
+    if (diseaseCategory && topic) {
+      onSubmit({ diseaseCategory, topic });
     }
   };
 
-  // Define available topics based on vendor
-  const getTopicsForVendor = () => {
-    if (vendor === 'Vendor1') {
-      return [
-        { value: 'CardioVascularPrediction', label: 'CardioVascular Predictor Evaluation' },
-      ];
-    } else if (vendor === 'Vendor2') {
-      return [
-        { value: 'CKD', label: 'Kidney Failure Estimator' },
-        { value: 'ProstateCancerPrediction', label: 'ProstateCancer Predictor Evaluation' },
-      ];
-    }
-    return [];
-  };
+  // Get enabled DSI tools for the selected disease category from config
+  const availableTopics = diseaseCategory ? getEnabledToolsForCategory(diseaseCategory) : [];
 
-  const availableTopics = getTopicsForVendor();
+  // Get only disease categories that have enabled tools
+  const activeDiseaseCategories = getActiveDiseaseCategories();
 
   return (
-    <Box p={4} display="flex" flexDirection="column" alignItems="center" gap={3}>
+    <Box 
+      p={4} 
+      display="flex" 
+      flexDirection="column" 
+      alignItems="center" 
+      gap={4}
+      sx={{
+        minHeight: '60vh',
+        backgroundColor: 'transparent',
+        mx: 'auto',
+        maxWidth: '1400px',
+        px: { xs: 2, sm: 3, md: 3 },
+        py: { xs: 2, sm: 3, md: 4 }
+      }}
+    >
       <LavaLogo />
 
-      <FormControl fullWidth>
-        <Typography variant="body1" gutterBottom>Pick a DSI Application</Typography>
-        <Select value={vendor} onChange={handleVendorChange} displayEmpty>
-          <MenuItem value="">Select a vendor</MenuItem>
-          <MenuItem value="Vendor1">Cerner</MenuItem>
-          <MenuItem value="Vendor2">DSI Vendor2</MenuItem>
-        </Select>
-      </FormControl>
+      <Box 
+        sx={{ 
+          width: '100%', 
+          maxWidth: '500px',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          padding: '32px',
+          borderRadius: '16px',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+          backdropFilter: 'blur(10px)'
+        }}
+      >
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+              color: '#275786',
+              marginBottom: '12px'
+            }}
+          >
+            Select Disease Category
+          </Typography>
+          <Select
+            value={diseaseCategory}
+            onChange={handleDiseaseCategoryChange} 
+            displayEmpty
+            sx={{
+              borderRadius: '8px',
+              backgroundColor: '#fff',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#e0e0e0',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#275786',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#275786',
+              }
+            }}
+          >
+            <MenuItem value="">Select a disease category</MenuItem>
+            {activeDiseaseCategories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <FormControl fullWidth disabled={!vendor}>
-        <Typography variant="body1" gutterBottom>Pick a Topic</Typography>
-        <Select value={topic} onChange={(e) => setTopic(e.target.value)} displayEmpty>
-          <MenuItem value="">Select a topic</MenuItem>
-          {availableTopics.map((t) => (
-            <MenuItem key={t.value} value={t.value}>{t.label}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        <FormControl fullWidth disabled={!diseaseCategory} sx={{ mb: 3 }}>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+              color: diseaseCategory ? '#275786' : '#999',
+              marginBottom: '12px'
+            }}
+          >
+            Select DSI Tool
+          </Typography>
+          <Select 
+            value={topic} 
+            onChange={(e) => setTopic(e.target.value)} 
+            displayEmpty
+            sx={{
+              borderRadius: '8px',
+              backgroundColor: diseaseCategory ? '#fff' : '#f5f5f5',
+              boxShadow: diseaseCategory ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#e0e0e0',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: diseaseCategory ? '#275786' : '#e0e0e0',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#275786',
+              }
+            }}
+          >
+            <MenuItem value="">Select a DSI tool</MenuItem>
+            {availableTopics.map((t) => (
+              <MenuItem key={t.value} value={t.value}>{t.label}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <Button variant="contained" onClick={handleSubmit} disabled={!vendor || !topic}>
-        →
-      </Button>
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Button 
+            variant="contained" 
+            onClick={handleSubmit} 
+            disabled={!diseaseCategory || !topic}
+            sx={{
+              backgroundColor: '#275786',
+              padding: '12px 32px',
+              borderRadius: '25px',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              boxShadow: '0 4px 16px rgba(39, 87, 134, 0.3)',
+              '&:hover': {
+                backgroundColor: '#1164ad',
+                boxShadow: '0 6px 20px rgba(39, 87, 134, 0.4)',
+                transform: 'translateY(-2px)'
+              },
+              '&:disabled': {
+                backgroundColor: '#ccc',
+                boxShadow: 'none'
+              },
+              transition: 'all 0.3s ease'
+            }}
+          >
+            →
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -1,7 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { Box, Paper, Typography, Switch, FormControlLabel, Tooltip as MUITooltip } from '@mui/material';
+import { Box, Paper, Typography, Switch, FormControlLabel, Tooltip as MUITooltip, IconButton, Dialog, DialogTitle, DialogContent, Menu, MenuItem } from '@mui/material';
+import { ZoomIn, Download } from '@mui/icons-material';
+import { downloadCanvasChart } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -18,6 +21,58 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
  */
 const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, title = "Calibration Plot" }) => {
   const [showConfidenceInterval, setShowConfidenceInterval] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [downloadMenuAnchor, setDownloadMenuAnchor] = useState(null);
+  const chartRef = useRef(null);
+
+  const handleEnlargeChart = () => {
+    setOpenModal(true);
+  };
+
+  const handleDownloadClick = (event) => {
+    setDownloadMenuAnchor(event.currentTarget);
+  };
+
+  const handleDownloadClose = () => {
+    setDownloadMenuAnchor(null);
+  };
+
+  const downloadChart = (format) => {
+    if (chartRef.current) {
+      const canvas = chartRef.current.canvas;
+      if (canvas) {
+        // Create tooltip data with calibration info
+        const tooltipData = {
+          label: 'Calibration Analysis',
+          value: `Bins: ${nBins} | Confidence Interval: ${showConfidenceInterval ? 'Enabled' : 'Disabled'}`
+        };
+
+        // Create legend data for calibration curve with metrics
+        const legendData = [
+          { label: 'Calibration Curve', color: 'blue' },
+          { label: 'Perfect Calibration', color: 'red' }
+        ];
+        
+        if (showConfidenceInterval) {
+          legendData.push({ label: 'Confidence Interval', color: 'rgba(0, 123, 255, 0.3)' });
+        }
+        
+        // Add metrics to legend
+        if (calibrationError !== null) {
+          legendData.push({ label: `ECE: ${calibrationError.toFixed(3)}`, color: '#f8f9fa' });
+        }
+        if (calibrationMetrics.brierScore !== null) {
+          legendData.push({ label: `Brier Score: ${calibrationMetrics.brierScore.toFixed(3)}`, color: '#f8f9fa' });
+        }
+        if (calibrationAssessment) {
+          legendData.push({ label: `${calibrationAssessment.level}: ${calibrationAssessment.message}`, color: calibrationAssessment.color });
+        }
+        
+        downloadCanvasChart(canvas, format, 'calibration_curve', title, tooltipData, legendData);
+      }
+    }
+    handleDownloadClose();
+  };
   
   const calibrationData = useMemo(() => {
     // Use fixed nBins for calculation
@@ -81,7 +136,37 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
     plugins: {
       legend: {
         display: true,
-        position: 'bottom'
+        position: 'bottom',
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Arial, sans-serif'
+          },
+          color: '#000',
+          usePointStyle: true,
+          padding: 20,
+          generateLabels: function(chart) {
+            const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+            const labels = original.call(this, chart);
+            
+            labels.forEach((label, index) => {
+              const dataset = chart.data.datasets[index];
+              label.pointStyle = 'line';
+              label.pointStyleWidth = 50;
+              label.strokeStyle = dataset.borderColor || label.fillStyle;
+              label.fillStyle = dataset.borderColor || label.fillStyle;
+              label.lineWidth = 5;
+              
+              // Make red dotted line for Perfect Calibration
+              if (dataset.label === 'Perfect Calibration' || dataset.borderColor === 'red') {
+                label.lineDash = [8, 4];
+              }
+            });
+            
+            return labels;
+          }
+        }
       },
       title: {
         display: false
@@ -102,32 +187,63 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
         }
       }
     },
+    elements: {
+      line: {
+        borderWidth: 4
+      },
+      point: {
+        radius: 4,
+        hoverRadius: 6
+      }
+    },
     scales: {
       x: {
         type: 'linear',
         title: {
           display: true,
           text: 'Mean Predicted Probability',
-          font: { size: 14 }
+          font: { 
+            size: 14, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#000'
+        },
+        ticks: {
+          stepSize: 0.1,
+          font: { 
+            size: 12, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#000'
         },
         min: 0,
-        max: 1,
-        ticks: {
-          stepSize: 0.1
-        }
+        max: 1
       },
       y: {
         type: 'linear',
         title: {
           display: true,
           text: 'Fraction of Positives',
-          font: { size: 14 }
+          font: { 
+            size: 14, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#000'
+        },
+        ticks: {
+          stepSize: 0.1,
+          font: { 
+            size: 12, 
+            weight: 'bold', 
+            family: 'Arial, sans-serif' 
+          },
+          color: '#000'
         },
         min: 0,
-        max: 1,
-        ticks: {
-          stepSize: 0.1
-        }
+        max: 1
       }
     }
   };
@@ -150,19 +266,78 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
   }, [calibrationError, calibrationData]);
 
   return (
-    <Paper elevation={2} style={{ padding: 16, height: '650px', display: 'flex', flexDirection: 'column' }}>
+    <Paper 
+      elevation={2} 
+      style={{ 
+        padding: 16, 
+        height: '650px', 
+        display: 'flex', 
+        flexDirection: 'column',
+        transition: 'all 0.3s ease',
+        cursor: 'pointer'
+      }}
+      sx={{
+        '&:hover': {
+          elevation: 8,
+          transform: 'translateY(-4px)',
+          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+        }
+      }}
+    >
       {/* Header */}
-      <Box mb={1}>
-        <Typography variant="subtitle1" align="left" gutterBottom>
+      <Box mb={1} display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="subtitle1" align="left" gutterBottom sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
           {title}
         </Typography>
+        <Box>
+          <HelpIcon tooltip="Learn more about calibration curves in the Glossary" section="calibration-curve" />
+          <IconButton 
+            size="small" 
+            onClick={handleEnlargeChart}
+            title="Enlarge Chart"
+            sx={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e3f2fd',
+              borderRadius: '4px',
+              marginRight: '6px',
+              minWidth: '28px',
+              minHeight: '28px',
+              '&:hover': {
+                backgroundColor: '#e3f2fd',
+                border: '1px solid #bbdefb',
+                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+              }
+            }}
+          >
+            <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+          </IconButton>
+          <IconButton 
+            size="small" 
+            onClick={handleDownloadClick}
+            title="Download Chart"
+            sx={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e3f2fd',
+              borderRadius: '4px',
+              minWidth: '28px',
+              minHeight: '28px',
+              '&:hover': {
+                backgroundColor: '#e3f2fd',
+                border: '1px solid #bbdefb',
+                boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+              }
+            }}
+          >
+            <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+          </IconButton>
+        </Box>
       </Box>
 
       {/* Main Content Area */}
       <Box flex={1} display="flex" gap={2} minHeight={0}>
         {/* Left Side: Chart */}
         <Box flex={1} minHeight={0} minWidth={0}>
-          <Line data={chartData} options={options} />
+          <Line ref={chartRef} data={chartData} options={options} />
         </Box>
         
         {/* Right Side: Metrics and Controls */}
@@ -216,7 +391,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Expected Calibration Error
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -248,7 +423,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Brier Score
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -280,7 +455,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Mean Calibration Error
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -312,7 +487,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Reliability
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -344,7 +519,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
                 justifyContent="center"
                 sx={{ cursor: 'help' }}
               >
-                <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
                   Resolution
                 </Typography>
                 <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -380,7 +555,7 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
               </Typography>
               <Typography 
                 variant="body2" 
-                style={{ color: '#666', fontSize: '0.85rem' }}
+                style={{ color: '#000', fontSize: '0.85rem' }}
               >
                 {calibrationAssessment.message}
               </Typography>
@@ -388,6 +563,337 @@ const CalibrationCurve = ({ predictions, actual, processedData, nBins = 10, titl
           </Box>
         )}
       </Box>
+
+      {/* Modal for enlarged chart */}
+      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
+        <DialogTitle>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <span>{title}</span>
+            <Box>
+              <IconButton 
+                size="small" 
+                onClick={handleDownloadClick}
+                title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+              <IconButton 
+                size="small" 
+                onClick={() => setOpenModal(false)}
+                title="Close"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #ffebee',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#ffebee',
+                    border: '1px solid #ffcdd2',
+                    boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                  }
+                }}
+              >
+                <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
+              </IconButton>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent sx={{ overflow: 'hidden' }}>
+          <Box style={{ height: '600px', width: '100%', display: 'flex', gap: '16px', overflow: 'hidden' }}>
+            {/* Chart */}
+            <Box flex={1}>
+              <Line data={chartData} options={{ 
+                ...options, 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: {
+                  ...options.plugins,
+                  legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                      font: {
+                        size: 14,
+                        weight: 'bold',
+                        family: 'Arial, sans-serif'
+                      },
+                      color: '#000',
+                      usePointStyle: true,
+                      padding: 20,
+                      generateLabels: function(chart) {
+                        const original = ChartJS.defaults.plugins.legend.labels.generateLabels;
+                        const labels = original.call(this, chart);
+                        
+                        labels.forEach((label, index) => {
+                          const dataset = chart.data.datasets[index];
+                          label.pointStyle = 'line';
+                          label.pointStyleWidth = 50;
+                          label.strokeStyle = dataset.borderColor || label.fillStyle;
+                          label.fillStyle = dataset.borderColor || label.fillStyle;
+                          label.lineWidth = 5;
+                          
+                          // Make red dotted line for Perfect Calibration
+                          if (dataset.label === 'Perfect Calibration' || dataset.borderColor === 'red') {
+                            label.lineDash = [8, 4];
+                          }
+                        });
+                        
+                        return labels;
+                      }
+                    }
+                  }
+                }
+              }} />
+            </Box>
+            {/* Metrics Panel */}
+            <Box width="200px" display="flex" flexDirection="column" gap={1.5}>
+              <Box 
+                px={0.5} 
+                py={0.2}
+                bgcolor="#e3f2fd" 
+                borderRadius={1} 
+                textAlign="left"
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showConfidenceInterval}
+                      onChange={(e) => setShowConfidenceInterval(e.target.checked)}
+                      color="primary"
+                      size="small"
+                    />
+                  }
+                  label={
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'bold' }}>
+                      Confidence Intervals
+                    </Typography>
+                  }
+                  sx={{ m: 0 }}
+                />
+              </Box>
+              
+              {/* Calibration Metrics in Modal */}
+              {calibrationError !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Expected Calibration Error: Lower values (≤0.05) indicate excellent calibration
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
+                      Expected Calibration Error
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationError.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.brierScore !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Brier Score: Lower is better. Measures accuracy of probabilistic predictions (0 = perfect, 1 = worst)
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
+                      Brier Score
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.brierScore.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.meanCalibrationError !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Mean Calibration Error: Lower is better. Represents the maximum calibration error across all bins
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
+                      Mean Calibration Error
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.meanCalibrationError.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.reliability !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Reliability: Lower is better. Measures how much predictions deviate from actual outcomes within bins
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
+                      Reliability
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.reliability.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+              
+              {calibrationMetrics.resolution !== null && (
+                <MUITooltip 
+                  title={
+                    <Typography sx={{ fontSize: '0.9rem' }}>
+                      Resolution: Higher is better. Measures the model's ability to distinguish between different outcome rates
+                    </Typography>
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <Box 
+                    px={0.5} 
+                    py={1}
+                    bgcolor="#f8f9fa" 
+                    borderRadius={1} 
+                    textAlign="center"
+                    minHeight="60px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography variant="caption" sx={{ fontSize: '0.75rem', color: '#000' }}>
+                      Resolution
+                    </Typography>
+                    <Typography variant="h6" color="primary" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                      {calibrationMetrics.resolution.toFixed(3)}
+                    </Typography>
+                  </Box>
+                </MUITooltip>
+              )}
+            </Box>
+          </Box>
+          
+          {/* Bottom: Assessment Bar in Modal */}
+          {calibrationAssessment && (
+            <Box mt={2} mx={2} mb={1}>
+              <Box 
+                p={1} 
+                borderRadius={1} 
+                bgcolor="#f5f5f5"
+                border={`2px solid ${calibrationAssessment.color}`}
+                sx={{ boxShadow: 1 }}
+              >
+                <Box display="flex" alignItems="center" justifyContent="center" gap={1} flexWrap="wrap">
+                  <span style={{ fontSize: '14px' }}>{calibrationAssessment.icon}</span>
+                  <Typography 
+                    variant="body2" 
+                    style={{ 
+                      color: calibrationAssessment.color, 
+                      fontWeight: 'bold',
+                      fontSize: '0.9rem'
+                    }}
+                  >
+                    {calibrationAssessment.level}:
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    style={{ color: '#000', fontSize: '0.85rem' }}
+                  >
+                    {calibrationAssessment.message}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Download Menu */}
+      <Menu
+        anchorEl={downloadMenuAnchor}
+        open={Boolean(downloadMenuAnchor)}
+        onClose={handleDownloadClose}
+      >
+        <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
+        <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
+        <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+      </Menu>
     </Paper>
   );
 };

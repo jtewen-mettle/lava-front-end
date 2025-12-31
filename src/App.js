@@ -113,7 +113,13 @@ function App() {
   }, []);
 
   return (
-    <div style={{ paddingLeft: "2rem", fontSize: "1.2rem", alignItems:"center" }}>
+    <div style={{ 
+      margin: 0, 
+      padding: 0, 
+      width: '100%', 
+      overflowX: 'hidden',
+      fontSize: "1.2rem"
+    }}>
       {isAuthorized ? <AppProvider><Lava /> </AppProvider>: message}
     </div>
   );

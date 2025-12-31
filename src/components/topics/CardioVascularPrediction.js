@@ -1037,7 +1037,7 @@ const CardioVascularPrediction = (props) => {
   return (
     <div>
       { csvData && csvData.length > 0 && (
-        <Prediction csvData={csvData} topic="CardioVascularDisease Prediction" score="TenYearScore"/>
+        <Prediction csvData={csvData} topic="Atherosclerotic Cardiovascular Disease Prediction" score="TenYearScore"/>
       )}
     </div>
   );

@@ -5068,7 +5068,7 @@ const ProstateCancerPrediction = (props) => {
     <div>
       {/* <CKDPredictionCsvFromFhir onCsvReady={handleCsvReady} /> */}
       { csvData && csvData.length > 0 && (
-        <Prediction csvData={csvData} topic="ProstateCancer Prediction" score="PCPT_Risk_Prob"/>
+        <Prediction csvData={csvData} topic="Prostate Cancer Prediction" score="PCPT_Risk_Prob"/>
       )}
     </div>
   );

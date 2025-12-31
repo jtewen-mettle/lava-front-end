@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Paper, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from '@mui/material';
+import { ZoomIn, Download } from '@mui/icons-material';
 import DistributionPieChart from './DistributionPieChart';
+import { downloadCanvasChart } from './ChartDownloadUtils';
+import HelpIcon from '../HelpIcon';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
 const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [modalChart, setModalChart] = useState(null);
+  const [modalTitle, setModalTitle] = useState('');
+  const [downloadMenuAnchor, setDownloadMenuAnchor] = useState(null);
+  const [activeChart, setActiveChart] = useState(null);
+  const [lastTooltipData, setLastTooltipData] = useState(null);
+  
+  const ageChartRef = useRef(null);
+  const raceChartRef = useRef(null);
+
   const ageData = {
     labels: Object.keys(ageGroups),
     datasets: [{
       label: 'Patients',
       data: Object.values(ageGroups),
-      backgroundColor: '#42a5f5'
+      backgroundColor: '#42a5f5',
+      borderColor: '#1976d2',
+      borderWidth: 2,
+      borderRadius: 4,
+      borderSkipped: false,
     }]
   };
 
@@ -25,59 +42,615 @@ const DistributionCharts = ({ ageGroups, genderCounts, raceCounts }) => {
     }]
   };
 
+  // Create light, appealing race color palette for distribution charts
+  const raceDistributionColors = [
+    "rgba(255, 182, 193, 0.95)", // Light pink
+    "rgba(173, 216, 230, 0.95)", // Light blue
+    "rgba(221, 160, 221, 0.95)", // Light orchid
+    "rgba(255, 218, 185, 0.95)", // Light peach
+    "rgba(144, 238, 144, 0.95)", // Light green
+    "rgba(255, 255, 224, 0.95)", // Light yellow
+    "rgba(255, 192, 203, 0.95)", // Light coral
+    "rgba(176, 196, 222, 0.95)", // Light steel blue
+    "rgba(230, 230, 250, 0.95)", // Light lavender
+    "rgba(240, 248, 255, 0.95)"  // Light azure
+  ];
+  
+  const raceLabels = Object.keys(raceCounts).sort(); // Sort for consistency in display
+  const raceColors = raceLabels.map((race, index) => {
+    return raceDistributionColors[index % raceDistributionColors.length];
+  });
+
   const raceData = {
-    labels: Object.keys(raceCounts),
+    labels: raceLabels,
     datasets: [{
       label: 'Patients',
-      data: Object.values(raceCounts),
-      backgroundColor: '#ab47bc'
+      data: raceLabels.map(label => raceCounts[label]),
+      backgroundColor: 'rgba(255, 182, 193, 0.95)', // Light pink
+      borderColor: 'rgba(255, 182, 193, 1)',
+      borderWidth: 2,
+      borderRadius: 4,
+      borderSkipped: false,
     }]
+  };
+
+  const handleEnlargeChart = (chartData, title, chartType) => {
+    setModalChart({ data: chartData, type: chartType });
+    setModalTitle(title);
+    setOpenModal(true);
+  };
+
+  const handleDownloadClick = (event, chartType) => {
+    setDownloadMenuAnchor(event.currentTarget);
+    setActiveChart(chartType);
+  };
+
+  const handleDownloadClose = () => {
+    setDownloadMenuAnchor(null);
+    setActiveChart(null);
+  };
+
+  const getTooltipDataForChart = (chartType) => {
+    switch(chartType) {
+      case 'age':
+        return {
+          label: 'Age Groups',
+          value: `Total patients: ${Object.values(ageGroups).reduce((sum, val) => sum + val, 0)}`
+        };
+      case 'race':
+        return {
+          label: 'Race/Ethnicity',
+          value: `Total patients: ${Object.values(raceCounts).reduce((sum, val) => sum + val, 0)}`
+        };
+      default:
+        return null;
+    }
+  };
+
+  const getLegendDataForChart = (chartType) => {
+    switch(chartType) {
+      case 'age':
+        return Object.keys(ageGroups).map(ageGroup => ({
+          label: ageGroup,
+          color: '#42a5f5'
+        }));
+      case 'race':
+        return raceLabels.map((race, index) => ({
+          label: race,
+          color: 'rgba(255, 182, 193, 0.95)'
+        }));
+      default:
+        return null;
+    }
+  };
+
+  const downloadChart = (format) => {
+    let canvas;
+    let fileName = `${activeChart}_distribution`;
+    let title = '';
+    
+    switch(activeChart) {
+      case 'age':
+        canvas = ageChartRef.current?.canvas;
+        fileName = 'age_distribution';
+        title = 'Age Distribution';
+        break;
+      case 'race':
+        canvas = raceChartRef.current?.canvas;
+        fileName = 'race_distribution';
+        title = 'Race/Ethnicity Distribution';
+        break;
+      default:
+        return;
+    }
+
+    if (canvas) {
+      // Get tooltip and legend data for the active chart
+      const tooltipData = getTooltipDataForChart(activeChart);
+      const legendData = getLegendDataForChart(activeChart);
+      downloadCanvasChart(canvas, format, fileName, title, tooltipData, legendData);
+    }
+    handleDownloadClose();
   };
 
   return (
     <Box mt={4}>
-    <Grid container spacing={4} width="100%">
-      <Grid item xs={12} md={6} width="45%">
-        <Paper sx={{ p: 2, height: '300px' }}> {/* Set a consistent height */}
-          <Typography variant="h6" gutterBottom align="left">
-            Age Distribution
-          </Typography>
-          <Bar data={ageData} options={{ 
-              responsive: true,
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 600px), 1fr))', 
+        gap: '24px',
+        width: '100%',
+        gridAutoRows: 'minmax(400px, auto)',
+        maxWidth: '100%'
+      }}>
+        {/* Age Distribution */}
+        <Paper 
+          sx={{ 
+            p: 2, 
+            height: '400px', 
+            display: 'flex', 
+            flexDirection: 'column',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+            }
+          }}
+        >
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
+              Age Distribution
+            </Typography>
+            <Box>
+              <HelpIcon tooltip="Learn more about age distribution in the Glossary" section="age-distribution" />
+              <IconButton 
+                size="small" 
+                onClick={() => handleEnlargeChart(ageData, 'Age Distribution', 'bar')}
+                title="Enlarge Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+              <IconButton 
+                size="small" 
+                onClick={(e) => handleDownloadClick(e, 'age')}
+                title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+            </Box>
+          </Box>
+          <div style={{ flex: 1, height: '300px' }}>
+            <Bar 
+              ref={ageChartRef}
+              data={ageData} 
+              options={{ 
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { 
+                    display: true,
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                      usePointStyle: true,
+                      pointStyle: 'rect',
+                      color: '#333',
+                      font: {
+                        family: 'Arial, sans-serif',
+                        size: 14,
+                        weight: 'bold'
+                      }
+                    }
+                  },
+                  tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: '#333',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: true
+                  }
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Age Group',
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    grid: {
+                      display: false
+                    }
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Number of Patients',
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    grid: {
+                      color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                  }
+                },
+                elements: {
+                  bar: {
+                    borderWidth: 2,
+                    hoverBorderWidth: 2,
+                    hoverBackgroundColor: '#42a5f5',
+                    hoverBorderColor: '#1976d2',
+                    shadowColor: 'rgba(0, 0, 0, 0.15)',
+                    shadowBlur: 8,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 4
+                  }
+                }
+              }} />
+          </div>
+        </Paper>
+
+        {/* Gender Distribution */}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          minWidth: 0,
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box'
+        }}>
+          <DistributionPieChart title="Gender Distribution" data={genderCounts}/>
+        </div>
+
+        {/* Race/Ethnicity Distribution */}
+        <Paper 
+          sx={{ 
+            p: 2, 
+            height: '400px', 
+            display: 'flex', 
+            flexDirection: 'column',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+            }
+          }}
+        >
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="h6" gutterBottom align="left" sx={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', fontSize: '16px' }}>
+              Race/Ethnicity Distribution
+            </Typography>
+            <Box>
+              <HelpIcon tooltip="Learn more about race/ethnicity distribution in the Glossary" section="race-distribution" />
+              <IconButton 
+                size="small" 
+                onClick={() => handleEnlargeChart(raceData, 'Race/Ethnicity Distribution', 'bar')}
+                title="Enlarge Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  marginRight: '6px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <ZoomIn sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+              <IconButton 
+                size="small" 
+                onClick={(e) => handleDownloadClick(e, 'race')}
+                title="Download Chart"
+                sx={{
+                  backgroundColor: '#f8f9fa',
+                  border: '1px solid #e3f2fd',
+                  borderRadius: '4px',
+                  minWidth: '28px',
+                  minHeight: '28px',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #bbdefb',
+                    boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                  }
+                }}
+              >
+                <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+              </IconButton>
+            </Box>
+          </Box>
+          <div style={{ flex: 1, height: '300px' }}>
+            <Bar 
+              ref={raceChartRef}
+              data={raceData} 
+              options={{ 
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { 
+                    display: true,
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                      usePointStyle: true,
+                      pointStyle: 'rect',
+                      color: '#333',
+                      font: {
+                        family: 'Arial, sans-serif',
+                        size: 14,
+                        weight: 'bold'
+                      }
+                    }
+                  },
+                  tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: '#333',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: true
+                  }
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Race/Ethnicity Group',
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    grid: {
+                      display: false
+                    }
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Number of Patients',
+                      font: { 
+                        size: 14, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    ticks: {
+                      font: { 
+                        size: 12, 
+                        weight: 'bold', 
+                        family: 'Arial, sans-serif' 
+                      },
+                      color: '#333'
+                    },
+                    grid: {
+                      color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                  }
+                },
+                elements: {
+                  bar: {
+                    borderWidth: 2,
+                    hoverBorderWidth: 2,
+                    hoverBackgroundColor: 'rgba(255, 182, 193, 0.95)',
+                    hoverBorderColor: 'rgba(255, 182, 193, 1)',
+                    shadowColor: 'rgba(0, 0, 0, 0.15)',
+                    shadowBlur: 8,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 4
+                  }
+                }
+              }} />
+          </div>
+        </Paper>
+      </div>
+
+    {/* Modal for enlarged charts */}
+    <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="xl" fullWidth>
+      <DialogTitle>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <span>{modalTitle}</span>
+          <Box>
+            <IconButton 
+              size="small" 
+              onClick={(e) => {
+                setActiveChart(modalTitle.includes('Age') ? 'age' : 'race');
+                handleDownloadClick(e);
+              }}
+              title="Download Chart"
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #e3f2fd',
+                borderRadius: '4px',
+                marginRight: '6px',
+                minWidth: '28px',
+                minHeight: '28px',
+                '&:hover': {
+                  backgroundColor: '#e3f2fd',
+                  border: '1px solid #bbdefb',
+                  boxShadow: '0 2px 4px rgba(25,118,210,0.15)'
+                }
+              }}
+            >
+              <Download sx={{ fontSize: 16, color: '#1976d2' }} />
+            </IconButton>
+            <IconButton 
+              size="small" 
+              onClick={() => setOpenModal(false)}
+              title="Close"
+              sx={{
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #ffebee',
+                borderRadius: '4px',
+                minWidth: '28px',
+                minHeight: '28px',
+                '&:hover': {
+                  backgroundColor: '#ffebee',
+                  border: '1px solid #ffcdd2',
+                  boxShadow: '0 2px 4px rgba(244,67,54,0.15)'
+                }
+              }}
+            >
+              <span style={{ fontSize: '16px', color: '#f44336', fontWeight: 'normal' }}>✕</span>
+            </IconButton>
+          </Box>
+        </Box>
+      </DialogTitle>
+      <DialogContent sx={{ overflow: 'hidden' }}>
+        <Box style={{ height: '600px', width: '100%', overflow: 'hidden' }}>
+          {modalChart && modalChart.type === 'bar' && (
+            <Bar data={modalChart.data} options={{ 
+              responsive: true, 
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { 
+                  display: true,
+                  position: 'top',
+                  align: 'end',
+                  labels: {
+                    usePointStyle: true,
+                    pointStyle: 'rect',
+                    color: '#333',
+                    font: {
+                      family: 'Arial, sans-serif',
+                      size: 14,
+                      weight: 'bold'
+                    }
+                  }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  titleColor: '#fff',
+                  bodyColor: '#fff',
+                  borderColor: '#333',
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  displayColors: true
+                }
+              },
               scales: {
                 x: {
                   title: {
                     display: true,
-                    text: 'Age Group', // X-axis label for Age Distribution
-                    font: { size: 14 }
+                    text: modalTitle.includes('Age') ? 'Age Group' : 'Race/Ethnicity Group',
+                    font: { 
+                      size: 14, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  ticks: {
+                    font: { 
+                      size: 12, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  grid: {
+                    display: false
                   }
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'Number of Patients',
+                    font: { 
+                      size: 14, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  ticks: {
+                    font: { 
+                      size: 12, 
+                      weight: 'bold', 
+                      family: 'Arial, sans-serif' 
+                    },
+                    color: '#333'
+                  },
+                  grid: {
+                    color: 'rgba(0, 0, 0, 0.1)'
+                  }
+                }
+              },
+              elements: {
+                bar: {
+                  borderWidth: 2,
+                  hoverBorderWidth: 2,
+                  shadowColor: 'rgba(0, 0, 0, 0.15)',
+                  shadowBlur: 8,
+                  shadowOffsetX: 0,
+                  shadowOffsetY: 4
                 }
               }
             }} />
-        </Paper>
-      </Grid>
-      <Grid item xs={12} md={6} width="45%">
-        <DistributionPieChart title="Gender Distribution" data={genderCounts}/>
-      </Grid>
-      <Grid item xs={12} width="45%">
-        <Paper sx={{ p: 2, height: '300px' }}> {/* Set the same height */}
-          <Typography variant="h6" gutterBottom align="left">
-            Race/Ethnicity Distribution
-          </Typography>
-          <Bar data={raceData} options={{ responsive: true,
-             scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: 'Race/Ethnicity Group', // X-axis label for Age Distribution
-                  font: { size: 14 }
-                }
-              }
-            }
-           }} />
-        </Paper>
-      </Grid>
-    </Grid>
+          )}
+        </Box>
+      </DialogContent>
+    </Dialog>
+
+    {/* Download Menu */}
+    <Menu
+      anchorEl={downloadMenuAnchor}
+      open={Boolean(downloadMenuAnchor)}
+      onClose={handleDownloadClose}
+    >
+      <MenuItem onClick={() => downloadChart('png')}>Download as PNG</MenuItem>
+      <MenuItem onClick={() => downloadChart('jpg')}>Download as JPG</MenuItem>
+      <MenuItem onClick={() => downloadChart('pdf')}>Download as PDF</MenuItem>
+    </Menu>
   </Box>
   );
 };
